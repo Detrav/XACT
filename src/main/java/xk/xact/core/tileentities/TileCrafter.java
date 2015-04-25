@@ -9,6 +9,7 @@ package xk.xact.core.tileentities;
 import java.util.ArrayList;
 import java.util.List;
 
+
 //import net.mcft.copy.betterstorage.api.ICrateStorage;
 //import net.mcft.copy.betterstorage.api.ICrateWatcher;
 import net.minecraft.client.Minecraft;
@@ -19,6 +20,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -360,19 +362,84 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT( compound );
-		resources.readFromNBT( compound );
-		circuits.readFromNBT( compound );
-		craftGrid.readFromNBT( compound );
+//		resources.readFromNBT( compound );
+//		circuits.readFromNBT( compound );
+//		craftGrid.readFromNBT( compound );
+		
+
+		NBTTagList gridList = compound.getTagList("Grid", 10); // Load Grid
+		for (int i = 0; i < gridList.tagCount(); ++i) {
+			NBTTagCompound tag = gridList.getCompoundTagAt(i);
+			byte slotIndex = tag.getByte("GridSlot");
+			if (slotIndex >= 0 && slotIndex < craftGrid.getSizeInventory()) {
+				craftGrid.setInventorySlotContents(slotIndex, ItemStack
+						.loadItemStackFromNBT(tag));
+			}
+		}
+		
+		NBTTagList circuitList = compound.getTagList("Circuits", 10); // Load Circuits
+		for (int i = 0; i < circuitList.tagCount(); i++) {
+			NBTTagCompound tag = circuitList.getCompoundTagAt(i);
+			byte slotIndex = tag.getByte("CircuitSlot");
+			if (slotIndex >= 0 && slotIndex < circuits.getSizeInventory()) {
+				circuits.setInventorySlotContents(slotIndex, ItemStack.loadItemStackFromNBT(tag));
+			}
+		}
+		
+		NBTTagList resourceList = compound.getTagList("Resources", 10); // Load resources
+		for (int i = 0; i < resourceList.tagCount(); ++i) {
+			NBTTagCompound tag = resourceList.getCompoundTagAt(i);
+			byte slotIndex = tag.getByte("ResourceSlot");
+			if (slotIndex >= 0 && slotIndex < resources.getSizeInventory()) {
+				resources.setInventorySlotContents(slotIndex, ItemStack
+						.loadItemStackFromNBT(tag));
+			}
+		}
 		updateRecipes();
 		stateUpdatePending = true;
+		
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT( compound );
-		resources.writeToNBT( compound );
-		circuits.writeToNBT( compound );
-		craftGrid.writeToNBT( compound );
+		
+		ItemStack[] grid = craftGrid.getContents();
+		ItemStack[] circuit = circuits.getContents();
+		ItemStack[] resource = resources.getContents();
+		
+		NBTTagList gridList = new NBTTagList(); // save the grid
+		for (int i = 0; i < grid.length ; ++i) {
+			if (grid[i] != null) {
+				NBTTagCompound tag = new NBTTagCompound();
+				tag.setByte("GridSlot", (byte) i);
+				grid[i].writeToNBT(tag);
+				gridList.appendTag(tag);
+			}
+		}
+		compound.setTag("Grid", gridList);
+		
+		NBTTagList circuitList = new NBTTagList(); // save the circuits
+		for (int i = 0; i < circuit.length; i++) { 
+			if (circuit[i] != null) {
+				NBTTagCompound tag = new NBTTagCompound(); //Temp
+				tag.setByte("CircuitSlot", (byte) i);
+				circuit[i].writeToNBT(tag);
+				circuitList.appendTag(tag);
+			}
+		}
+		compound.setTag("Circuits", circuitList);
+		
+		NBTTagList resourceList = new NBTTagList(); // save the resources
+		for (int i = 0; i < resource.length; i++) {
+			if (resource[i] != null) {
+				NBTTagCompound tag = new NBTTagCompound();
+				tag.setByte("ResourceSlot", (byte) i);
+				resource[i].writeToNBT(tag);
+				resourceList.appendTag(tag);
+			}
+		}
+		compound.setTag("Resources", resourceList);
 	}
 
 	//////////

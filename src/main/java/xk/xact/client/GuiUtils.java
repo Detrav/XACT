@@ -131,7 +131,7 @@ public class GuiUtils {
 		return Keyboard.isKeyDown( FMLClientHandler.instance().getClient().gameSettings.keyBindSneak.getKeyCode() );
 	}
 
-	@SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT) //item = the chip, slotID 
 	public static void sendItemToServer(NetHandlerPlayClient sendQueue, byte slotID, ItemStack item) {
 //		if( sendQueue == null )
 //			return;

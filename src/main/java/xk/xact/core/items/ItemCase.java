@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import xk.xact.XActMod;
+import xk.xact.util.References;
 import xk.xact.util.Textures;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -18,7 +19,7 @@ public class ItemCase extends Item {
 
 	public ItemCase() {
 		super();
-		this.setUnlocalizedName( "chipCase" );
+		this.setUnlocalizedName(References.Unlocalized.ITEMCHIPCASE);
 		this.setMaxStackSize( 1 );
 		this.setCreativeTab( XActMod.xactTab );
 	}

@@ -1,6 +1,9 @@
 package xk.xact.client.gui;
 
+import com.sun.org.apache.xml.internal.security.encryption.Reference;
+
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -16,6 +19,7 @@ import xk.xact.gui.ContainerCrafter;
 import xk.xact.network.ClientProxy;
 import xk.xact.recipes.CraftManager;
 import xk.xact.recipes.CraftRecipe;
+import xk.xact.util.References;
 import xk.xact.util.Textures;
 import xk.xact.util.Utils;
 
@@ -88,9 +92,10 @@ public class GuiCrafter extends GuiCrafting {
 
 	@Override
 	protected void drawTitle() {
-		int xPos = (this.xSize - fontRendererObj.getStringWidth( "X.A.C.T. Crafter" )) / 2;
-		this.fontRendererObj.drawString( "X.A.C.T. Crafter", xPos, 6, 4210752 );
-		this.fontRendererObj.drawString( "Player's Inventory", 8, this.ySize - 94, 4210752 );
+		String localizedTitle = I18n.format(References.Localization.CRAFTER_TITLE);
+		int xPos = (this.xSize - fontRendererObj.getStringWidth( localizedTitle )) / 2;
+		this.fontRendererObj.drawString(localizedTitle, xPos, 6, 4210752 );
+		this.fontRendererObj.drawString(I18n.format(References.Localization.CRAFTER_INVENTORY), 8, this.ySize - 94, 4210752 );
 	}
 
 	@Override

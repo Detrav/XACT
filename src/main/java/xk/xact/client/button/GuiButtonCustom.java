@@ -49,19 +49,19 @@ public abstract class GuiButtonCustom extends GuiButton {
 		if( !isVisible() )
 			return;
 
-//		// is hovering?
-//		this.field_82253_i = isMouseHovering( mouseX, mouseY );
-//
-//		// The button's background
-//		drawBackgroundLayer( mc, mouseX, mouseY );
-//
-//		// The button's contents
-//		drawForegroundLayer( mc, mouseX, mouseY );
-//
-//		// tooltip?
-//		if( field_82253_i ) {
-//			drawTooltip( mc, mouseX, mouseY );
-//		}
+		// is hovering?
+		this.visible = isMouseHovering( mouseX, mouseY );
+
+		// The button's background
+		drawBackgroundLayer( mc, mouseX, mouseY );
+
+		// The button's contents
+		drawForegroundLayer( mc, mouseX, mouseY );
+
+		// tooltip?
+		if( visible ) {
+			drawTooltip( mc, mouseX, mouseY );
+		}
 	}
 
 	protected abstract void drawBackgroundLayer(Minecraft mc, int mouseX, int mouseY);

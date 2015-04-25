@@ -3,15 +3,15 @@ package xk.xact.core.items;
 
 import java.util.List;
 
-import javax.swing.Icon;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import xk.xact.XActMod;
+import xk.xact.util.References;
 import xk.xact.util.Textures;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -23,7 +23,7 @@ public class ItemPad extends Item {
 
 	public ItemPad() {
 		super();
-		this.setUnlocalizedName( "craftPad" );
+		this.setUnlocalizedName(References.Unlocalized.ITEMCRAFTPAD);
 		this.setMaxStackSize( 1 );
 		this.setCreativeTab( XActMod.xactTab );
 	}
@@ -37,7 +37,7 @@ public class ItemPad extends Item {
 
 		String loadedRecipe = itemStack.getTagCompound().getString( "loadedRecipe" );
 		if( loadedRecipe != null && !loadedRecipe.equals( "" ) )
-			list.add( "Recipe: " + loadedRecipe );
+			list.add(I18n.format(References.Localization.CHIP_RECIPE) + ": " + loadedRecipe );
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -24,17 +25,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockVanillaWorkbench extends BlockContainer {
 
 
-	private BlockVanillaWorkbench() {
+	public BlockVanillaWorkbench() {
 		super(Material.wood );
 		this.setHardness( 2.5F );
 		this.setStepSound( soundTypeWood );
-		this.setBlockName( "workbench" );
+		this.setBlockName( "xact.workbench" );
 		this.setCreativeTab( CreativeTabs.tabDecorations );
 	}
 
-	public static BlockVanillaWorkbench createNew() {
-		return new BlockVanillaWorkbench();
-	}
 
 	@Override
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
@@ -58,6 +56,7 @@ public class BlockVanillaWorkbench extends BlockContainer {
 		if( !world.isRemote ) {
 			player.openGui( XActMod.instance, 2, world, x, y, z );
 		}
+
 		return true;
 	}
 
@@ -101,5 +100,9 @@ public class BlockVanillaWorkbench extends BlockContainer {
 
 	@SideOnly(Side.CLIENT)
 	private IIcon TEXTURE_BOTTOM;
-
+	
+	@Override
+	public String getUnlocalizedName() {
+		return Blocks.crafting_table.getUnlocalizedName();
+	}
 }

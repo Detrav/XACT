@@ -1,8 +1,8 @@
 package xk.xact.client.gui;
 
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import xk.xact.XActMod;
@@ -15,6 +15,7 @@ import xk.xact.core.items.ItemChip;
 import xk.xact.network.ClientProxy;
 import xk.xact.recipes.CraftManager;
 import xk.xact.recipes.CraftRecipe;
+import xk.xact.util.References;
 import xk.xact.util.Textures;
 
 public class GuiPad extends GuiCrafting {
@@ -49,10 +50,10 @@ public class GuiPad extends GuiCrafting {
 	@Override
 	protected void drawTitle() {
 		int xPos = 11 + (112 - fontRendererObj.getStringWidth( "Craft Pad" )) / 2;
-		this.fontRendererObj.drawString( "Craft Pad", xPos, 8, 4210752 );
+		this.fontRendererObj.drawString(I18n.format(References.Localization.CRAFTPAD_GUITITLE), xPos, 8, 4210752 );
 
 		xPos = 126 + (40 - fontRendererObj.getStringWidth( "Chip" )) / 2;
-		this.fontRendererObj.drawString( "Chip", xPos, 23, 4210752 );
+		this.fontRendererObj.drawString(I18n.format(References.Localization.CRAFTPAD_CHIPTITLE), xPos, 23, 4210752 );
 	}
 
 //	@Override

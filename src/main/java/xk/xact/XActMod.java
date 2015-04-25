@@ -1,15 +1,7 @@
 package xk.xact;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
+import java.util.logging.Logger;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -19,21 +11,30 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import xk.xact.config.ConfigurationManager;
 import xk.xact.core.Machines;
-import xk.xact.core.items.*;
+import xk.xact.core.items.ItemMachine;
 import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.core.tileentities.TileWorkbench;
 import xk.xact.gui.CreativeTabXACT;
 import xk.xact.network.CommonProxy;
-import xk.xact.network.PacketHandler;
 import xk.xact.plugin.PluginManager;
 import xk.xact.recipes.RecipeUtils;
-
-import java.util.logging.Logger;
+import xk.xact.util.References;
+import xk.xact.util.Utils;
+import xk.xact.util.References.Registry;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * XACT adds an electronic crafting table capable of reading recipes encoded into chips.
  */
-@Mod(modid = "xact", name = "XACT Mod", version = "0.4.3", useMetadata = true)
+@Mod(modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION, useMetadata = true)
 //@NetworkMod(clientSideRequired = true, serverSideRequired = true,
 //		channels = { "xact_channel" }, packetHandler = PacketHandler.class)
 public class XActMod {
@@ -73,7 +74,7 @@ public class XActMod {
 	@Mod.EventHandler
 	@SuppressWarnings("unused")
 	public void initializeAll(FMLInitializationEvent ignoredEvent) {
-
+		
 		xactTab = new CreativeTabXACT();
 
 		// Init Items
@@ -88,9 +89,15 @@ public class XActMod {
 
 		// Register Blocks
 		GameRegistry.registerBlock( blockMachine, ItemMachine.class, "XACT Machine" );
-		if( blockWorkbench != null )
+		if( blockWorkbench != null ) {
 			GameRegistry.registerBlock( blockWorkbench, "XACT Workbench" );
-
+		}
+		
+		GameRegistry.registerItem(itemChipCase, References. Registry.ITEMCHIPCASE);
+		GameRegistry.registerItem(itemCraftPad, References.Registry.ITEMCRAFTPAD);
+		GameRegistry.registerItem(itemRecipeEncoded, References.Registry.ITEMRECIPEENCODED);
+		GameRegistry.registerItem(itemRecipeBlank, References.Registry.ITEMRECIPEBLANK);
+		
 		// Register TileEntities
 		GameRegistry.registerTileEntity( TileCrafter.class, "tile.xact.Crafter" );
 		GameRegistry.registerTileEntity( TileWorkbench.class, "tile.xact.VanillaWorkbench" );
@@ -159,13 +166,13 @@ public class XActMod {
 				Items.iron_ingot, Blocks.crafting_table, chip,
 				null, null, null
 		);
-		GameRegistry.addRecipe( new ShapedRecipes( 3, 2, ingredients, new ItemStack( itemCraftPad ) ) );
-
-		// Machines
+		
+		if (blockWorkbench != null)
+			GameRegistry.addRecipe(new ShapedOreRecipe(XActMod.blockWorkbench, new String[] { "ww", "ww"}, 'w', "plankWood"));	
+		
 		for( Machines machine : Machines.values() ) {
 			GameRegistry.addRecipe( machine.getMachineRecipe() );
 		}
-
 	}
 
 }

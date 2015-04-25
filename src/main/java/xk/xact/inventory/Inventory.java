@@ -59,7 +59,12 @@ public class Inventory implements IInventory, IInventoryNBT {
 		this.markDirty();
 		
 	}
-
+	
+	public void setContens(ItemStack[] stacks) {
+		for (int i = 0; i < stacks.length; i++)
+			if (i <= this.size)
+				this.setInventorySlotContents(i, stacks[i]);
+	}
 	public ItemStack[] getContents() {
 		return this.internalInv.clone();
 	}

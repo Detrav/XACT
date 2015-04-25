@@ -24,8 +24,8 @@ public class ButtonItem extends GuiButtonCustom {
 		super.xPosition += xDiff;
 		super.yPosition += yDiff;
 
-//		super.field_146123_n = (xPosition > 0 && xPosition < boundX)
-//				&& (yPosition > 0 && yPosition < boundY);
+		super.field_146123_n = (xPosition > 0 && xPosition < boundX)
+				&& (yPosition > 0 && yPosition < boundY);
 	}
 
 

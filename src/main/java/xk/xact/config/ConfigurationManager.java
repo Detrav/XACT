@@ -2,13 +2,19 @@ package xk.xact.config;
 
 import java.io.File;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import xk.xact.XActMod;
 import xk.xact.core.blocks.BlockMachine;
 import xk.xact.core.blocks.BlockVanillaWorkbench;
 import xk.xact.core.items.ItemCase;
 import xk.xact.core.items.ItemChip;
 import xk.xact.core.items.ItemPad;
+import xk.xact.util.Utils;
 
 /**
  * @author Xhamolk_
@@ -55,17 +61,13 @@ public class ConfigurationManager {
 	}
 
 	public static void initBlocks() {
-		XActMod.blockMachine = new BlockMachine( machineID );
-		if( REPLACE_WORKBENCH )
-			XActMod.blockWorkbench = BlockVanillaWorkbench.createNew();
+		XActMod.blockMachine = new BlockMachine();
+		if(REPLACE_WORKBENCH) {
+			XActMod.blockWorkbench = new BlockVanillaWorkbench();
+			Utils.removeAnyRecipe(Item.getItemFromBlock(Blocks.crafting_table));
+		}
 	}
 
-
-	public static int machineID;
-	public static int blankChipID;
-	public static int encodedChipID;
-	public static int caseID;
-	public static int padID;
 
 	public static boolean REPLACE_WORKBENCH;
 

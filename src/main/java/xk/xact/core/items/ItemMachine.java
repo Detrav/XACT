@@ -5,6 +5,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import xk.xact.XActMod;
 import xk.xact.core.Machines;
+import xk.xact.util.References;
 
 /**
  *
@@ -20,7 +21,7 @@ public class ItemMachine extends ItemBlock {
 
 	@Override
 	public String getUnlocalizedName(ItemStack itemStack) {
-		return "tile.xact.machine." + Machines.getMachineName( itemStack );
+		return References.MOD_ID + ":tile.machine." + Machines.getMachineName( itemStack );
 	}
 
 }

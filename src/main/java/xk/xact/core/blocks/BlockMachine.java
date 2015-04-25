@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class BlockMachine extends BlockContainer {
 
-	public BlockMachine(int itemID) {
+	public BlockMachine() {
 		super(Material.iron );
 		this.setStepSound( soundTypeAnvil );
 		this.setHardness( 2.0f );

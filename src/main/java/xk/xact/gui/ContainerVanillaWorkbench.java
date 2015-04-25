@@ -4,6 +4,7 @@ package xk.xact.gui;
 //import invtweaks.api.container.ChestContainer;
 //import invtweaks.api.container.ContainerSection;
 //import invtweaks.api.container.ContainerSectionCallback;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
@@ -72,9 +73,7 @@ public class ContainerVanillaWorkbench extends Container {
 				if( !this.mergeItemStack( slotStack, 10, 46, false ) ) { // changed last param to false.
 					return null;
 				}
-
 				slot.onSlotChange( slotStack, retValue );
-
 			} else if( slotID >= 10 && slotID < 37 ) { // player's main inv
 				if( !this.mergeItemStack( slotStack, 37, 46, false ) ) {
 					return null;
