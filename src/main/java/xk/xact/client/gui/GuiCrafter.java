@@ -1,7 +1,11 @@
 package xk.xact.client.gui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.sun.org.apache.xml.internal.security.encryption.Reference;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -106,22 +110,41 @@ public class GuiCrafter extends GuiCrafting {
 		if( hoveredRecipe != currentRecipe ) {
 			updateGhostContents( currentRecipe );
 		}
+	
 	}
-
+	
+	@Override
+	public void drawGuiContainerForegroundLayer(int x, int y) {
+		// TODO Auto-generated method stub
+		super.drawGuiContainerForegroundLayer(x, y);
+		int xOffset = 20;
+		int yOffset = 20;
+		if (hoveredRecipe != -1) {
+			for (int i = 0; i < 9; i++) {
+				ItemStack itemToPaint = gridContents[i];
+				GuiUtils.paintItem(itemToPaint, xOffset + (i * 18), yOffset, mc, itemRender);
+			}
+		}
+	}
 	@Override
 	protected ResourceLocation getBaseTexture() {
 		return guiTexture;
 	}
 
-//	@Override
-//	protected void drawSlotInventory(Slot slot) {
-//		// grid's contents.
-//		if( 8 <= slot.slotNumber && slot.slotNumber < 18 - 1 ) {
+	
+	@Override
+	public void drawScreen(int p_73863_1_, int p_73863_2_, float p_73863_3_) {
+//		List slots = new ArrayList<Slot>();
+//		slots = (List<Slot>)container.inventorySlots;
+//		for (Object object : container.inventorySlots) {
+//			Slot slot = (Slot) object;
+//
+//			if( 8 <= slot.slotNumber && slot.slotNumber < 18 - 1 ) {
 //			int index = slot.slotNumber - 8;
 //
 //			// only paint the grid's real contents if there is no recipe being hovered.
 //			if( hoveredRecipe == -1 ) {
-//				super.drawSlotInventory( slot );
+//				
 //			}
 //			// If a recipe is being hovered, paint those ingredients instead.
 //			else {
@@ -142,10 +165,11 @@ public class GuiCrafter extends GuiCrafting {
 //			if( slot.slotNumber == hoveredRecipe )
 //				GuiUtils.paintSlotOverlay( slot, 22, getColorForOutputSlot( slot.getSlotIndex() ) );
 //		}
-//
-//		super.drawSlotInventory( slot );
-//	}
-//	
+//		}
+	
+		super.drawScreen(p_73863_1_, p_73863_2_, p_73863_3_);
+
+	}
 	private int getColorForOutputSlot(int recipeIndex) {
 		int color;
 		if( this.mc.thePlayer.capabilities.isCreativeMode ) {
@@ -204,10 +228,10 @@ public class GuiCrafter extends GuiCrafting {
 	@Override
 	public void sendGridIngredients(ItemStack[] ingredients) {
 		if( ingredients == null ) {
-			GuiUtils.sendItemToServer( ClientProxy.getNetClientHandler(), (byte) -1, null );
+			GuiUtils.sendItemToServer((byte) -1, null);
 			return;
 		}
-		GuiUtils.sendItemsToServer( ClientProxy.getNetClientHandler(), ingredients, 8 );
+		GuiUtils.sendItemsToServer(ingredients, 8 );
 	}
 
 	// -------------------- Buttons --------------------
@@ -222,12 +246,12 @@ public class GuiCrafter extends GuiCrafting {
 			int action = ((GuiButtonCustom) button).getAction();
 
 			if( action == 1 ) { // SAVE
-				ItemStack stack = CraftManager.encodeRecipe( crafter.getRecipe( 4 ) );
-				GuiUtils.sendItemToServer( ClientProxy.getNetClientHandler(), (byte) (4 + button.id), stack );
+				ItemStack stack = CraftManager.encodeRecipe( crafter.getRecipe( 4 ));
+				GuiUtils.sendItemToServer((byte) (4 + button.id), stack);
 				return;
 			}
 			if( action == 3 ) { // CLEAR
-				GuiUtils.sendItemToServer( ClientProxy.getNetClientHandler(), (byte) (4 + button.id), new ItemStack( XActMod.itemRecipeBlank ) );
+				GuiUtils.sendItemToServer((byte) (4 + button.id), new ItemStack( XActMod.itemRecipeBlank));
 			}
 		}
 	}

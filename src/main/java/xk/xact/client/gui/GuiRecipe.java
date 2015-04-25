@@ -1,12 +1,15 @@
 package xk.xact.client.gui;
 
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
+
 import xk.xact.client.GuiUtils;
 import xk.xact.util.Textures;
 import xk.xact.inventory.InventoryUtils;
@@ -109,10 +112,10 @@ public class GuiRecipe extends GuiCrafting {
 	@Override
 	public void sendGridIngredients(ItemStack[] ingredients) {
 		if( ingredients == null ) {
-			GuiUtils.sendItemToServer( ClientProxy.getNetClientHandler(), (byte) -1, null );
+			GuiUtils.sendItemToServer((byte) -1, null);
 			return;
 		}
-		GuiUtils.sendItemsToServer( ClientProxy.getNetClientHandler(), ingredients, 1);
+		GuiUtils.sendItemsToServer(ingredients, 1);
 	}
 
 }

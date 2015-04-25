@@ -362,10 +362,6 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT( compound );
-//		resources.readFromNBT( compound );
-//		circuits.readFromNBT( compound );
-//		craftGrid.readFromNBT( compound );
-		
 
 		NBTTagList gridList = compound.getTagList("Grid", 10); // Load Grid
 		for (int i = 0; i < gridList.tagCount(); ++i) {
@@ -422,7 +418,7 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 		NBTTagList circuitList = new NBTTagList(); // save the circuits
 		for (int i = 0; i < circuit.length; i++) { 
 			if (circuit[i] != null) {
-				NBTTagCompound tag = new NBTTagCompound(); //Temp
+				NBTTagCompound tag = new NBTTagCompound(); //Temp save tag
 				tag.setByte("CircuitSlot", (byte) i);
 				circuit[i].writeToNBT(tag);
 				circuitList.appendTag(tag);

@@ -16,6 +16,7 @@ import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.core.tileentities.TileWorkbench;
 import xk.xact.gui.CreativeTabXACT;
 import xk.xact.network.CommonProxy;
+import xk.xact.network.PacketHandler;
 import xk.xact.plugin.PluginManager;
 import xk.xact.recipes.RecipeUtils;
 import xk.xact.util.References;
@@ -65,7 +66,7 @@ public class XActMod {
 	public void preInit(FMLPreInitializationEvent event) {
 		// Load Configurations
 		ConfigurationManager.loadConfiguration( event.getSuggestedConfigurationFile() );
-
+		PacketHandler.init();
 		// Initialize the logger.
 		logger = Logger.getLogger( "XACT-" + FMLCommonHandler.instance().getEffectiveSide() );
 		//logger.setParent( FMLLog.getLogger() );

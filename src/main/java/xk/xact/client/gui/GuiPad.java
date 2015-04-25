@@ -1,5 +1,6 @@
 package xk.xact.client.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Container;
@@ -20,14 +21,15 @@ import xk.xact.util.Textures;
 
 public class GuiPad extends GuiCrafting {
 
-	private static final ResourceLocation guiTexture = new ResourceLocation( Textures.GUI_PAD );
+	private static final ResourceLocation guiTexture = new ResourceLocation(
+			Textures.GUI_PAD);
 
 	private CraftPad craftPad;
 
 	private boolean[] missingIngredients = new boolean[9];
 
 	public GuiPad(CraftPad pad, Container container) {
-		super( container );
+		super(container);
 		this.ySize = 180;
 		this.craftPad = pad;
 	}
@@ -37,9 +39,10 @@ public class GuiPad extends GuiCrafting {
 	public void initGui() {
 		super.initGui();
 		super.buttonList.clear();
-		this.button = CustomButtons.createdDeviceButton( this.guiLeft + 97, this.guiTop + 63 );
+		this.button = CustomButtons.createdDeviceButton(this.guiLeft + 97,
+				this.guiTop + 63);
 		button.id = 0;
-		buttonList.add( button );
+		buttonList.add(button);
 	}
 
 	@Override
@@ -49,25 +52,30 @@ public class GuiPad extends GuiCrafting {
 
 	@Override
 	protected void drawTitle() {
-		int xPos = 11 + (112 - fontRendererObj.getStringWidth( "Craft Pad" )) / 2;
-		this.fontRendererObj.drawString(I18n.format(References.Localization.CRAFTPAD_GUITITLE), xPos, 8, 4210752 );
+		int xPos = 11 + (112 - fontRendererObj.getStringWidth("Craft Pad")) / 2;
+		this.fontRendererObj.drawString(
+				I18n.format(References.Localization.CRAFTPAD_GUITITLE), xPos,
+				8, 4210752);
 
-		xPos = 126 + (40 - fontRendererObj.getStringWidth( "Chip" )) / 2;
-		this.fontRendererObj.drawString(I18n.format(References.Localization.CRAFTPAD_CHIPTITLE), xPos, 23, 4210752 );
+		xPos = 126 + (40 - fontRendererObj.getStringWidth("Chip")) / 2;
+		this.fontRendererObj.drawString(
+				I18n.format(References.Localization.CRAFTPAD_CHIPTITLE), xPos,
+				23, 4210752);
 	}
 
-//	@Override
-//    protected void drawSlotInventory(Slot slot) {
-//        super.drawSlotInventory( slot );
-//
-//        int slotIndex = slot.slotNumber;
-//        if( 0 < slotIndex && slotIndex <= 9 ) { // grid slots
-//            int color = missingIngredients[slotIndex - 1] ? GuiUtils.COLOR_RED : GuiUtils.COLOR_GRAY;
-//            color |= 128 << 24; // transparency
-//
-//            GuiUtils.paintSlotOverlay( slot, 16, color );
-//        }
-//    }
+	// @Override
+	// protected void drawSlotInventory(Slot slot) {
+	// super.drawSlotInventory( slot );
+	//
+	// int slotIndex = slot.slotNumber;
+	// if( 0 < slotIndex && slotIndex <= 9 ) { // grid slots
+	// int color = missingIngredients[slotIndex - 1] ? GuiUtils.COLOR_RED :
+	// GuiUtils.COLOR_GRAY;
+	// color |= 128 << 24; // transparency
+	//
+	// GuiUtils.paintSlotOverlay( slot, 16, color );
+	// }
+	// }
 
 	// title: (43,8) size: 88x12
 
@@ -76,37 +84,39 @@ public class GuiPad extends GuiCrafting {
 
 	@Override
 	public void sendGridIngredients(ItemStack[] ingredients) {
-		if( ingredients == null ) {
-			GuiUtils.sendItemToServer( ClientProxy.getNetClientHandler(), (byte) -1, null );
+		if (ingredients == null) {
+			GuiUtils.sendItemToServer((byte) -1, null);
 			return;
 		}
-		GuiUtils.sendItemsToServer( ClientProxy.getNetClientHandler(), ingredients, 1 );
+		GuiUtils.sendItemsToServer(ingredients, 1);
 	}
 
 	@Override
 	public void updateScreen() {
 		super.updateScreen();
 
-		if( craftPad.recentlyUpdated ) {
+		if (craftPad.recentlyUpdated) {
 			// Update the missing ingredients
 			missingIngredients = craftPad.getMissingIngredients();
 
 			// Update the buttons for the chips
-			ItemStack chip = craftPad.chipInv.getStackInSlot( 0 );
-			if( chip == null ) {
-				button.setMode( ICustomButtonMode.DeviceModes.INACTIVE );
+			ItemStack chip = craftPad.chipInv.getStackInSlot(0);
+			if (chip == null) {
+				button.setMode(ICustomButtonMode.DeviceModes.INACTIVE);
 
-			} else if( chip.getItem() instanceof ItemChip ) {
-				if( !((ItemChip) chip.getItem()).encoded ) {
-					CraftRecipe mainRecipe = craftPad.getRecipe( 0 ); // the recipe on the grid
-					if( mainRecipe != null && mainRecipe.isValid() ) {
-						button.setMode( ICustomButtonMode.DeviceModes.SAVE );
+			} else if (chip.getItem() instanceof ItemChip) {
+				if (!((ItemChip) chip.getItem()).encoded) {
+					CraftRecipe mainRecipe = craftPad.getRecipe(0); // the
+																	// recipe on
+																	// the grid
+					if (mainRecipe != null && mainRecipe.isValid()) {
+						button.setMode(ICustomButtonMode.DeviceModes.SAVE);
 
 					} else {
-						button.setMode( ICustomButtonMode.DeviceModes.INACTIVE );
+						button.setMode(ICustomButtonMode.DeviceModes.INACTIVE);
 					}
 				} else {
-					button.setMode( ICustomButtonMode.DeviceModes.CLEAR );
+					button.setMode(ICustomButtonMode.DeviceModes.CLEAR);
 				}
 			}
 			craftPad.recentlyUpdated = false;
@@ -114,23 +124,24 @@ public class GuiPad extends GuiCrafting {
 
 	}
 
-	///////////////
-	///// Buttons
+	// /////////////
+	// /// Buttons
 
 	private GuiButtonCustom button;
 
 	@Override
 	protected void actionPerformed(GuiButton button) {
-		if( button instanceof GuiButtonCustom ) {
+		if (button instanceof GuiButtonCustom) {
 			int action = ((GuiButtonCustom) button).getAction();
 
-			if( action == 1 ) { // SAVE
-				ItemStack stack = CraftManager.encodeRecipe( craftPad.getRecipe( 0 ) );
-				GuiUtils.sendItemToServer( ClientProxy.getNetClientHandler(), (byte) (button.id + 10), stack );
+			if (action == 1) { // SAVE
+				ItemStack stack = CraftManager.encodeRecipe(craftPad
+						.getRecipe(0));
+				GuiUtils.sendItemToServer((byte) (button.id + 10), stack);
 				return;
 			}
-			if( action == 3 ) { // CLEAR
-				GuiUtils.sendItemToServer( ClientProxy.getNetClientHandler(), (byte) (button.id + 10), new ItemStack( XActMod.itemRecipeBlank ) );
+			if (action == 3) { // CLEAR
+				GuiUtils.sendItemToServer((byte) (button.id + 10), new ItemStack(XActMod.itemRecipeBlank));
 			}
 		}
 	}
