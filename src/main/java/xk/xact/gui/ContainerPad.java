@@ -7,7 +7,9 @@ package xk.xact.gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import xk.xact.XActMod;
 import xk.xact.api.InteractiveCraftingContainer;
 import xk.xact.core.CraftPad;
@@ -298,6 +300,7 @@ public class ContainerPad extends ContainerItem implements InteractiveCraftingCo
 		if( current != null ) {
 			current.setItemDamage( 0 );
 		}
+		saveContentsToNBT(current);
 	}
 
 	// Whether if the slot's contents can be taken on double click.
@@ -318,7 +321,27 @@ public class ContainerPad extends ContainerItem implements InteractiveCraftingCo
 	public void saveContentsToNBT(ItemStack itemStack) {
 		if( !itemStack.hasTagCompound() )
 			itemStack.setTagCompound( new NBTTagCompound() );
-		craftPad.writeToNBT( itemStack.stackTagCompound );
+
+		NBTTagList ingredients = new NBTTagList();
+		for (int i = 0; i < craftPad.gridInv.getSizeInventory(); ++i) {
+			if (craftPad.gridInv.getStackInSlot(i) != null) {
+				NBTTagCompound tag = new NBTTagCompound();
+				tag.setByte("ContentSlot", (byte) i);
+				craftPad.gridInv.getStackInSlot(i).writeToNBT(tag);
+				ingredients.appendTag(tag);
+			}
+		}
+		
+		//Save the chip onto the same list
+		NBTTagCompound chipTag = new NBTTagCompound();
+		chipTag.setByte("ChipSlot", (byte) (craftPad.gridInv.getSizeInventory() + 1));
+		if (craftPad.chipInv.getStackInSlot(0) != null)
+			craftPad.chipInv.getStackInSlot(0).writeToNBT(chipTag);
+		ingredients.appendTag(chipTag);
+		
+		itemStack.setTagInfo("Contents", ingredients);
+		
+//		craftPad.writeToNBT( itemStack.stackTagCompound );
 	}
 
 	@Override

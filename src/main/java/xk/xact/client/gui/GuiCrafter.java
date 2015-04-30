@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -122,7 +123,7 @@ public class GuiCrafter extends GuiCrafting {
 		if (hoveredRecipe != -1) {
 			for (int i = 0; i < 9; i++) {
 				ItemStack itemToPaint = gridContents[i];
-				GuiUtils.paintItem(itemToPaint, xOffset + (i * 18), yOffset, mc, itemRender);
+				//GuiUtils.paintItem(itemToPaint, xOffset + (i * 18), yOffset, Minecraft.getMinecraft(), GuiUtils.itemRender);
 			}
 		}
 	}
@@ -170,6 +171,7 @@ public class GuiCrafter extends GuiCrafting {
 		super.drawScreen(p_73863_1_, p_73863_2_, p_73863_3_);
 
 	}
+	
 	private int getColorForOutputSlot(int recipeIndex) {
 		int color;
 		if( this.mc.thePlayer.capabilities.isCreativeMode ) {
@@ -226,12 +228,12 @@ public class GuiCrafter extends GuiCrafting {
 	// -------------------- InteractiveCraftingGui --------------------
 
 	@Override
-	public void sendGridIngredients(ItemStack[] ingredients) {
+	public void sendGridIngredients(ItemStack[] ingredients, int buttonID) {
 		if( ingredients == null ) {
 			GuiUtils.sendItemToServer((byte) -1, null);
 			return;
 		}
-		GuiUtils.sendItemsToServer(ingredients, 8 );
+		GuiUtils.sendItemsToServer(ingredients, 4 + buttonID); // 4 because the first chipslot is 4 (and the corresponding buttonid is 0)
 	}
 
 	// -------------------- Buttons --------------------
@@ -244,10 +246,9 @@ public class GuiCrafter extends GuiCrafting {
 	protected void actionPerformed(GuiButton button) {
 		if( button instanceof GuiButtonCustom ) {
 			int action = ((GuiButtonCustom) button).getAction();
-
 			if( action == 1 ) { // SAVE
 				ItemStack stack = CraftManager.encodeRecipe( crafter.getRecipe( 4 ));
-				GuiUtils.sendItemToServer((byte) (4 + button.id), stack);
+				sendGridIngredients(crafter.craftGrid.getContents(), button.id);
 				return;
 			}
 			if( action == 3 ) { // CLEAR

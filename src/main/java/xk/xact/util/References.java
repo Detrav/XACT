@@ -27,6 +27,6 @@ public class References {
 		public static final String CRAFTER_INVENTORY = "gui.xact:crafter.inventory.name";
 		public static final String CHIP_BLANK = "item.xact:recipeChip.blank.desc";
 		public static final String CHIP_INVALID = "item.xact:recipeChip.invalid.desc";
-		public static final String CHIP_RECIPE = "item.xact:recipeChip.recipe.desc";
+		public static final String CHIP_RECIPE = "item.xact:recipeChip.recipe";
 	}
 }

@@ -110,12 +110,12 @@ public class GuiRecipe extends GuiCrafting {
 	}
 
 	@Override
-	public void sendGridIngredients(ItemStack[] ingredients) {
+	public void sendGridIngredients(ItemStack[] ingredients, int buttonID) {
 		if( ingredients == null ) {
 			GuiUtils.sendItemToServer((byte) -1, null);
 			return;
 		}
-		GuiUtils.sendItemsToServer(ingredients, 1);
+		GuiUtils.sendItemsToServer(ingredients, 1); //TODO: Temporary
 	}
 
 }

@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import xk.xact.api.CraftingHandler;
 import xk.xact.api.ICraftingDevice;
@@ -73,7 +74,18 @@ public class CraftPad implements ICraftingDevice {
 
 		if( !stack.hasTagCompound() )
 			stack.stackTagCompound = new NBTTagCompound();
-		this.readFromNBT( stack.getTagCompound() );
+		
+		NBTTagList content = stack.stackTagCompound.getTagList("Contents", 10);
+		for (int i = 0; i < content.tagCount() - 1; ++i) { // - 1 because the last entry is the chip
+			NBTTagCompound tag = content.getCompoundTagAt(i);
+			byte slotIndex = tag.getByte("ContentSlot");
+			if (slotIndex >= 0 && slotIndex < gridInv.getSizeInventory()) {
+				gridInv.setInventorySlotContents(slotIndex, ItemStack
+						.loadItemStackFromNBT(tag));
+			}
+		}
+		NBTTagCompound chipTag = content.getCompoundTagAt(content.tagCount());
+		chipInv.setInventorySlotContents(0, ItemStack.loadItemStackFromNBT(chipTag));
 	}
 
 	////////////
@@ -143,10 +155,8 @@ public class CraftPad implements ICraftingDevice {
 		NBTTagCompound tagCraftPad = (NBTTagCompound) compound.getTag( "craftPad" );
 		if( tagCraftPad == null )
 			return;
+		
 
-		chipInv.readFromNBT( tagCraftPad );
-		gridInv.readFromNBT( tagCraftPad );
-		outputInv.readFromNBT( tagCraftPad );
 	}
 
 	public void writeToNBT(NBTTagCompound compound) {

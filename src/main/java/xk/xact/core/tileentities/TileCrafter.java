@@ -43,7 +43,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @author Xhamolk_
  */
 public class TileCrafter extends TileMachine implements IInventory, ICraftingDevice {//, ICrateWatcher, IStorageAware, INonSignalBlock, IGridTileEntity {
-
+	
 	/*
 	Available Inventories:
 		This should be able to pull items from adjacent chests.

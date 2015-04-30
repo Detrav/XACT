@@ -75,7 +75,6 @@ public class CraftManager {
 		// Read recipe.
 		if( stack.stackTagCompound == null )
 			return null;
-
 		return CraftRecipe.readFromNBT( stack.stackTagCompound );
 	}
 

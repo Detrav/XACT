@@ -13,6 +13,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import xk.xact.core.ChipCase;
 import xk.xact.core.items.ItemChip;
 
@@ -70,13 +71,16 @@ public class ContainerCase extends ContainerItem {
 	@Override
 	public void onContainerClosed(EntityPlayer player) {
 		super.onContainerClosed( player );
-
+		
+		
 		// Reset the metadata value
 		ItemStack itemStack = player.inventory.getCurrentItem();
+		saveContentsToNBT(itemStack);
 		if( itemStack != null )
 			itemStack.setItemDamage( 0 );
 	}
-
+	
+	
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotID) {
 		Slot slot = (Slot) inventorySlots.get( slotID );
@@ -116,15 +120,26 @@ public class ContainerCase extends ContainerItem {
 	public void saveContentsToNBT(ItemStack itemStack) {
 		if( !itemStack.hasTagCompound() )
 			itemStack.setTagCompound( new NBTTagCompound() );
-
-		chipCase.writeToNBT( itemStack.getTagCompound() );
+		
+		NBTTagList chips = new NBTTagList(); // Chips. Om nom nom
+		for (int i = 0; i < chipCase.getInternalInventory().getSizeInventory(); ++i) {
+			if (chipCase.getInternalInventory().getStackInSlot(i) != null) {
+				NBTTagCompound tag = new NBTTagCompound();
+				tag.setByte("ChipSlot", (byte) i);
+				chipCase.getInternalInventory().getStackInSlot(i).writeToNBT(tag);
+				chips.appendTag(tag);
+			}
+		}
+		itemStack.stackTagCompound.setInteger("chipCount", chipCase.getChipsCount());
+		itemStack.setTagInfo("Chips", chips);
+		//chipCase.writeToNBT( itemStack.getTagCompound() );
 	}
 
 	@Override
 	public void onContentsStored(ItemStack itemStack) {
 		chipCase.inventoryChanged = false;
 	}
-
+	
 	@Override
 	public int getHeldItemSlotIndex() {
 		return player.inventory.currentItem;

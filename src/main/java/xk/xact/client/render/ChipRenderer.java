@@ -35,9 +35,9 @@ public class ChipRenderer implements IItemRenderer {
 		CraftRecipe recipe = RecipeUtils.getRecipe( itemStack, Minecraft.getMinecraft().theWorld );
 		if( recipe != null ) {
 			GuiUtils.paintItem( recipe.getResult(), 0, 0, Minecraft.getMinecraft(), GuiUtils.itemRender );
-
+			
 			// Green overlay
-			GuiUtils.paintEffectOverlay( 0, 0, GuiUtils.itemRender, 0.25f, 0.55f, 0.3f, 0.85f );
+			GuiUtils.paintEffectOverlay( 20, 20, GuiUtils.itemRender, 0.25f, 0.55f, 0.3f, 0.85f );
 		} else {
 			// paint invalid chip icon
 			GuiUtils.paintItem( ItemChip.invalidChip, 0, 0, Minecraft.getMinecraft(), GuiUtils.itemRender );

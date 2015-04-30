@@ -19,13 +19,13 @@ public abstract class GuiCrafting extends GuiXACT implements InteractiveCrafting
 
 	public void setRecipe(CraftRecipe recipe) {
 		ItemStack[] ingredients = (recipe == null || !recipe.isValid()) ? null : recipe.getIngredients();
-		sendGridIngredients( ingredients );
+		sendGridIngredients( ingredients , 0);
 	}
 
 	///////////////
 	///// InteractiveCraftingGui
-
-	public abstract void sendGridIngredients(ItemStack[] ingredients);
+	@Override
+	public abstract void sendGridIngredients(ItemStack[] ingredients, int buttonID);
 
 	@Override
 	public void handleKeyBinding(int keyCode, String keyDescription) {

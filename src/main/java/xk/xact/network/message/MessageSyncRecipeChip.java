@@ -2,12 +2,16 @@ package xk.xact.network.message;
 
 import xk.xact.api.InteractiveCraftingContainer;
 import xk.xact.client.GuiUtils;
+import xk.xact.recipes.CraftManager;
+import xk.xact.recipes.CraftRecipe;
+import xk.xact.recipes.RecipeUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import cpw.mods.fml.client.config.GuiUnicodeGlyphButton;
@@ -23,6 +27,7 @@ public class MessageSyncRecipeChip implements IMessage, IMessageHandler<MessageS
 	
 	public ItemStack chip;
 	public byte SlotID;
+	
 	public MessageSyncRecipeChip() {
 	}
 
@@ -39,7 +44,12 @@ public class MessageSyncRecipeChip implements IMessage, IMessageHandler<MessageS
 			container.setStack(-1, null);
 			return null;
 		}
+
 		ItemStack stack = message.chip;
+		if (stack != null)
+			if (stack.stackTagCompound != null) {
+				CraftRecipe recipe = CraftManager.decodeRecipe(stack);
+			}
 		container.setStack(message.SlotID, stack);
 		return null;
 	}

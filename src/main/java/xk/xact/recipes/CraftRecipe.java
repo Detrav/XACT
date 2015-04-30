@@ -222,7 +222,7 @@ public class CraftRecipe {
 		if( compound == null ) return null;
 
 		ItemStack[] ingredients = new ItemStack[9];
-		NBTTagList tagList = compound.getTagList( "recipeIngredients", 0 );
+		NBTTagList tagList = compound.getTagList( "recipeIngredients", 10); // MAAAAN CHANGING THIS TO TEN FIXED ALL THE THINGS GAAAAH  (it was 0)
 		if( tagList == null )
 			return null;
 		for( int i = 0; i < tagList.tagCount(); i++ ) {

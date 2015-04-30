@@ -9,6 +9,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,10 +23,14 @@ import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
+import xk.xact.core.items.ItemChip;
 import xk.xact.network.ClientProxy;
 import xk.xact.network.PacketHandler;
+import xk.xact.network.message.MessageSyncIngredients;
 import xk.xact.network.message.MessageSyncRecipeChip;
+import xk.xact.recipes.RecipeUtils;
 import xk.xact.util.CustomPacket;
 import xk.xact.util.Utils;
 
@@ -74,7 +79,8 @@ public class GuiUtils {
 		if (itemStack == null)
 			return; // I might want to have a "null" image, like background
 					// image.
-
+		RenderHelper.enableGUIStandardItemLighting(); //Fixes funny lightinge
+		
 		itemRenderer.zLevel = 100.0F;
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer,
@@ -82,8 +88,11 @@ public class GuiUtils {
 		itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine,
 				itemStack, x, y);
 		itemRenderer.zLevel = 0.0F;
+		
+		
 	}
-
+	
+	
 	private static final ResourceLocation GLINT = new ResourceLocation(
 			"textures/misc/enchanted_item_glint.png");
 
@@ -165,23 +174,23 @@ public class GuiUtils {
 	}
 
 	@SideOnly(Side.CLIENT)
-	public static void sendItemsToServer(ItemStack[] items, int offset) {
+	public static void sendItemsToServer(ItemStack[] items, int chipSlot) {
 		if (items == null) {
 			sendItemToServer((byte) -1, null );
 			return;
 		}
-
-		try {
-			CustomPacket customPacket = new CustomPacket((byte) 0x02).add(
-					(byte) items.length, (byte) offset);
-			for (ItemStack item : items) {
-				customPacket.add(item);
-			}
-		} catch (IOException ioe) {
-			Utils.logException(
-					"ICG-Custom Packet: Sending items to server. (0x02)", ioe,
-					false);
-		}
+		PacketHandler.INSTANCE.sendToServer(new MessageSyncIngredients(items, chipSlot));
+//		try {
+//			CustomPacket customPacket = new CustomPacket((byte) 0x02).add(
+//					(byte) items.length, (byte) offset);
+//			for (ItemStack item : items) {
+//				customPacket.add(item);
+//			}
+//		} catch (IOException ioe) {
+//			Utils.logException(
+//					"ICG-Custom Packet: Sending items to server. (0x02)", ioe,
+//					false);
+//		}
 	}
 
 	@SideOnly(Side.CLIENT)

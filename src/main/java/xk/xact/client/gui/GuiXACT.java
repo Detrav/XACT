@@ -10,6 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import xk.xact.XActMod;
 import xk.xact.client.GuiUtils;
 
 /**
@@ -84,18 +85,20 @@ public abstract class GuiXACT extends GuiContainer {
 	}
 	
 
-	protected boolean isPointInRegion(int minx, int miny, int maxx, int maxy, int mouseX,
+	protected boolean isPointInRegion(int minx, int miny, int xDim, int yDim, int mouseX,
 			int mouseY) {
-		if (mouseX >= minx && mouseX <= maxx
-			&& mouseY >= miny && mouseY <= maxy)
+		if (mouseX >= minx && mouseX <= minx + xDim
+			&& (mouseY) >= miny && (mouseY) <= miny + yDim) {
+			
 			return true;
+		}
 		return false;
 	}
 	// ---------------------------- Util ----------------------------
 
 	public boolean isMouseOverSlot(Slot slot, int mouseX, int mouseY) {
 		int dim = getSlotDimensions( slot );
-		return this.isPointInRegion( slot.xDisplayPosition, slot.yDisplayPosition, dim, dim, mouseX, mouseY );
+		return this.isPointInRegion( slot.xDisplayPosition, slot.yDisplayPosition, dim, dim, mouseX, mouseY);
 	}
 
 	public Slot getSlotAt(int x, int y) {
@@ -104,6 +107,7 @@ public abstract class GuiXACT extends GuiContainer {
 			if( isMouseOverSlot( slot, x, y ) )
 				return slot;
 		}
+		
 		return null;
 	}
 

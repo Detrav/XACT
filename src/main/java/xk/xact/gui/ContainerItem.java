@@ -88,7 +88,8 @@ public abstract class ContainerItem extends ContainerXACT {
 			Utils.notifyPlayer( player, "Cannot move <" + itemName + "> while it's in use." );
 		}
 	}
-
+	
+	
 	@Override
 	public void onTickUpdate(EntityPlayer player) {
 		// Save contents to NBT.

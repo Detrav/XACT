@@ -2,13 +2,25 @@ package xk.xact.core.items;
 
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 import xk.xact.XActMod;
+import xk.xact.recipes.CraftManager;
 import xk.xact.recipes.CraftRecipe;
 import xk.xact.recipes.RecipeUtils;
 import xk.xact.util.References;
@@ -49,20 +61,19 @@ public class ItemChip extends Item {
 	@Override
 	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) {
 		if(itemStack.getItem() instanceof ItemChip) {
-			if( ((ItemChip) itemStack.getItem()).encoded ) {
-				CraftRecipe recipe = RecipeUtils.getRecipe( itemStack, player.worldObj);
-				if( recipe != null ) {
-					ItemStack result = recipe.getResult();
-
+			if (((ItemChip) itemStack.getItem()).encoded) {
+				if (CraftManager.decodeRecipe(itemStack) != null) {
+					ItemStack result = CraftManager.decodeRecipe(itemStack).getResult();
 					String itemName = result.getItem().getItemStackDisplayName(result);
-					list.add( "\u00a73" + I18n.format(References.Localization.CHIP_RECIPE) + ": " + itemName);
+					list.add( "\u00a73" + I18n.format(References.Localization.CHIP_RECIPE) + ": " + itemName);				
 				} else {
-					list.add( "\u00a7c<" + I18n.format(References.Localization.CHIP_INVALID + ">"));
+					list.add( "\u00a7c<" + I18n.format(References.Localization.CHIP_INVALID) + ">");
 				}
 			} else {
 				// blank recipes.
 				list.add( "\u00a77<" + I18n.format(References.Localization.CHIP_BLANK) + ">");
 			}
+			
 		}
 	}
 
@@ -88,7 +99,17 @@ public class ItemChip extends Item {
 			return invalidChipIcon;
 		return super.getIconFromDamage( damage );
 	}
-
+	
+	@Override
+	public String getItemStackDisplayName(ItemStack stack) {
+		if (stack.getItem() instanceof ItemChip) {
+			if (((ItemChip) stack.getItem()).encoded) {
+				return EnumChatFormatting.DARK_GREEN + super.getItemStackDisplayName(stack) + EnumChatFormatting.RESET;
+			}
+		}
+		return super.getItemStackDisplayName(stack);
+	}
+	
 	public static ItemStack invalidChip;
 
 }

@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import xk.xact.XActMod;
+import xk.xact.network.message.MessageSyncIngredients;
 import xk.xact.network.message.MessageSyncRecipeChip;
 import xk.xact.util.References;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -20,6 +21,7 @@ public class PacketHandler {//implements IPacketHandler {
 	   public static void init() {
 		   // Register Network Messages
 		   INSTANCE.registerMessage(MessageSyncRecipeChip.class, MessageSyncRecipeChip.class, 0, Side.SERVER);
+		   INSTANCE.registerMessage(MessageSyncIngredients.class, MessageSyncIngredients.class, 1, Side.SERVER);
 	   }
 
 	/*
