@@ -64,7 +64,6 @@ public class ConfigurationManager {
 		XActMod.blockMachine = new BlockMachine();
 		if(REPLACE_WORKBENCH) {
 			XActMod.blockWorkbench = new BlockVanillaWorkbench();
-			Utils.removeAnyRecipe(Item.getItemFromBlock(Blocks.crafting_table));
 		}
 	}
 

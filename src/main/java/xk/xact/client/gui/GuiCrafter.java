@@ -146,6 +146,18 @@ public class GuiCrafter extends GuiCrafting {
 				}
 			}
 			RenderHelper.enableGUIStandardItemLighting();
+		} else {
+			for (int i = 0; i < 9; i++) {
+				Slot slot = container.getSlot(8 + i);
+				if (slot != null && slot instanceof SlotCraft) {
+					((SlotCraft) slot).canTakeStack(mc.thePlayer);
+				}
+				int color = getColorForGridSlot(slot);
+				if (color != -1)// Paint the "ghost item"
+					GuiUtils.paintOverlay(guiLeft + slot.xDisplayPosition,
+							guiTop + slot.yDisplayPosition, 16, color);
+			}
+			//MEH won't display red rectangle anymore :(
 		}
 	}
 
@@ -180,19 +192,9 @@ public class GuiCrafter extends GuiCrafting {
 					int x = guiLeft + leftGridOffset + (18 * xOffset);
 					int y = guiTop + topGridOffset + (18 * yOffset);
 					ItemStack itemToPaint = gridContents[index];
-					GuiUtils.paintItem(itemToPaint, x, y, this.mc, itemRender, 500.0F);
+					GuiUtils.paintItem(itemToPaint, x, y, this.mc, itemRender, 10.0F);
 					index++;
 				}
-			}
-			for (int i = 0; i < 9; i++) {
-				Slot slot = container.getSlot(8 + i);
-				if (slot != null && slot instanceof SlotCraft) {
-					((SlotCraft) slot).canTakeStack(mc.thePlayer);
-				}
-				int color = getColorForGridSlot(slot);
-				if (color != -1)// Paint the "ghost item"
-					GuiUtils.paintOverlay(guiLeft + slot.xDisplayPosition,
-							guiTop + slot.yDisplayPosition, 16, color);
 			}
 			if (!areSlotsHidden) {
 				for (int i = 0; i < 9; i++) {
@@ -201,10 +203,9 @@ public class GuiCrafter extends GuiCrafting {
 				}
 				areSlotsHidden = true;
 			}
-			
 			super.drawScreen(mousex, mousey, partialtick);
 		}	
-	}private ItemStack[] tempRecipeStorage; // Stores the recipe while a recipe from a chip is displayed
+	}
 	
 
 	private int getColorForOutputSlot(int recipeIndex) {

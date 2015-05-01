@@ -49,13 +49,13 @@ public class GuiUtils {
 
 	public static final RenderItem itemRender = new RenderItem();
 
-	public static void paintSlotOverlay(Slot slot, int size, int color) {
+	public static void paintSlotOverlay(Slot slot, int size, int color, int xOffset, int yOffset) {
 		if (slot == null)
 			return;
 
 		int off = (size - 16) / 2;
-		int minX = slot.xDisplayPosition - off;
-		int minY = slot.yDisplayPosition - off;
+		int minX = slot.xDisplayPosition - off + xOffset;
+		int minY = slot.yDisplayPosition - off + yOffset;
 
 		paintOverlay(minX, minY, size, color);
 	}
@@ -68,11 +68,12 @@ public class GuiUtils {
 	@SideOnly(Side.CLIENT)
 	public static void paintOverlay(int x, int y, int size, int color) {
 		RenderHelper.enableGUIStandardItemLighting();
-		GL11.glDisable(GL11.GL_LIGHTING);
-		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		RenderHelper.disableStandardItemLighting();
+		GL11.glDisable( GL11.GL_LIGHTING );
+		GL11.glDisable( GL11.GL_DEPTH_TEST );
 		Gui.drawRect(x, y, x + size, y + size, color);
 		RenderHelper.disableStandardItemLighting();
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GL11.glEnable( GL11.GL_DEPTH_TEST );
 	}
 
 	public static void paintItem(ItemStack itemStack, int x, int y, Minecraft mc, RenderItem itemRenderer, float zLevel) {
@@ -88,9 +89,9 @@ public class GuiUtils {
 		
 		itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.renderEngine, itemStack, x, y);
 		itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine, itemStack, x, y);
-		RenderHelper.disableStandardItemLighting();
-		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-		GL11.glDisable(GL11.GL_DEPTH_TEST);
+//		RenderHelper.disableStandardItemLighting();
+//		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+//		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		itemRenderer.zLevel = 0.0F;
 		GL11.glPopMatrix();
 	}
@@ -99,22 +100,24 @@ public class GuiUtils {
 			"textures/misc/enchanted_item_glint.png");
 
 	public static void paintEffectOverlay(int x, int y, RenderItem itemRenderer, float red, float green, float blue, float alpha, float zLevel) {
+		GL11.glPushMatrix();
 		GL11.glDepthFunc(GL11.GL_GREATER);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDepthMask(false);
 		bindTexture(GLINT); // do I want to change this to something else?
 
-		itemRenderer.zLevel -= zLevel;
+		itemRenderer.zLevel += zLevel;
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_DST_COLOR);
 		GL11.glColor4f(red, green, blue, alpha);
 		effect(itemRenderer.zLevel, x - 21, y - 21, 18, 18);
-
+		
 		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glDepthMask(true);
 		itemRenderer.zLevel += 50.0F;
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glDepthFunc(GL11.GL_LEQUAL);
+		GL11.glPopMatrix();
 	}
 
 	private static void effect(float zLevel, int x, int y, int width, int height) {
@@ -180,17 +183,6 @@ public class GuiUtils {
 			return;
 		}
 		PacketHandler.INSTANCE.sendToServer(new MessageSyncIngredients(items, chipSlot));
-//		try {
-//			CustomPacket customPacket = new CustomPacket((byte) 0x02).add(
-//					(byte) items.length, (byte) offset);
-//			for (ItemStack item : items) {
-//				customPacket.add(item);
-//			}
-//		} catch (IOException ioe) {
-//			Utils.logException(
-//					"ICG-Custom Packet: Sending items to server. (0x02)", ioe,
-//					false);
-//		}
 	}
 
 	@SideOnly(Side.CLIENT)

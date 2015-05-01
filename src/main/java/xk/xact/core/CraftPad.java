@@ -72,20 +72,7 @@ public class CraftPad implements ICraftingDevice {
 
 		this.handler = CraftingHandler.createCraftingHandler( this );
 
-		if( !stack.hasTagCompound() )
-			stack.stackTagCompound = new NBTTagCompound();
-		
-		NBTTagList content = stack.stackTagCompound.getTagList("Contents", 10);
-		for (int i = 0; i < content.tagCount() - 1; ++i) { // - 1 because the last entry is the chip
-			NBTTagCompound tag = content.getCompoundTagAt(i);
-			byte slotIndex = tag.getByte("ContentSlot");
-			if (slotIndex >= 0 && slotIndex < gridInv.getSizeInventory()) {
-				gridInv.setInventorySlotContents(slotIndex, ItemStack
-						.loadItemStackFromNBT(tag));
-			}
-		}
-		NBTTagCompound chipTag = content.getCompoundTagAt(content.tagCount());
-		chipInv.setInventorySlotContents(0, ItemStack.loadItemStackFromNBT(chipTag));
+		readFromNBT(stack.stackTagCompound);
 	}
 
 	////////////
@@ -152,27 +139,44 @@ public class CraftPad implements ICraftingDevice {
 	/// NBT
 
 	public void readFromNBT(NBTTagCompound compound) {
-		NBTTagCompound tagCraftPad = (NBTTagCompound) compound.getTag( "craftPad" );
-		if( tagCraftPad == null )
-			return;
+		if( compound == null )
+			compound= new NBTTagCompound();
 		
-
+		NBTTagList content = compound.getTagList("Contents", 10);
+		for (int i = 0; i < content.tagCount() - 1; ++i) { // - 1 because the last entry is the chip
+			NBTTagCompound tag = content.getCompoundTagAt(i);
+			byte slotIndex = tag.getByte("ContentSlot");
+			if (slotIndex >= 0 && slotIndex < gridInv.getSizeInventory()) {
+				gridInv.setInventorySlotContents(slotIndex, ItemStack
+						.loadItemStackFromNBT(tag));
+			}
+		}
+		
+		NBTTagCompound chipTag = content.getCompoundTagAt(content.tagCount() - 1);
+		chipInv.setInventorySlotContents(0, ItemStack.loadItemStackFromNBT(chipTag));
 	}
 
-	public void writeToNBT(NBTTagCompound compound) {
-		if( compound == null )
-			return;
+	public void writeToNBT(ItemStack pad) {
+		if( !pad.hasTagCompound() )
+			pad.setTagCompound( new NBTTagCompound() );
 
-		NBTTagCompound tagCraftPad = new NBTTagCompound();
-
-		chipInv.writeToNBT( tagCraftPad );
-		gridInv.writeToNBT( tagCraftPad );
-		outputInv.writeToNBT( tagCraftPad );
-
-		String loadedRecipe = lastRecipe == null ? "" : lastRecipe.toString();
-		compound.setString( "loadedRecipe", loadedRecipe );
-
-		compound.setTag( "craftPad", tagCraftPad );
+		NBTTagList ingredients = new NBTTagList();
+		for (int i = 0; i < gridInv.getSizeInventory(); ++i) {
+			if (gridInv.getStackInSlot(i) != null) {
+				NBTTagCompound tag = new NBTTagCompound();
+				tag.setByte("ContentSlot", (byte) i);
+				gridInv.getStackInSlot(i).writeToNBT(tag);
+				ingredients.appendTag(tag);
+			}
+		}
+		
+		//Save the chip onto the same list
+		NBTTagCompound chipTag = new NBTTagCompound();
+		chipTag.setByte("chip", (byte) 0);
+		if (chipInv.getStackInSlot(0) != null)
+			chipInv.getStackInSlot(0).writeToNBT(chipTag);
+		ingredients.appendTag(chipTag);
+		pad.setTagInfo("Contents", ingredients);
 	}
 
 	/*

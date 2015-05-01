@@ -271,7 +271,7 @@ public class ContainerPad extends ContainerItem implements InteractiveCraftingCo
 				}
 			}
 		}
-
+		
 		// Add to an empty slot.
 		if( itemStack.stackSize > 0 ) {
 
@@ -319,29 +319,7 @@ public class ContainerPad extends ContainerItem implements InteractiveCraftingCo
 
 	@Override
 	public void saveContentsToNBT(ItemStack itemStack) {
-		if( !itemStack.hasTagCompound() )
-			itemStack.setTagCompound( new NBTTagCompound() );
-
-		NBTTagList ingredients = new NBTTagList();
-		for (int i = 0; i < craftPad.gridInv.getSizeInventory(); ++i) {
-			if (craftPad.gridInv.getStackInSlot(i) != null) {
-				NBTTagCompound tag = new NBTTagCompound();
-				tag.setByte("ContentSlot", (byte) i);
-				craftPad.gridInv.getStackInSlot(i).writeToNBT(tag);
-				ingredients.appendTag(tag);
-			}
-		}
-		
-		//Save the chip onto the same list
-		NBTTagCompound chipTag = new NBTTagCompound();
-		chipTag.setByte("ChipSlot", (byte) (craftPad.gridInv.getSizeInventory() + 1));
-		if (craftPad.chipInv.getStackInSlot(0) != null)
-			craftPad.chipInv.getStackInSlot(0).writeToNBT(chipTag);
-		ingredients.appendTag(chipTag);
-		
-		itemStack.setTagInfo("Contents", ingredients);
-		
-//		craftPad.writeToNBT( itemStack.stackTagCompound );
+		craftPad.writeToNBT(itemStack);
 	}
 
 	@Override

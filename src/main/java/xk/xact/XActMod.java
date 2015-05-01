@@ -166,7 +166,7 @@ public class XActMod {
 		);
 		
 		if (blockWorkbench != null)
-			GameRegistry.addRecipe(new ShapedOreRecipe(XActMod.blockWorkbench, new String[] { "ww", "ww"}, 'w', "plankWood"));	
+			GameRegistry.addRecipe(new ShapedOreRecipe(XActMod.blockWorkbench, new String[] { "0w0", "wcw", "0w0"}, 'w', "plankWood", 'c', Blocks.crafting_table));	
 		
 		for( Machines machine : Machines.values() ) {
 			GameRegistry.addRecipe( machine.getMachineRecipe() );

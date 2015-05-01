@@ -2,6 +2,7 @@ package xk.xact.client.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -68,21 +69,27 @@ public class GuiPad extends GuiCrafting {
 				I18n.format(References.Localization.CRAFTPAD_CHIPTITLE), xPos,
 				23, 4210752);
 	}
-
-	// @Override
-	// protected void drawSlotInventory(Slot slot) {
-	// super.drawSlotInventory( slot );
-	//
-	// int slotIndex = slot.slotNumber;
-	// if( 0 < slotIndex && slotIndex <= 9 ) { // grid slots
-	// int color = missingIngredients[slotIndex - 1] ? GuiUtils.COLOR_RED :
-	// GuiUtils.COLOR_GRAY;
-	// color |= 128 << 24; // transparency
-	//
-	// GuiUtils.paintSlotOverlay( slot, 16, color );
-	// }
-	// }
-
+	
+	@Override
+	public void drawScreen(int p_73863_1_, int p_73863_2_, float p_73863_3_) {	
+		super.drawScreen(p_73863_1_, p_73863_2_, p_73863_3_);
+	}
+	
+	@Override
+	public void drawGuiContainerForegroundLayer(int x, int y) {
+		// TODO Auto-generated method stub
+		super.drawGuiContainerForegroundLayer(x, y);
+		for (int i = 1; i < 10; i++) {
+			Slot slot = container.getSlot(i);
+			int slotIndex = slot.slotNumber;
+			 if( 0 < slotIndex && slotIndex <= 9 ) { // grid slots
+				 int color = missingIngredients[slotIndex - 1] ? GuiUtils.COLOR_RED : GuiUtils.COLOR_GRAY;
+				 color |= 128 << 24; // transparency
+				 GuiUtils.paintSlotOverlay(slot, 16, color, 0, 0);
+			 }
+			 RenderHelper.enableGUIStandardItemLighting();
+		}
+	}
 	// title: (43,8) size: 88x12
 
 	// button position: 97, 63. size: 14x14
@@ -127,7 +134,7 @@ public class GuiPad extends GuiCrafting {
 			GuiUtils.sendItemToServer((byte) -1, null);
 			return;
 		}
-		GuiUtils.sendItemsToServer(ingredients, 1); //TODO: temporary
+		GuiUtils.sendItemsToServer(ingredients, 1);
 	}
 
 	@Override

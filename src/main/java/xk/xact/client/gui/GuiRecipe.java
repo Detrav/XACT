@@ -102,7 +102,7 @@ public class GuiRecipe extends GuiCrafting {
 		}
 
 		int color = 165 << 24 | GuiUtils.COLOR_GRAY;
-		GuiUtils.paintSlotOverlay( slot, 16, color );
+		GuiUtils.paintSlotOverlay( slot, 16, color, 0, 0);
 	}
 
 	private void buttonClicked(int i) {

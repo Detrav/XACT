@@ -35,14 +35,16 @@ public class ChipRenderer implements IItemRenderer {
 			Object... data) {
 		drawing = true;
 
+	
+		GL11.glPushMatrix();
 		GL11.glEnable(GL11.GL_LIGHTING);
-
+		GL11.glEnable(GL11.GL_BLEND);
 		CraftRecipe recipe = RecipeUtils.getRecipe(itemStack,
 				Minecraft.getMinecraft().theWorld);
 		if (recipe != null) {
 		
 			GuiUtils.paintItem(recipe.getResult(), 0, 0,
-					Minecraft.getMinecraft(), GuiUtils.itemRender, 200.0F);
+					Minecraft.getMinecraft(), GuiUtils.itemRender, 120.0F);
 
 			// Green overlay
 			GuiUtils.paintEffectOverlay(20, 20, GuiUtils.itemRender, 0.25f,
@@ -50,12 +52,14 @@ public class ChipRenderer implements IItemRenderer {
 		} else {
 			// paint invalid chip icon
 			GuiUtils.paintItem(ItemChip.invalidChip, 0, 0,
-					Minecraft.getMinecraft(), GuiUtils.itemRender, 200.0F);
+					Minecraft.getMinecraft(), GuiUtils.itemRender, 120.0F);
 		}
 		
 		RenderHelper.enableGUIStandardItemLighting();
 		drawing = false;
 		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glPopMatrix();
 	}
 
 	private boolean canRevealRecipe() {
