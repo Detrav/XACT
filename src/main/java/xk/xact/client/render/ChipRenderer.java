@@ -1,10 +1,12 @@
 package xk.xact.client.render;
 
-
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
+
 import xk.xact.client.GuiUtils;
 import xk.xact.core.items.ItemChip;
 import xk.xact.recipes.CraftRecipe;
@@ -18,33 +20,42 @@ public class ChipRenderer implements IItemRenderer {
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
 		return canRevealRecipe() && item.getItem() instanceof ItemChip
-				&& ((ItemChip) item.getItem()).encoded && type == ItemRenderType.INVENTORY;
+				&& ((ItemChip) item.getItem()).encoded
+				&& type == ItemRenderType.INVENTORY;
 	}
 
 	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item,
+			ItemRendererHelper helper) {
 		return false; // No, this is not a block.
 	}
 
 	@Override
-	public void renderItem(ItemRenderType type, ItemStack itemStack, Object... data) {
+	public void renderItem(ItemRenderType type, ItemStack itemStack,
+			Object... data) {
 		drawing = true;
 
-		GL11.glEnable( GL11.GL_LIGHTING );
+		GL11.glEnable(GL11.GL_LIGHTING);
 
-		CraftRecipe recipe = RecipeUtils.getRecipe( itemStack, Minecraft.getMinecraft().theWorld );
-		if( recipe != null ) {
-			GuiUtils.paintItem( recipe.getResult(), 0, 0, Minecraft.getMinecraft(), GuiUtils.itemRender );
-			
+		CraftRecipe recipe = RecipeUtils.getRecipe(itemStack,
+				Minecraft.getMinecraft().theWorld);
+		if (recipe != null) {
+		
+			GuiUtils.paintItem(recipe.getResult(), 0, 0,
+					Minecraft.getMinecraft(), GuiUtils.itemRender, 200.0F);
+
 			// Green overlay
-			GuiUtils.paintEffectOverlay( 20, 20, GuiUtils.itemRender, 0.25f, 0.55f, 0.3f, 0.85f );
+			GuiUtils.paintEffectOverlay(20, 20, GuiUtils.itemRender, 0.25f,
+					0.55f, 0.3f, 0.85f, 120F);
 		} else {
 			// paint invalid chip icon
-			GuiUtils.paintItem( ItemChip.invalidChip, 0, 0, Minecraft.getMinecraft(), GuiUtils.itemRender );
+			GuiUtils.paintItem(ItemChip.invalidChip, 0, 0,
+					Minecraft.getMinecraft(), GuiUtils.itemRender, 200.0F);
 		}
-
+		
+		RenderHelper.enableGUIStandardItemLighting();
 		drawing = false;
-		GL11.glEnable( GL11.GL_CULL_FACE );
+		GL11.glEnable(GL11.GL_CULL_FACE);
 	}
 
 	private boolean canRevealRecipe() {

@@ -1,14 +1,9 @@
 package xk.xact.network;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
-import xk.xact.XActMod;
+import xk.xact.network.message.MessageSyncGrid;
 import xk.xact.network.message.MessageSyncIngredients;
 import xk.xact.network.message.MessageSyncRecipeChip;
+import xk.xact.network.message.MessageUpdateMissingItems;
 import xk.xact.util.References;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -22,6 +17,9 @@ public class PacketHandler {//implements IPacketHandler {
 		   // Register Network Messages
 		   INSTANCE.registerMessage(MessageSyncRecipeChip.class, MessageSyncRecipeChip.class, 0, Side.SERVER);
 		   INSTANCE.registerMessage(MessageSyncIngredients.class, MessageSyncIngredients.class, 1, Side.SERVER);
+		   INSTANCE.registerMessage(MessageUpdateMissingItems.class, MessageUpdateMissingItems.class, 2, Side.SERVER);
+		   INSTANCE.registerMessage(MessageSyncGrid.class, MessageSyncGrid.class, 3, Side.CLIENT);
+		   
 	   }
 
 	/*

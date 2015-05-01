@@ -102,13 +102,13 @@ public class GuiCase extends GuiXACT {
 			return;
 
 		ItemStack result = recipe.getResult();
-		GuiUtils.paintItem(result, 32, 17, this.mc, itemRender);
+		GuiUtils.paintItem(result, 32, 17, this.mc, itemRender, 200.0F);
 		ItemStack[] ingredients = recipe.getIngredients();
 		for (int i = 0; i < 3; i++) {
 			for (int e = 0; e < 3; e++) {
 				int index = i * 3 + e;
 				GuiUtils.paintItem(ingredients[index], e * 18 + 14,
-						i * 18 + 41, this.mc, itemRender);
+						i * 18 + 41, this.mc, itemRender, 200.0F);
 			}
 		}
 	}

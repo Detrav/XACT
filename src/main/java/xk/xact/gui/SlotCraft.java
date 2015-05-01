@@ -67,6 +67,7 @@ public class SlotCraft extends Slot {
 	public boolean canTakeStack(EntityPlayer player) {
 		if( player != null && player.capabilities.isCreativeMode )
 			return getHasStack();
+		
 		return device.canCraft( getSlotIndex() );
 	}
 

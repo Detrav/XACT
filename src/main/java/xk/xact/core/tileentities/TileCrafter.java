@@ -187,7 +187,6 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 		if( worldObj.getWorldTime() % 40 != 0 ) { // 4 checks per second might be enough.
 			return;
 		}
-
 		updateIfChangesDetected();
 	}
 
@@ -393,7 +392,6 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 		}
 		updateRecipes();
 		stateUpdatePending = true;
-		
 	}
 
 	@Override

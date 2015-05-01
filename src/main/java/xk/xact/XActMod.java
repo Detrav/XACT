@@ -62,7 +62,6 @@ public class XActMod {
 	public static CreativeTabXACT xactTab;
 
 	@Mod.EventHandler
-	@SuppressWarnings("unused")
 	public void preInit(FMLPreInitializationEvent event) {
 		// Load Configurations
 		ConfigurationManager.loadConfiguration( event.getSuggestedConfigurationFile() );
@@ -73,7 +72,6 @@ public class XActMod {
 	}
 
 	@Mod.EventHandler
-	@SuppressWarnings("unused")
 	public void initializeAll(FMLInitializationEvent ignoredEvent) {
 		
 		xactTab = new CreativeTabXACT();
@@ -134,7 +132,6 @@ public class XActMod {
 	}
 
 	@Mod.EventHandler
-	@SuppressWarnings("unused")
 	public void postInit(FMLPostInitializationEvent event) {
 		PluginManager.checkEverything();
 		PluginManager.initializePlugins();

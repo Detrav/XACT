@@ -30,7 +30,7 @@ public class BlockMachine extends BlockContainer {
 
 	public BlockMachine() {
 		super(Material.iron );
-		this.setStepSound( soundTypeAnvil );
+		this.setStepSound( soundTypeMetal );
 		this.setHardness( 2.0f );
 		this.setResistance( 1.5f );
 		this.setCreativeTab( XActMod.xactTab );

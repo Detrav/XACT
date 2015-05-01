@@ -373,7 +373,7 @@ public class ContainerCrafter extends ContainerXACT implements InteractiveCrafti
 
 		syncClients( crafters );
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void updateProgressBar(int var, int value) {

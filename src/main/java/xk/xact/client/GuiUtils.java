@@ -67,48 +67,48 @@ public class GuiUtils {
 
 	@SideOnly(Side.CLIENT)
 	public static void paintOverlay(int x, int y, int size, int color) {
+		RenderHelper.enableGUIStandardItemLighting();
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		Gui.drawRect(x, y, x + size, y + size, color);
-		GL11.glEnable(GL11.GL_LIGHTING);
+		RenderHelper.disableStandardItemLighting();
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 	}
 
-	public static void paintItem(ItemStack itemStack, int x, int y,
-			Minecraft mc, RenderItem itemRenderer) {
+	public static void paintItem(ItemStack itemStack, int x, int y, Minecraft mc, RenderItem itemRenderer, float zLevel) {
 		if (itemStack == null)
 			return; // I might want to have a "null" image, like background
 					// image.
+		GL11.glPushMatrix();
+		itemRenderer.zLevel = zLevel;
+		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		RenderHelper.enableStandardItemLighting();
 		RenderHelper.enableGUIStandardItemLighting(); //Fixes funny lightinge
 		
-		itemRenderer.zLevel = 100.0F;
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer,
-				mc.renderEngine, itemStack, x, y);
-		itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine,
-				itemStack, x, y);
+		itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.renderEngine, itemStack, x, y);
+		itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine, itemStack, x, y);
+		RenderHelper.disableStandardItemLighting();
+		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		itemRenderer.zLevel = 0.0F;
-		
-		
+		GL11.glPopMatrix();
 	}
-	
-	
+
 	private static final ResourceLocation GLINT = new ResourceLocation(
 			"textures/misc/enchanted_item_glint.png");
 
-	public static void paintEffectOverlay(int x, int y,
-			RenderItem itemRenderer, float red, float green, float blue,
-			float alpha) {
+	public static void paintEffectOverlay(int x, int y, RenderItem itemRenderer, float red, float green, float blue, float alpha, float zLevel) {
 		GL11.glDepthFunc(GL11.GL_GREATER);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDepthMask(false);
 		bindTexture(GLINT); // do I want to change this to something else?
 
-		itemRenderer.zLevel -= 50.0F;
+		itemRenderer.zLevel -= zLevel;
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_DST_COLOR);
 		GL11.glColor4f(red, green, blue, alpha);
-		effect(itemRenderer.zLevel, x - 1, y - 1, 18, 18);
+		effect(itemRenderer.zLevel, x - 21, y - 21, 18, 18);
 
 		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glDepthMask(true);
