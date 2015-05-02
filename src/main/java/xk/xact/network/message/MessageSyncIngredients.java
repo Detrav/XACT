@@ -1,27 +1,16 @@
 package xk.xact.network.message;
 
-import org.lwjgl.BufferUtils;
-
-import xk.xact.XActMod;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import xk.xact.api.InteractiveCraftingContainer;
-import xk.xact.core.items.ItemChip;
-import xk.xact.gui.ContainerCrafter;
-import xk.xact.gui.ContainerPad;
 import xk.xact.recipes.CraftManager;
 import xk.xact.recipes.CraftRecipe;
-import io.netty.buffer.ByteBuf;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.RecipesCrafting;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 public class MessageSyncIngredients implements IMessage, IMessageHandler<MessageSyncIngredients, IMessage> {
 	/**
@@ -45,9 +34,10 @@ public class MessageSyncIngredients implements IMessage, IMessageHandler<Message
 	@Override
 	public IMessage onMessage(MessageSyncIngredients message, MessageContext ctx) {
 		//Get the player
-		EntityPlayer thePlayer = (ctx.side.isClient() ? Minecraft.getMinecraft().thePlayer : ctx.getServerHandler().playerEntity);
+		EntityPlayer thePlayer = ctx.getServerHandler().playerEntity;
+		
 		//Get the conatiner
-		InteractiveCraftingContainer container = (InteractiveCraftingContainer) ((EntityPlayer) ctx.getServerHandler().playerEntity).openContainer;
+		InteractiveCraftingContainer container = (InteractiveCraftingContainer) thePlayer.openContainer;
 		
 		CraftRecipe recipe = CraftManager.generateRecipe(message.ingredients, thePlayer.worldObj);
 		ItemStack encodedChip = CraftManager.encodeRecipe(recipe);

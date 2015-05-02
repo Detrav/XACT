@@ -1,6 +1,5 @@
 package xk.xact.network;
 
-import xk.xact.network.message.MessageSyncGrid;
 import xk.xact.network.message.MessageSyncIngredients;
 import xk.xact.network.message.MessageSyncRecipeChip;
 import xk.xact.network.message.MessageUpdateMissingItems;
@@ -18,8 +17,7 @@ public class PacketHandler {//implements IPacketHandler {
 		   INSTANCE.registerMessage(MessageSyncRecipeChip.class, MessageSyncRecipeChip.class, 0, Side.SERVER);
 		   INSTANCE.registerMessage(MessageSyncIngredients.class, MessageSyncIngredients.class, 1, Side.SERVER);
 		   INSTANCE.registerMessage(MessageUpdateMissingItems.class, MessageUpdateMissingItems.class, 2, Side.SERVER);
-		   INSTANCE.registerMessage(MessageSyncGrid.class, MessageSyncGrid.class, 3, Side.CLIENT);
-		   
+		 
 	   }
 
 	/*

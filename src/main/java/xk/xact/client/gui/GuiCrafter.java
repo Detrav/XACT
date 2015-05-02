@@ -1,14 +1,19 @@
 package xk.xact.client.gui;
 
+import org.lwjgl.input.Keyboard;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import xk.xact.XActMod;
 import xk.xact.client.GuiUtils;
+import xk.xact.client.Keybinds;
 import xk.xact.client.button.CustomButtons;
 import xk.xact.client.button.GuiButtonCustom;
 import xk.xact.client.button.ICustomButtonMode;
@@ -24,6 +29,7 @@ import xk.xact.util.NumberHelper;
 import xk.xact.util.References;
 import xk.xact.util.Textures;
 import xk.xact.util.Utils;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.network.NetworkRegistry;
 
 public class GuiCrafter extends GuiCrafting {
@@ -119,45 +125,51 @@ public class GuiCrafter extends GuiCrafting {
 		if (hoveredRecipe != currentRecipe) {
 			updateGhostContents(currentRecipe);
 		}
-		//Draw higlight around current recipe
-		int blue = NumberHelper.argb(128, 0, 0, 255);
-		if (hoveredRecipe != -1) {
-			Slot hovered   = container.getSlot(hoveredRecipe);
-			int slotLeft   = guiLeft + hovered.xDisplayPosition;
-			int slotTop    = guiTop + hovered.yDisplayPosition;
-			int slotBottom = slotTop + 16;
-			int slotRight  = slotLeft + 16;
-			drawGradientRect(slotLeft - 5, slotTop - 5, slotLeft - 4, slotBottom + 5, blue, blue);
-			drawGradientRect(slotLeft - 4, slotTop - 5, slotRight + 4, slotTop - 4, blue, blue);
-			drawGradientRect(slotLeft - 4, slotBottom + 4, slotRight + 4, slotBottom + 5, blue, blue);
-			drawGradientRect(slotRight + 5, slotBottom + 5, slotRight + 4, slotTop - 5, blue, blue);
-		}
+		
+
 	}
 
 	@Override
 	public void drawGuiContainerForegroundLayer(int x, int y) {
 		super.drawGuiContainerForegroundLayer(x, y);
-		int gray = NumberHelper.argb(128, 139, 139, 139);
+		int gray = NumberHelper.argb(255, 139, 139, 139);
 		if (hoveredRecipe == -1) {
 			for (int i = 0; i < 9 ;i++) {
 				Slot slot = container.getSlot(8 + i);
+				int color = getColorForGridSlot(slot);
 				if (slot.getHasStack()) {
-					GuiUtils.paintOverlay(slot.xDisplayPosition, slot.yDisplayPosition, 16, gray);
+					GuiUtils.paintOverlay(slot.xDisplayPosition, slot.yDisplayPosition, 16, color);
 				}
 			}
 			RenderHelper.enableGUIStandardItemLighting();
 		} else {
+			ItemStack hoveredChip = container.crafter.circuits.getStackInSlot(hoveredRecipe);
+			CraftRecipe hoveredRecipe = CraftManager.decodeRecipe(hoveredChip);
+			
 			for (int i = 0; i < 9; i++) {
 				Slot slot = container.getSlot(8 + i);
-				if (slot != null && slot instanceof SlotCraft) {
-					((SlotCraft) slot).canTakeStack(mc.thePlayer);
-				}
 				int color = getColorForGridSlot(slot);
-				if (color != -1)// Paint the "ghost item"
-					GuiUtils.paintOverlay(guiLeft + slot.xDisplayPosition,
-							guiTop + slot.yDisplayPosition, 16, color);
+					if (color != -1) {
+						// Paint the "ghost item"
+						GuiUtils.paintOverlay(slot.xDisplayPosition, slot.yDisplayPosition, 16, gray); //Paint gray over the slot so you wont see the old items
+						GuiUtils.paintItem(hoveredRecipe.getIngredients()[i], slot.xDisplayPosition, slot.yDisplayPosition, mc, itemRender, 100F);
+						GuiUtils.paintOverlay(slot.xDisplayPosition,
+								slot.yDisplayPosition, 16, color);
+					}
 			}
-			//MEH won't display red rectangle anymore :(
+		}
+		//Draw higlight around current recipe
+		int blue = NumberHelper.argb(128, 0, 0, 255);
+		int red  = NumberHelper.argb(128, 255, 0, 0);
+		if (hoveredRecipe != -1) {
+			Slot hovered   = container.getSlot(hoveredRecipe);
+			if (hovered != null && hovered instanceof SlotCraft) {
+				if (((SlotCraft) hovered).canTakeStack(Minecraft.getMinecraft().thePlayer)) { //Draw a blue border if the player can craft it
+					drawRecipeBorder(hovered, blue, guiLeft, guiTop);
+				} else { //Or a red one if not
+					drawRecipeBorder(hovered, red, guiLeft, guiTop);
+				}
+			}
 		}
 	}
 
@@ -170,41 +182,7 @@ public class GuiCrafter extends GuiCrafting {
 	public void drawScreen(int mousex, int mousey, float partialtick) {
 		if (partialtick > 0.6) // only update less t
 			PacketHandler.INSTANCE.sendToServer(new MessageUpdateMissingItems());
-		if (hoveredRecipe < 0) {
-			if (areSlotsHidden) {
-				for (int i = 0; i < 9; i++) {
-					Slot slot = container.getSlot(8 + i);
-					slot.xDisplayPosition -= 9000; // Dirty way to hide a slot plz don't hit me
-				}
-				areSlotsHidden = false;
-			}
-			
 			super.drawScreen(mousex, mousey, partialtick);
-		} else {// If a recipe is being hovered, paint those ingredients
-				// instead.
-			int leftGridOffset = 62;
-			int topGridOffset = 17;
-			int index = 0;
-
-			// Draw Ghost recipe & missing item red rectangle
-			for (int yOffset = 0; yOffset < 3; yOffset++) {
-				for (int xOffset = 0; xOffset < 3; xOffset++) {
-					int x = guiLeft + leftGridOffset + (18 * xOffset);
-					int y = guiTop + topGridOffset + (18 * yOffset);
-					ItemStack itemToPaint = gridContents[index];
-					GuiUtils.paintItem(itemToPaint, x, y, this.mc, itemRender, 10.0F);
-					index++;
-				}
-			}
-			if (!areSlotsHidden) {
-				for (int i = 0; i < 9; i++) {
-					Slot slot = container.getSlot(8 + i);
-					slot.xDisplayPosition += 9000; // Dirty way to hide a slot plz don't hit me
-				}
-				areSlotsHidden = true;
-			}
-			super.drawScreen(mousex, mousey, partialtick);
-		}	
 	}
 	
 
@@ -262,7 +240,21 @@ public class GuiCrafter extends GuiCrafting {
 			gridContents = recipe == null ? emptyGrid : recipe.getIngredients();
 		}
 	}
-
+	
+	private void drawRecipeBorder(Slot hoveredSlot, int color, int guiLeft, int guiTop) {
+		int slotLeft   = hoveredSlot.xDisplayPosition;
+		int slotTop    = hoveredSlot.yDisplayPosition;
+		int slotBottom = slotTop + 16;
+		int slotRight  = slotLeft + 16;
+		
+		drawGradientRect(slotLeft - 5, slotTop - 5, slotLeft - 4, slotBottom + 5, color, color);
+		drawGradientRect(slotLeft - 4, slotTop - 5, slotRight + 4, slotTop - 4, color, color);
+		drawGradientRect(slotLeft - 4, slotBottom + 4, slotRight + 4, slotBottom + 5, color, color);
+		drawGradientRect(slotRight + 5, slotBottom + 5, slotRight + 4, slotTop - 5, color, color);
+		RenderHelper.enableStandardItemLighting();
+		RenderHelper.enableGUIStandardItemLighting();
+	}
+	
 	// -------------------- InteractiveCraftingGui --------------------
 
 	@Override

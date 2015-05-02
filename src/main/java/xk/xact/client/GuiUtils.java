@@ -25,6 +25,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import xk.xact.client.gui.GuiXACT;
 import xk.xact.core.items.ItemChip;
 import xk.xact.network.ClientProxy;
 import xk.xact.network.PacketHandler;
@@ -272,4 +273,6 @@ public class GuiUtils {
 					+ meta + ")", e, false);
 		}
 	}
+	
+
 }

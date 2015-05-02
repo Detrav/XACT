@@ -110,21 +110,6 @@ public class GuiPad extends GuiCrafting {
 				if (invPlayer.getStackInSlot(keyCode - 2).equals(invPlayer.getCurrentItem())) // - 2 because the keycode is 2 ahead (e.g pressing 1 returns 2 and corresponds to inv slot 0)
 					return; // Dont handle the number key when it would replace the currently open Case
 		}
-		
-		if (chartyped == 'c') { // Clear the grid by pressing c, more or less
-			for (int i = 0; i < 9; i++) {
-				container.putStackInSlot(i, null);
-				craftPad.gridInv.markDirty();
-			}
-			craftPad.outputInv.setInventorySlotContents(0, null);
-			if (container instanceof ContainerPad) {
-				if (Minecraft.getMinecraft().thePlayer.getHeldItem() != null
-					&& Minecraft.getMinecraft().thePlayer.getHeldItem().getItem().equals(XActMod.itemCraftPad))
-					((ContainerPad) container).saveContentsToNBT(Minecraft.getMinecraft().thePlayer.getHeldItem());
-				else
-					Utils.logError("Gaah! Someone managed to move the Crafting Pad while open");
-			}
-		}
 		super.keyTyped(chartyped, keyCode);
 	}
 	

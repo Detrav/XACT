@@ -1,13 +1,17 @@
 package xk.xact.network;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import xk.xact.XActMod;
 import xk.xact.client.KeyBindingHandler;
+import xk.xact.client.Keybinds;
 import xk.xact.client.gui.GuiCase;
 import xk.xact.client.gui.GuiPad;
 import xk.xact.client.gui.GuiVanillaWorkbench;
@@ -19,6 +23,8 @@ import xk.xact.core.tileentities.TileWorkbench;
 import xk.xact.gui.ContainerCase;
 import xk.xact.gui.ContainerPad;
 import xk.xact.gui.ContainerVanillaWorkbench;
+import xk.xact.util.References;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -36,10 +42,17 @@ public class ClientProxy extends CommonProxy {
 		MinecraftForgeClient.registerItemRenderer( XActMod.itemRecipeEncoded, new ChipRenderer() );
 	}
 
-	@Override
-	public void registerHandlers() {
-		super.registerHandlers();
 
+	@Override
+	public void registerKeybindings() {
+		ClientRegistry.registerKeyBinding(Keybinds.clear);
+		ClientRegistry.registerKeyBinding(Keybinds.load);
+		ClientRegistry.registerKeyBinding(Keybinds.prev);
+		ClientRegistry.registerKeyBinding(Keybinds.next);
+		ClientRegistry.registerKeyBinding(Keybinds.delete);
+		ClientRegistry.registerKeyBinding(Keybinds.reveal);
+		ClientRegistry.registerKeyBinding(Keybinds.openGrid);
+		//Old stuff
 		// Register KeyBindingHandler
 		//KeyBindingRegistry.registerKeyBinding( new KeyBindingHandler() );
 

@@ -2,8 +2,9 @@ package xk.xact.network;
 
 import java.util.UUID;
 
-import com.mojang.authlib.GameProfile;
+import org.lwjgl.input.Keyboard;
 
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -17,8 +18,12 @@ import xk.xact.gui.ContainerCase;
 import xk.xact.gui.ContainerPad;
 import xk.xact.gui.ContainerRecipe;
 import xk.xact.gui.ContainerVanillaWorkbench;
+import xk.xact.util.References;
+
+import com.mojang.authlib.GameProfile;
+
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.relauncher.Side;
 
 public class CommonProxy implements IGuiHandler {
 
@@ -28,12 +33,12 @@ public class CommonProxy implements IGuiHandler {
 	public void registerRenderInformation() { }
 
 	/**
-	 * Register side-sensitive handlers, like TickHandlers, Key Bindings, etc.
+	 * Register keybinds, duh
 	 */
-	public void registerHandlers() {
-		//TickRegistry.registerTickHandler( GuiTickHandler.instance(), Side.SERVER );
+	public void registerKeybindings() {
+		// Only on client side
 	}
-
+	
 	@Override
 	public Object getServerGuiElement(int GuiID, EntityPlayer player, World world, int x, int y, int z) {
 		int ID = (GuiID & 0xFF);

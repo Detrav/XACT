@@ -31,6 +31,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * XACT adds an electronic crafting table capable of reading recipes encoded into chips.
@@ -65,10 +66,13 @@ public class XActMod {
 	public void preInit(FMLPreInitializationEvent event) {
 		// Load Configurations
 		ConfigurationManager.loadConfiguration( event.getSuggestedConfigurationFile() );
+		
 		PacketHandler.init();
-		// Initialize the logger.
+		// Initialize the logger. (I think this is useless as of 1.7.10)
 		logger = Logger.getLogger( "XACT-" + FMLCommonHandler.instance().getEffectiveSide() );
-		//logger.setParent( FMLLog.getLogger() );
+		
+		//Load keybinds
+		proxy.registerKeybindings();
 	}
 
 	@Mod.EventHandler
@@ -84,7 +88,6 @@ public class XActMod {
 
 		// Register side-sensitive Stuff
 		proxy.registerRenderInformation();
-		proxy.registerHandlers();
 
 		// Register Blocks
 		GameRegistry.registerBlock( blockMachine, ItemMachine.class, "XACT Machine" );
@@ -101,28 +104,6 @@ public class XActMod {
 		GameRegistry.registerTileEntity( TileCrafter.class, "tile.xact.Crafter" );
 		GameRegistry.registerTileEntity( TileWorkbench.class, "tile.xact.VanillaWorkbench" );
 
-//		// Add names
-//		LanguageRegistry.addName( itemRecipeBlank, "Recipe Chip" );
-//		LanguageRegistry.addName( itemRecipeEncoded, "\u00a72" + "Recipe Chip" );
-//		LanguageRegistry.addName( itemChipCase, "Chip Case" );
-//		LanguageRegistry.addName( itemCraftPad, "Craft Pad" );
-//
-//		// machine's names
-//		for( Machines machine : Machines.values() ) {
-//			LanguageRegistry.addName( new ItemStack( blockMachine, 1, machine.ordinal() ), machine.getLocalizedName() );
-//		}
-//
-//		// tab's name
-//		LanguageRegistry.instance().addStringLocalization( "itemGroup.xact", "XACT" );
-//
-//		// keybinding names
-//		LanguageRegistry.instance().addStringLocalization( "xact.clear", "XACT: Clear Crafting Grid" );
-//		LanguageRegistry.instance().addStringLocalization( "xact.load", "XACT: Load recipe from chip" );
-//		LanguageRegistry.instance().addStringLocalization( "xact.prev", "XACT: Get Previous Recipe" );
-//		LanguageRegistry.instance().addStringLocalization( "xact.next", "XACT: Get Next Recipe" );
-//		LanguageRegistry.instance().addStringLocalization( "xact.delete", "XACT: Clear Recipe List" );
-//		LanguageRegistry.instance().addStringLocalization( "xact.reveal", "XACT: Hold to Reveal Chip's Recipe" );
-//		LanguageRegistry.instance().addStringLocalization( "xact.openGrid", "XACT: Open Craft Pad" );
 
 		// Register GUIs
 		NetworkRegistry.INSTANCE.registerGuiHandler( XActMod.instance, proxy );

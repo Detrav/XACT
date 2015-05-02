@@ -262,6 +262,11 @@ public class InventoryUtils {
 				return true;
 			}
 			if( inventory instanceof IInventory ) { // ISidedInventory is included here.
+				//Special case IC2 Safe/carpeters safe
+				if (((IInventory) inventory).getInventoryName() == "tile.blockCarpentersSafe.name"
+					|| ((IInventory) inventory).getInventoryName() == "Personal Safe")
+					return false;
+				
 				return true;
 			}
 
