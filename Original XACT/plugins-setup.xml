@@ -1,0 +1,236 @@
+<project name="XACT Plugins" basedir="">
+
+    <!-- Versions -->
+    <property file="version.properties"/>
+    <property name="forge.version" value="${mc.version}-${forge.version.mayor}.${forgebuild}"/>
+
+    <!-- Directories -->
+    <property file="build.properties"/>
+    <condition property="custom.root">
+        <and>
+            <isset property="build.baseDir"/>
+            <not>
+                <equals arg1="${build.baseDir}" arg2=""/>
+            </not>
+        </and>
+    </condition>
+
+    <condition property="build.dir" value="${build.baseDir}/MC ${mc.version} #${forgebuild}"
+               else="MC ${mc.version} #${forgebuild}">
+        <istrue value="${custom.root}"/>
+    </condition>
+    <property name="forge.dir" value="${build.dir}/forge"/>
+    <property name="download.dir" value="${build.dir}/downloads"/>
+    <property name="mcp.dir" value="${forge.dir}/mcp"/>
+    <property name="mcpsrc.dir" value="${mcp.dir}/src/minecraft"/>
+    <condition property="api.src.dir" value="${mcpsrc.dir}" else="${build.dir}/Mod APIs">
+        <istrue value="${copy.xact.srcs}"/>
+    </condition>
+
+
+    <!-- URLs -->
+    <property name="forge.url"
+              value="http://files.minecraftforge.net/minecraftforge/minecraftforge-src-${forge.version}.zip"/>
+    <property name="ue.download.dir" value="${download.dir}/ue/minecraft/universalelectricity"/>
+
+    <property name="invtweaks.url"
+              value="https://github.com/Kobata/inventory-tweaks/archive/${invtweaks.version}.zip"/>
+
+
+    <!-- Main Targets -->
+    <mkdir dir="${download.dir}"/>
+    <mkdir dir="${api.src.dir}"/>
+
+    <target name="download-all" depends="download-apis, download-nei, download-mps, download-betterStorage, download-ae"/>
+
+    <target name="copy-access-transformers" depends="copy-nei-access-transformers"/>
+
+    <target name="copy-sources" depends="copy-nei-sources, copy-mps-sources, copy-betterStorage-sources, copy-ae-sources">
+
+        <echo message="Extracting Inventory Tweaks API... "/>
+        <unzip src="${download.dir}/InventoryTweaks-api-${invtweaks.version}.zip" dest="${download.dir}"/>
+        <mkdir dir="${api.src.dir}/invtweaks/api/container/"/>
+        <move file="${download.dir}/inventory-tweaks-${invtweaks.version}/src/minecraft/invtweaks/api/container/ChestContainer.java"
+              todir="${api.src.dir}/invtweaks/api/container"/>
+        <move file="${download.dir}/inventory-tweaks-${invtweaks.version}/src/minecraft/invtweaks/api/container/ContainerSection.java"
+              todir="${api.src.dir}/invtweaks/api/container"/>
+        <move file="${download.dir}/inventory-tweaks-${invtweaks.version}/src/minecraft/invtweaks/api/container/ContainerSectionCallback.java"
+              todir="${api.src.dir}/invtweaks/api/container"/>
+    </target>
+
+
+    <!-- Plug-in Sources -->
+
+    <condition property="do.build.nei">
+        <istrue value="${build.plugin.nei}"/>
+    </condition>
+    <condition property="do.build.mps">
+        <istrue value="${build.plugin.mps}"/>
+    </condition>
+    <condition property="do.build.betterStorage">
+        <istrue value="${build.plugin.betterStorage}"/>
+    </condition>
+    <condition property="do.build.ae">
+        <istrue value="${build.plugin.appliedEnergistics}"/>
+    </condition>
+
+    <target name="copy-plugin-sources"
+            depends="copy-nei-plugin, copy-mps-plugin, copy-betterStorage-plugin, copy-ae-plugin"/>
+
+    <target name="copy-nei-plugin" if="do.build.nei">
+        <copy todir="${mcpsrc.dir}">
+            <fileset dir="${dir.plugin.nei}"/>
+        </copy>
+    </target>
+    <target name="copy-mps-plugin" if="do.build.mps">
+        <copy todir="${mcpsrc.dir}">
+            <fileset dir="${dir.plugin.mps}"/>
+        </copy>
+    </target>
+    <target name="copy-betterStorage-plugin" if="do.build.betterStorage">
+        <copy todir="${mcpsrc.dir}">
+            <fileset dir="${dir.plugin.betterStorage}"/>
+        </copy>
+    </target>
+    <target name="copy-ae-plugin" if="do.build.ae">
+        <copy todir="${mcpsrc.dir}">
+            <fileset dir="${dir.plugin.appliedEnergistics}"/>
+        </copy>
+    </target>
+
+    <!-- APIs -->
+
+    <target name="download-apis">
+        <echo message="Downloading Inventory Tweaks API... "/>
+        <get src="${invtweaks.url}"
+             dest="${download.dir}/InventoryTweaks-api-${invtweaks.version}.zip"/>
+    </target>
+
+
+    <!-- Modular Powersuits -->
+
+    <condition property="mps-downloaded">
+        <available file="${download.dir}/MachineMusePowersuits-${mps.commit}.zip"/>
+    </condition>
+
+    <target name="download-mps" if="do.build.mps" unless="mps-downloaded">
+        <get src="https://github.com/MachineMuse/MachineMusePowersuits/archive/${mps.commit}.zip"
+             dest="${download.dir}/MachineMusePowersuits-${mps.commit}.zip"/>
+    </target>
+
+    <target name="copy-mps-sources" if="do.build.mps">
+        <unzip src="${download.dir}/MachineMusePowersuits-${mps.commit}.zip" dest="${download.dir}"/>
+
+        <copy todir="${api.src.dir}">
+            <fileset dir="${download.dir}/MachineMusePowersuits-${mps.commit}/src/minecraft">
+                <include name="net/machinemuse/api/IModularItem.java"/>
+                <include name="net/machinemuse/api/IPowerModule.java"/>
+                <include name="net/machinemuse/api/IPropertyModifier.java"/>
+                <include name="net/machinemuse/api/moduletrigger/IRightClickModule.java"/>
+            </fileset>
+        </copy>
+    </target>
+
+
+    <!-- NEI -->
+    <property name="ccc.dir" value="${download.dir}/ChickenBones-codechickencore-${ccc.commit}"/>
+    <property name="nei.dir" value="${download.dir}/ChickenBones-notenoughitems-${nei.commit}"/>
+
+    <target name="copy-nei-access-transformers" if="do.build.nei">
+        <mkdir dir="${forge.dir}/accesstransformers"/>
+    <!-- <copy todir="${forge.dir}/accesstransformers" file="${ccc.dir}/codechickencore_at.cfg"/> -->
+        <copy todir="${forge.dir}/accesstransformers" file="${nei.dir}/nei_at.cfg"/>
+    </target>
+
+    <target name="copy-nei-sources" if="do.build.nei">
+        <copy todir="${mcp.dir}/src/minecraft" overwrite="true">
+            <fileset dir="${ccc.dir}">
+                <include name="codechicken/**/*.*"/>
+                <include name="net/**/*.*"/>
+            </fileset>
+            <fileset dir="${nei.dir}">
+                <include name="codechicken/**/*.*"/>
+                <include name="net/**/*.*"/>
+            </fileset>
+            <fileset dir="${download.dir}/CCLib-${ccLib.version}/src">
+                <include name="codechicken/**/*.*"/>
+                <include name="net/**/*.*"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <condition property="nei-downloaded">
+        <and>
+            <available file="${download.dir}/CCC-${ccc.commit}.zip"/>
+            <available file="${download.dir}/NEI-${nei.commit}.zip"/>
+            <available file="${download.dir}/CCLib-${ccLib.version}.jar"/>
+        </and>
+    </condition>
+
+    <target name="download-nei" unless="nei-downloaded" if="do.build.nei">
+        <mkdir dir="${download.dir}"/>
+        <echo message="Downloading NEI, CCC and CodeChickenLib"/>
+
+        <get src="https://bitbucket.org/ChickenBones/codechickencore/get/${ccc.commit}.zip"
+             dest="${download.dir}/CCC-${ccc.commit}.zip"/>
+        <get src="https://bitbucket.org/ChickenBones/notenoughitems/get/${nei.commit}.zip"
+             dest="${download.dir}/NEI-${nei.commit}.zip"/>
+        <get src="http://files.minecraftforge.net/CodeChickenLib/CodeChickenLib-${ccLib.version}.jar"
+             dest="${download.dir}/CCLib-${ccLib.version}.jar"/>
+
+        <!-- Extract NEI, CCC and CodeChickenLib -->
+        <unzip src="${download.dir}/CCC-${ccc.commit}.zip" dest="${download.dir}"/>
+        <unzip src="${download.dir}/NEI-${nei.commit}.zip" dest="${download.dir}"/>
+        <unzip src="${download.dir}/CCLib-${ccLib.version}.jar" dest="${download.dir}/CCLib-${ccLib.version}"/>
+    </target>
+
+    <!-- Better Storage -->
+
+    <target name="copy-betterStorage-sources" if="do.build.betterStorage">
+        <unzip src="${download.dir}/BetterStorage-${betterStorage.commit}.zip" dest="${download.dir}"/>
+
+        <copy todir="${api.src.dir}">
+            <fileset dir="${download.dir}/BetterStorage-${betterStorage.commit}/src">
+                <include name="net/mcft/copy/betterstorage/api/ICrateStorage.java"/>
+                <include name="net/mcft/copy/betterstorage/api/ICrateWatcher.java"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <condition property="betterStorage-downloaded">
+        <available file="${download.dir}/BetterStorage-${betterStorage.commit}.zip"/>
+    </condition>
+
+    <target name="download-betterStorage" unless="betterStorage-downloaded" if="do.build.betterStorage">
+        <get src="https://github.com/copyboy/mod_BetterStorage/archive/${betterStorage.commit}.zip"
+             dest="${download.dir}/BetterStorage-${betterStorage.commit}.zip"/>
+    </target>
+
+    <!-- Applied Energistics -->
+
+    <condition property="ae-downloaded">
+        <and>
+            <available file="${download.dir}/appeng-${ae.version}.zip"/>
+        </and>
+    </condition>
+
+    <target name="download-ae" unless="ae-downloaded" if="do.build.ae">
+        <echo message="http://ae-mod.info/releases/appeng-${ae.version}.jar"/>
+        <get dest="${download.dir}/appeng-${ae.version}.zip" src="http://ae-mod.info/releases/appeng-${ae.version}.jar"/>
+    </target>
+
+    <target name="copy-ae-sources" if="do.build.ae" depends="download-ae">
+        <delete dir="${download.dir}/appeng-${ae.version}"/>
+        <unzip src="${download.dir}/appeng-${ae.version}.zip" dest="${download.dir}/appeng-${ae.version}"/>
+        <unzip src="${download.dir}/appeng-${ae.version}/appeng_api.zip" dest="${download.dir}/appeng-${ae.version}/API"/>
+
+        <mkdir dir="${api.src.dir}/appeng"/>
+        <copy todir="${api.src.dir}/appeng">
+            <fileset dir="${download.dir}/appeng-${ae.version}/API/appeng">
+                <include name="api/**/*.java"/>
+                <exclude name="api/integration/**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+
+</project>
