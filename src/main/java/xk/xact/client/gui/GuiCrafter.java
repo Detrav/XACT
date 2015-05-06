@@ -17,6 +17,7 @@ import xk.xact.client.Keybinds;
 import xk.xact.client.button.CustomButtons;
 import xk.xact.client.button.GuiButtonCustom;
 import xk.xact.client.button.ICustomButtonMode;
+import xk.xact.config.ConfigurationManager;
 import xk.xact.core.items.ItemChip;
 import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.gui.ContainerCrafter;
@@ -125,13 +126,14 @@ public class GuiCrafter extends GuiCrafting {
 		if (hoveredRecipe != currentRecipe) {
 			updateGhostContents(currentRecipe);
 		}
-		
-
+		if (ConfigurationManager.ENABLE_ALT_TEXTURES)
+			GuiUtils.drawLights(container, guiTexture, this, guiLeft, guiTop);
 	}
 
 	@Override
 	public void drawGuiContainerForegroundLayer(int x, int y) {
 		super.drawGuiContainerForegroundLayer(x, y);
+	
 		int gray = NumberHelper.argb(255, 139, 139, 139);
 		if (hoveredRecipe == -1) {
 			for (int i = 0; i < 9 ;i++) {
@@ -152,25 +154,14 @@ public class GuiCrafter extends GuiCrafting {
 					if (color != -1) {
 						// Paint the "ghost item"
 						GuiUtils.paintOverlay(slot.xDisplayPosition, slot.yDisplayPosition, 16, gray); //Paint gray over the slot so you wont see the old items
-						GuiUtils.paintItem(hoveredRecipe.getIngredients()[i], slot.xDisplayPosition, slot.yDisplayPosition, mc, itemRender, 100F);
+						GuiUtils.paintItem(hoveredRecipe.getIngredients()[i], slot.xDisplayPosition, slot.yDisplayPosition, mc, itemRender, 200F);
 						GuiUtils.paintOverlay(slot.xDisplayPosition,
 								slot.yDisplayPosition, 16, color);
 					}
 			}
 		}
-		//Draw higlight around current recipe
-		int blue = NumberHelper.argb(128, 0, 0, 255);
-		int red  = NumberHelper.argb(128, 255, 0, 0);
-		if (hoveredRecipe != -1) {
-			Slot hovered   = container.getSlot(hoveredRecipe);
-			if (hovered != null && hovered instanceof SlotCraft) {
-				if (((SlotCraft) hovered).canTakeStack(Minecraft.getMinecraft().thePlayer)) { //Draw a blue border if the player can craft it
-					drawRecipeBorder(hovered, blue, guiLeft, guiTop);
-				} else { //Or a red one if not
-					drawRecipeBorder(hovered, red, guiLeft, guiTop);
-				}
-			}
-		}
+		//Draw highlight around current recipe
+		drawRecipeBorder(GuiUtils.getHoveredSlot(container, mouseX, mouseY), getColorForOutputSlot(hoveredRecipe));
 	}
 
 	@Override
@@ -180,7 +171,7 @@ public class GuiCrafter extends GuiCrafting {
 
 	@Override
 	public void drawScreen(int mousex, int mousey, float partialtick) {
-		if (partialtick > 0.6) // only update less t
+		if (partialtick > 0.6) // Reduces updates by i dunno ... a bit
 			PacketHandler.INSTANCE.sendToServer(new MessageUpdateMissingItems());
 			super.drawScreen(mousex, mousey, partialtick);
 	}
@@ -188,6 +179,7 @@ public class GuiCrafter extends GuiCrafting {
 
 	private int getColorForOutputSlot(int recipeIndex) {
 		int color;
+		if (recipeIndex < 0) return 0;
 		if (this.mc.thePlayer.capabilities.isCreativeMode) {
 			color = GuiUtils.COLOR_BLUE;
 		} else if (Utils.anyOf(container.recipeStates[recipeIndex])) {
@@ -241,7 +233,9 @@ public class GuiCrafter extends GuiCrafting {
 		}
 	}
 	
-	private void drawRecipeBorder(Slot hoveredSlot, int color, int guiLeft, int guiTop) {
+	private void drawRecipeBorder(Slot hoveredSlot, int color) {
+		if (hoveredSlot == null) return;
+		if (hoveredSlot.slotNumber > 3) return;
 		int slotLeft   = hoveredSlot.xDisplayPosition;
 		int slotTop    = hoveredSlot.yDisplayPosition;
 		int slotBottom = slotTop + 16;

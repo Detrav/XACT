@@ -93,6 +93,7 @@ public class CraftPad implements ICraftingDevice {
 
 	public void updateState() {
 		recentlyUpdated = true;
+		
 	}
 
 	////////////
@@ -176,6 +177,13 @@ public class CraftPad implements ICraftingDevice {
 		if (chipInv.getStackInSlot(0) != null)
 			chipInv.getStackInSlot(0).writeToNBT(chipTag);
 		ingredients.appendTag(chipTag);
+		
+		//Also save the current recipe to the list
+		NBTTagCompound recipeTag = new NBTTagCompound();
+		if (lastRecipe != null) {
+			lastRecipe.getResult().writeToNBT(recipeTag);
+		}
+		pad.setTagCompound(recipeTag);
 		pad.setTagInfo("Contents", ingredients);
 	}
 

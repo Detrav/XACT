@@ -27,10 +27,14 @@ import org.lwjgl.opengl.GL12;
 
 import xk.xact.client.gui.GuiXACT;
 import xk.xact.core.items.ItemChip;
+import xk.xact.gui.ContainerCrafter;
+import xk.xact.inventory.Inventory;
 import xk.xact.network.ClientProxy;
 import xk.xact.network.PacketHandler;
 import xk.xact.network.message.MessageSyncIngredients;
 import xk.xact.network.message.MessageSyncRecipeChip;
+import xk.xact.recipes.CraftManager;
+import xk.xact.recipes.CraftRecipe;
 import xk.xact.recipes.RecipeUtils;
 import xk.xact.util.CustomPacket;
 import xk.xact.util.Utils;
@@ -253,7 +257,20 @@ public class GuiUtils {
 	public static void bindTexture(ResourceLocation resource) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(resource);
 	}
-
+	
+	/**
+	 * Draws the green status lights (Only on alternate textures)
+	 */
+	public static void drawLights(ContainerCrafter container, ResourceLocation guiTexture, GuiContainer gui, int guiLeft, int guiTop) {
+		bindTexture(guiTexture);
+		for (int i = 0; i < 4; i++) {
+			Slot chipSlot = container.getSlot(4 + i); // 8 Offset
+			
+			if (chipSlot.getHasStack() && CraftManager.decodeRecipe(chipSlot.getStack()) != null) {
+				gui.drawTexturedModalRect(guiLeft + chipSlot.xDisplayPosition, guiTop + chipSlot.yDisplayPosition + 9, 176, 0, 3, 3);
+			}
+		}
+	}
 	/**
 	 * Sends a packet to the server to open the specified GUI.
 	 *

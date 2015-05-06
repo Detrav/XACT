@@ -1,16 +1,18 @@
 package xk.xact.util;
 
+import xk.xact.config.ConfigurationManager;
+import xk.xact.gui.ContainerCrafter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public final class Textures {
 
-	public static final String TEXTURES_ROOT = "xact:textures/";
+	public static final String TEXTURES_ROOT = References.MOD_ID + ":textures/";
 
 	// GUI Textures
-	public static final String GUI_CRAFTER = TEXTURES_ROOT + "gui/GuiCrafter.png";
-	public static final String GUI_PAD = TEXTURES_ROOT + "gui/GuiPad.png";
+	public static final String GUI_CRAFTER = TEXTURES_ROOT + "gui/GuiCrafter" + (ConfigurationManager.ENABLE_ALT_TEXTURES ? "_alt.png" : ".png");
+	public static final String GUI_PAD = TEXTURES_ROOT + "gui/GuiPad" + (ConfigurationManager.ENABLE_ALT_TEXTURES ? "_alt.png" : ".png");
 	public static final String GUI_CASE = TEXTURES_ROOT + "gui/GuiCase.png";
 	public static final String GUI_RECIPE = TEXTURES_ROOT + "gui/GuiRecipe.png";
 	public static final String GUI_WORKBENCH = "textures/gui/container/crafting_table.png";
@@ -23,19 +25,19 @@ public final class Textures {
 
 
 	// Items
-	public static final String ITEM_CASE = "xact:case";
-	public static final String ITEM_CHIP_BLANK = "xact:chip_blank";
-	public static final String ITEM_CHIP_ENCODED = "xact:chip_encoded";
-	public static final String ITEM_CHIP_INVALID = "xact:chip_invalid";
-	public static final String ITEM_PAD_ON = "xact:pad_on";
-	public static final String ITEM_PAD_OFF = "xact:pad_off";
+	public static final String ITEM_CASE = References.MOD_ID + ":case";
+	public static final String ITEM_CHIP_BLANK = References.MOD_ID + ":chip_blank";
+	public static final String ITEM_CHIP_ENCODED = References.MOD_ID + ":chip_encoded";
+	public static final String ITEM_CHIP_INVALID = References.MOD_ID + ":chip_invalid";
+	public static final String ITEM_PAD_ON = References.MOD_ID + ":pad_on" + (ConfigurationManager.ENABLE_ALT_TEXTURES ? "_alt" : "");
+	public static final String ITEM_PAD_OFF = References.MOD_ID + ":pad_off" + (ConfigurationManager.ENABLE_ALT_TEXTURES ? "_alt" : "");
 
 
 	// Block Texture: Crafter
-	public static final String CRAFTER_TOP = "xact:crafter_top";
-	public static final String CRAFTER_BOTTOM = "xact:crafter_bottom";
-	public static final String CRAFTER_FRONT = "xact:crafter_front";
-	public static final String CRAFTER_SIDE = "xact:crafter_side";
+	public static final String CRAFTER_TOP = References.MOD_ID + ":crafter_top";
+	public static final String CRAFTER_BOTTOM = References.MOD_ID + ":crafter_bottom";
+	public static final String CRAFTER_FRONT = References.MOD_ID + ":crafter_front";
+	public static final String CRAFTER_SIDE = References.MOD_ID + ":crafter_side";
 
 	// Block Texture: Workbench
 	public static final String WORKBENCH_TOP = "crafting_table_top";

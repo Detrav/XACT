@@ -19,6 +19,8 @@ import xk.xact.core.CraftPad;
 import xk.xact.core.items.ItemChip;
 import xk.xact.gui.ContainerPad;
 import xk.xact.network.ClientProxy;
+import xk.xact.network.PacketHandler;
+import xk.xact.network.message.MessageUpdateMissingItems;
 import xk.xact.recipes.CraftManager;
 import xk.xact.recipes.CraftRecipe;
 import xk.xact.util.References;
@@ -71,8 +73,11 @@ public class GuiPad extends GuiCrafting {
 	}
 	
 	@Override
-	public void drawScreen(int p_73863_1_, int p_73863_2_, float p_73863_3_) {	
-		super.drawScreen(p_73863_1_, p_73863_2_, p_73863_3_);
+	public void drawScreen(int p_73863_1_, int p_73863_2_, float partialTick) {	
+		// Update the missing ingredients 
+		if ((int) (partialTick * 10) == 1)
+			missingIngredients = craftPad.getMissingIngredients();
+		super.drawScreen(p_73863_1_, p_73863_2_, partialTick);
 	}
 	
 	@Override
@@ -127,9 +132,6 @@ public class GuiPad extends GuiCrafting {
 		super.updateScreen();
 
 		if (craftPad.recentlyUpdated) {
-			// Update the missing ingredients
-			missingIngredients = craftPad.getMissingIngredients();
-
 			// Update the buttons for the chips
 			ItemStack chip = craftPad.chipInv.getStackInSlot(0);
 			if (chip == null) {

@@ -35,9 +35,9 @@ public class ItemPad extends Item {
 		if( itemStack == null || itemStack.stackTagCompound == null )
 			return;
 
-		String loadedRecipe = itemStack.getTagCompound().getString( "loadedRecipe" );
+		String loadedRecipe = ItemStack.loadItemStackFromNBT(itemStack.stackTagCompound).getDisplayName();
 		if( loadedRecipe != null && !loadedRecipe.equals( "" ) )
-			list.add(I18n.format(References.Localization.CHIP_RECIPE) + ": " + loadedRecipe );
+			list.add(I18n.format(References.Localization.CHIP_RECIPE) + ": " + I18n.format(loadedRecipe));
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package xk.xact.network.message;
 import net.minecraft.entity.player.EntityPlayer;
 import xk.xact.api.InteractiveCraftingContainer;
 import xk.xact.gui.ContainerCrafter;
+import xk.xact.gui.ContainerPad;
 import io.netty.buffer.ByteBuf;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
@@ -11,6 +12,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 /**
  * Updates the missing ingredients
  * So that the grid highlights missing items correctly
+ * I guess this replaces the old GuiTickHandler
  */
 public class MessageUpdateMissingItems implements IMessage, IMessageHandler<MessageUpdateMissingItems, IMessage> {
 	

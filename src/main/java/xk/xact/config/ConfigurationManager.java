@@ -24,49 +24,55 @@ public class ConfigurationManager {
 	private static Configuration config;
 
 	public static void loadConfiguration(File configFile) {
-		config = new Configuration( configFile );
+		config = new Configuration(configFile);
 		config.load();
 
+		ENABLE_MPS_PLUGIN = config
+				.get("Plug-ins", "enableModularPowerSuitsPlugin", true,
+					"If true, XACT will try to initialize the plug-in for Modular PowerSuits. \n"
+					+ "This plug-in let's you install the Craft Pad into the MPS Power Fist.")
+				.getBoolean(true);
 
-		ENABLE_MPS_PLUGIN = config.get( "Plug-ins", "enableModularPowerSuitsPlugin", true,
-				"If true, XACT will try to initialize the plug-in for Modular PowerSuits. \n" +
-						"This plug-in let's you install the Craft Pad into the MPS Power Fist." )
-				.getBoolean( true );
+		ENABLE_BETTER_STORAGE_PLUGIN = config
+				.get("Plug-ins", "enableBetterStoragePlugin", true,
+						"If true, XACT will try to initialize the plug-in for the Better Storage mod. \n"
+						+ "This plug-in enables the XACT Crafter to pull resources from adjacent crates (from Better Storage).")
+				.getBoolean(true);
 
-		ENABLE_BETTER_STORAGE_PLUGIN = config.get( "Plug-ins", "enableBetterStoragePlugin", true,
-				"If true, XACT will try to initialize the plug-in for the Better Storage mod. \n" +
-						"This plug-in enables the XACT Crafter to pull resources from adjacent crates (from Better Storage)." )
-				.getBoolean( true );
+		ENABLE_AE_PLUGIN = config
+				.get("Plug-ins", "enableAppliedEnergisticsPlugin", true,
+						"If true, XACT will try to initialize the plug-in for the Applied Energistics mod. \n"
+						+ "This plug-in enables the XACT Crafter to pull resources from adjacent ME Interfaces, \n"
+						+ "which acts as a access point to that particular ME Network.")
+				.getBoolean(true);
 
-		ENABLE_AE_PLUGIN = config.get( "Plug-ins", "enableAppliedEnergisticsPlugin", true,
-				"If true, XACT will try to initialize the plug-in for the Applied Energistics mod. \n" +
-						"This plug-in enables the XACT Crafter to pull resources from adjacent ME Interfaces, \n" +
-						"which acts as a access point to that particular ME Network." )
-				.getBoolean( true );
+		REPLACE_WORKBENCH = config
+				.get("Miscellaneous", "addWorkbenchTileEntity", true,
+						"If true, XACT will add a crafting table which keeps it's inventory. (This used to replace the vanilla one) \n"
+						+ "Make sure you clear the workbench's grid before setting this to false, or you will lose your items.")
+				.getBoolean(true);
 
-
-		REPLACE_WORKBENCH = config.get( "Miscellaneous", "addWorkbenchTileEntity", true,
-				"If true, XACT will make the vanilla workbench able to keep it's contents on the grid after the GUI is closed. \n" +
-						"Make sure you clear the workbench's grid before setting this to false, or you will lose your items." )
-				.getBoolean( true );
+		ENABLE_ALT_TEXTURES = config
+				.get("Miscellaneous", "useAltTextures", false,
+						"If true XACT will use atlernate textures for Items/Guis. They're not really any better.")
+				.getBoolean(true);
 
 		config.save();
 	}
 
 	public static void initItems() {
-		XActMod.itemRecipeBlank = new ItemChip(false );
-		XActMod.itemRecipeEncoded = new ItemChip(true );
+		XActMod.itemRecipeBlank = new ItemChip(false);
+		XActMod.itemRecipeEncoded = new ItemChip(true);
 		XActMod.itemChipCase = new ItemCase();
 		XActMod.itemCraftPad = new ItemPad();
 	}
 
 	public static void initBlocks() {
 		XActMod.blockMachine = new BlockMachine();
-		if(REPLACE_WORKBENCH) {
+		if (REPLACE_WORKBENCH) {
 			XActMod.blockWorkbench = new BlockVanillaWorkbench();
 		}
 	}
-
 
 	public static boolean REPLACE_WORKBENCH;
 
@@ -76,6 +82,7 @@ public class ConfigurationManager {
 
 	public static boolean ENABLE_AE_PLUGIN;
 
+	public static boolean ENABLE_ALT_TEXTURES;
 	// debugging information.
 	public static boolean DEBUG_MODE = false;
 
