@@ -218,17 +218,15 @@ public class GuiUtils {
 		int mouseX = getMouseX(Minecraft.getMinecraft()) - guiLeft;
 		int mouseY = getMouseY(Minecraft.getMinecraft()) - guiTop;
 
-		return getHoveredSlot(container, mouseX, mouseY);
+		return getHoveredSlot(container, mouseX, mouseY, guiLeft, guiTop);
 	}
 
-	public static Slot getHoveredSlot(Container container, int mouseX,
-			int mouseY) {
-		Utils.debug("Getting slot at: (%s, %s)", mouseX, mouseY);
-
+	public static Slot getHoveredSlot(Container container, int mouseX, int mouseY, int guiLeft, int guiTop) {
+//		Utils.debug("Getting slot at: (%s, %s)", mouseX, mouseY);
 		for (int i = 0; i < container.inventorySlots.size(); i++) {
 			Slot slot = container.getSlot(i);
 			if (slot != null) {
-				if (isMouseOverSlot(slot, mouseX, mouseY)) {
+				if (isMouseOverSlot(slot, mouseX - guiLeft, mouseY - guiTop)) {
 					return slot;
 				}
 			}

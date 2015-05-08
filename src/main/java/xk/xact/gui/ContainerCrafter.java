@@ -56,7 +56,7 @@ public class ContainerCrafter extends ContainerXACT implements InteractiveCrafti
 			int y = 20 + (i / 2) * 44;
 			addSlotToContainer( new SlotCraft( crafter, crafter.results, player, i, x, y ) );
 		}
-
+		
 		// circuits
 		for( int i = 0; i < 4; i++ ) {
 			int x = 20 + (i % 2) * 120;

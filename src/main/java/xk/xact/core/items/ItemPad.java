@@ -1,6 +1,5 @@
 package xk.xact.core.items;
 
-
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -24,42 +23,55 @@ public class ItemPad extends Item {
 	public ItemPad() {
 		super();
 		this.setUnlocalizedName(References.Unlocalized.ITEMCRAFTPAD);
-		this.setMaxStackSize( 1 );
-		this.setCreativeTab( XActMod.xactTab );
+		this.setMaxStackSize(1);
+		this.setCreativeTab(XActMod.xactTab);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) {
+	public void addInformation(ItemStack itemStack, EntityPlayer player,
+			List list, boolean par4) {
 		// Tell which is recipe is loaded on the grid.
-		if( itemStack == null || itemStack.stackTagCompound == null )
+		if (itemStack == null || itemStack.stackTagCompound == null) {
+			if (itemStack != null)
+				itemStack.setStackDisplayName(I18n.format(getUnlocalizedName()));
 			return;
-
-		String loadedRecipe = ItemStack.loadItemStackFromNBT(itemStack.stackTagCompound).getDisplayName();
-		if( loadedRecipe != null && !loadedRecipe.equals( "" ) )
-			list.add(I18n.format(References.Localization.CHIP_RECIPE) + ": " + I18n.format(loadedRecipe));
+			
+		}
+		
+		ItemStack recipeResult = ItemStack.loadItemStackFromNBT(
+				itemStack.stackTagCompound);
+		if (recipeResult != null) {
+			String loadedRecipe = recipeResult.getDisplayName();
+			if (loadedRecipe != null && !loadedRecipe.equals(""))
+				list.add(I18n.format(References.Localization.CHIP_RECIPE) + ": "
+						+ I18n.format(loadedRecipe));
+			if (itemStack.getDisplayName() == "Unnamed")
+				itemStack.setStackDisplayName(getUnlocalizedName());
+		}
+	
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-		itemStack.setItemDamage( 1 );
-		if( !world.isRemote )
-			player.openGui( XActMod.instance, 3, world, 0, 0, 0 );
+	public ItemStack onItemRightClick(ItemStack itemStack, World world,
+			EntityPlayer player) {
+		itemStack.setItemDamage(1);
+		if (!world.isRemote)
+			player.openGui(XActMod.instance, 3, world, 0, 0, 0);
 		return itemStack;
 	}
 
 	@Override
 	public IIcon getIconFromDamage(int itemDamage) {
-		if( itemDamage == 1 )
+		if (itemDamage == 1)
 			return inUseIcon;
 		return itemIcon;
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT) // Item Texture
+	@SideOnly(Side.CLIENT)
+	// Item Texture
 	public void registerIcons(IIconRegister iconRegister) {
-		this.itemIcon = iconRegister.registerIcon( Textures.ITEM_PAD_OFF );
-		this.inUseIcon = iconRegister.registerIcon( Textures.ITEM_PAD_ON );
+		this.itemIcon = iconRegister.registerIcon(Textures.ITEM_PAD_OFF);
+		this.inUseIcon = iconRegister.registerIcon(Textures.ITEM_PAD_ON);
 	}
-
 }

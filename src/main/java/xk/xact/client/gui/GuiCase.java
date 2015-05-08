@@ -85,7 +85,7 @@ public class GuiCase extends GuiXACT {
 	// protected, so don't copy.
 
 	private Slot findSlotAt(int x, int y) {
-		Slot slot = getSlotAt(x - guiLeft, y - guiTop);
+		Slot slot = getSlotAt(x, y);
 		if (slot != null && slot.getHasStack()) {
 			if (CraftManager.isEncoded(slot.getStack())) {
 				return slot;

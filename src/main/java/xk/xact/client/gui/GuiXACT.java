@@ -29,10 +29,6 @@ public abstract class GuiXACT extends GuiContainer {
 
 	@Override
 	public void handleMouseInput() {
-		int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
-		int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
-		mouseX = x - guiLeft;
-		mouseY = y - guiTop;
 		super.handleMouseInput();
 	}
 
@@ -43,8 +39,9 @@ public abstract class GuiXACT extends GuiContainer {
 
 	@Override
 	public void drawGuiContainerForegroundLayer(int x, int y) {
+		super.drawGuiContainerForegroundLayer(x , y);
 		drawTitle();
-		drawPostForeground( x, y );
+		drawPostForeground( x, y);
 	}
 
 	@Override
@@ -81,7 +78,7 @@ public abstract class GuiXACT extends GuiContainer {
 
 
 	protected int getSlotDimensions(Slot slot) {
-		return 16;
+		return 16; //Friggin usefull
 	}
 	
 
@@ -98,7 +95,7 @@ public abstract class GuiXACT extends GuiContainer {
 
 	public boolean isMouseOverSlot(Slot slot, int mouseX, int mouseY) {
 		int dim = getSlotDimensions( slot );
-		return this.isPointInRegion( slot.xDisplayPosition, slot.yDisplayPosition, dim, dim, mouseX, mouseY);
+		return this.isPointInRegion( slot.xDisplayPosition, slot.yDisplayPosition, dim, dim, mouseX - guiLeft, mouseY - guiTop);
 	}
 
 	public Slot getSlotAt(int x, int y) {

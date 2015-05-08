@@ -20,3 +20,13 @@ gui.xact:crafter.name=X.A.C.T. Crafter
 gui.xact:crafter.inventory.name=Player's Inventory
 gui.xact:craftpad.name=Craft Pad
 gui.xact:craftpad.chip.name=Chip
+
+# Keybinds
+key.categories.xact=X.A.C.T.
+xact.key.clear=Clear Crafting Grid
+xact.key.load=Load recipe from chip
+xact.key.prev=Get Previous Recipe
+xact.key.next=Get Next Recipe
+xact.key.delete=Clear Recipe List
+xact.key.reveal=Hold to Reveal Chip's Recipe
+xact.key.opengrid=Open Craft Pad

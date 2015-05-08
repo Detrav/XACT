@@ -183,8 +183,10 @@ public class CraftPad implements ICraftingDevice {
 		if (lastRecipe != null) {
 			lastRecipe.getResult().writeToNBT(recipeTag);
 		}
+		
 		pad.setTagCompound(recipeTag);
 		pad.setTagInfo("Contents", ingredients);
+		
 	}
 
 	/*

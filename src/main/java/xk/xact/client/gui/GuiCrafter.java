@@ -49,7 +49,6 @@ public class GuiCrafter extends GuiCrafting {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void initGui() {
 		super.initGui();
 		updateGhostContents(-1);
@@ -68,7 +67,7 @@ public class GuiCrafter extends GuiCrafting {
 		}
 		invalidated = true;
 	}
-
+	
 	@Override
 	public void updateScreen() {
 		super.updateScreen();
@@ -133,7 +132,7 @@ public class GuiCrafter extends GuiCrafting {
 	@Override
 	public void drawGuiContainerForegroundLayer(int x, int y) {
 		super.drawGuiContainerForegroundLayer(x, y);
-	
+		
 		int gray = NumberHelper.argb(255, 139, 139, 139);
 		if (hoveredRecipe == -1) {
 			for (int i = 0; i < 9 ;i++) {
@@ -161,7 +160,7 @@ public class GuiCrafter extends GuiCrafting {
 			}
 		}
 		//Draw highlight around current recipe
-		drawRecipeBorder(GuiUtils.getHoveredSlot(container, mouseX, mouseY), getColorForOutputSlot(hoveredRecipe));
+		drawRecipeBorder(GuiUtils.getHoveredSlot(container, x, y, guiLeft, guiTop), getColorForOutputSlot(hoveredRecipe));
 	}
 
 	@Override
@@ -173,7 +172,7 @@ public class GuiCrafter extends GuiCrafting {
 	public void drawScreen(int mousex, int mousey, float partialtick) {
 		if (partialtick > 0.6) // Reduces updates by i dunno ... a bit
 			PacketHandler.INSTANCE.sendToServer(new MessageUpdateMissingItems());
-			super.drawScreen(mousex, mousey, partialtick);
+		super.drawScreen(mousex, mousey, partialtick);
 	}
 	
 
@@ -193,6 +192,7 @@ public class GuiCrafter extends GuiCrafting {
 	}
 
 	private int getColorForGridSlot(Slot slot) {
+		//This was commented
 		// ItemStack itemInSlot = slot.getStack();
 		// if( itemInSlot != null && itemInSlot.stackSize > 0 ) {
 		// return -1; // no overlay when the slot contains "real" items.
