@@ -31,12 +31,8 @@ public class ItemPad extends Item {
 	public void addInformation(ItemStack itemStack, EntityPlayer player,
 			List list, boolean par4) {
 		// Tell which is recipe is loaded on the grid.
-		if (itemStack == null || itemStack.stackTagCompound == null) {
-			if (itemStack != null)
-				itemStack.setStackDisplayName(I18n.format(getUnlocalizedName()));
+		if (itemStack == null || itemStack.stackTagCompound == null)
 			return;
-			
-		}
 		
 		ItemStack recipeResult = ItemStack.loadItemStackFromNBT(
 				itemStack.stackTagCompound);
