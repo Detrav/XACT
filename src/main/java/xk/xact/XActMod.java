@@ -36,7 +36,7 @@ import cpw.mods.fml.relauncher.Side;
 /**
  * XACT adds an electronic crafting table capable of reading recipes encoded into chips.
  */
-@Mod(modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION, useMetadata = true)
+@Mod(modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION, useMetadata = true,  guiFactory = References.GUI_FACTORY_CLASS)
 //@NetworkMod(clientSideRequired = true, serverSideRequired = true,
 //		channels = { "xact_channel" }, packetHandler = PacketHandler.class)
 public class XActMod {
@@ -107,7 +107,8 @@ public class XActMod {
 
 		// Register GUIs
 		NetworkRegistry.INSTANCE.registerGuiHandler( XActMod.instance, proxy );
-
+//		FMLCommonHandler.instance().bus().register(ConfigurationManager.instance);
+		
 		// Add the recipes
 		addRecipes();
 	}
@@ -116,6 +117,7 @@ public class XActMod {
 	public void postInit(FMLPostInitializationEvent event) {
 		PluginManager.checkEverything();
 		PluginManager.initializePlugins();
+
 	}
 
 	private void addRecipes() {
@@ -140,11 +142,7 @@ public class XActMod {
 		) );
 
 		// Craft Pad
-		ingredients = RecipeUtils.ingredients(
-				Items.iron_ingot, Items.iron_ingot, null,
-				Items.iron_ingot, Blocks.crafting_table, chip,
-				null, null, null
-		);
+		GameRegistry.addRecipe(new ItemStack(itemCraftPad), "ii0", "icr", "000", 'i', new ItemStack(Items.iron_ingot), 'c', new ItemStack(Blocks.crafting_table), 'r', new ItemStack(itemRecipeBlank));
 		
 		if (blockWorkbench != null)
 			GameRegistry.addRecipe(new ShapedOreRecipe(XActMod.blockWorkbench, new String[] { "0w0", "wcw", "0w0"}, 'w', "plankWood", 'c', Blocks.crafting_table));	

@@ -12,6 +12,7 @@ import java.util.List;
 
 
 
+
 import net.mcft.copy.betterstorage.api.crate.ICrateStorage;
 import net.mcft.copy.betterstorage.api.crate.ICrateWatcher;
 //import net.mcft.copy.betterstorage.api.ICrateStorage;
@@ -40,6 +41,7 @@ import xk.xact.plugin.PluginManager;
 import xk.xact.recipes.CraftRecipe;
 import xk.xact.recipes.RecipeUtils;
 import xk.xact.util.Utils;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -465,14 +467,14 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 	}
 
 	// ---------- Better Storage integration ---------- //
-
+	
 	private ICrateStorage[] adjacentCrates = new ICrateStorage[6];
 
 	@Override
 	public void onCrateItemsModified(ItemStack stack) {
 		stateUpdatePending = true;
 	}
-
+	
 	private void checkForAdjacentCrates() {
 		if( !ConfigurationManager.ENABLE_BETTER_STORAGE_PLUGIN )
 			return;

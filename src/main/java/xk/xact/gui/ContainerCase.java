@@ -1,9 +1,11 @@
 package xk.xact.gui;
 
 
-//import invtweaks.api.container.ChestContainer;
-//import invtweaks.api.container.ContainerSection;
-//import invtweaks.api.container.ContainerSectionCallback;
+
+import invtweaks.api.container.ChestContainer;
+import invtweaks.api.container.ContainerSection;
+import invtweaks.api.container.ContainerSectionCallback;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +19,7 @@ import net.minecraft.nbt.NBTTagList;
 import xk.xact.core.ChipCase;
 import xk.xact.core.items.ItemChip;
 
-
+@ChestContainer(showButtons = false)
 public class ContainerCase extends ContainerItem {
 
 	public ChipCase chipCase;
@@ -163,13 +165,14 @@ public class ContainerCase extends ContainerItem {
 
 	// -------------------- Compatibility with Inventory Tweaks --------------------
 
-//	@ContainerSectionCallback
-//	public Map<ContainerSection, List<Slot>> getContainerSections() {
-//		Map<ContainerSection, List<Slot>> map = new HashMap<ContainerSection, List<Slot>>();
-//		List<Slot> slots = inventorySlots;
-//
-//		map.put( ContainerSection.CHEST, slots.subList( 0, 30 ) ); // the storage slots
-//		return map;
-//	}
+	@ContainerSectionCallback
+	public Map<ContainerSection, List<Slot>> getContainerSections() {
+		Map<ContainerSection, List<Slot>> map = new HashMap<ContainerSection, List<Slot>>();
+		List<Slot> slots = inventorySlots;
+
+		map.put( ContainerSection.CHEST, slots.subList( 0, 30 ) ); // the storage slots
+		return map;
+	}
+	
 
 }

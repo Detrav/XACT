@@ -1,0 +1,14 @@
+[+] Add
+[*] Change
+[-] Remove
+Todo XACT
+---------
+
++ Holding shift will make encoded chipse show the item with an enchantment	☑
++ Hovering a chip output slot paints it blue					☑
+* No masking on missing items just red rectangle				☑
+* Change sound from anvil to iron block						☑
++ Input ingredients will also have alpha					☑
++ Hovering an encoded chip will only show the recipe, removing the old one	☑
++ Make Crafter drop contained items						☐
+* IC2 Safe And Carpenters safe dupe

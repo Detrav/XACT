@@ -2,11 +2,16 @@ package xk.xact.config;
 
 import java.io.File;
 
+import cpw.mods.fml.client.event.ConfigChangedEvent;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import xk.xact.XActMod;
 import xk.xact.core.blocks.BlockMachine;
@@ -14,16 +19,18 @@ import xk.xact.core.blocks.BlockVanillaWorkbench;
 import xk.xact.core.items.ItemCase;
 import xk.xact.core.items.ItemChip;
 import xk.xact.core.items.ItemPad;
+import xk.xact.util.References;
 import xk.xact.util.Utils;
 
 /**
  * @author Xhamolk_
  */
-public class ConfigurationManager {
-
-	private static Configuration config;
+public class ConfigurationManager extends Configuration {
+	public static ConfigurationManager instance;
+	static Configuration config;
 
 	public static void loadConfiguration(File configFile) {
+		
 		config = new Configuration(configFile);
 		config.load();
 
@@ -85,5 +92,20 @@ public class ConfigurationManager {
 	public static boolean ENABLE_ALT_TEXTURES;
 	// debugging information.
 	public static boolean DEBUG_MODE = false;
-
+	
+	  @SubscribeEvent
+	  public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
+	    if(eventArgs.modID.equals(References.MOD_ID))
+	      config.save();
+	  }
+	  
+	  public static ConfigCategory getAllCategories() {
+		  ConfigCategory cfg =  new ConfigCategory(References.MOD_NAME + " Config");
+		  for (String categoryName : config.getCategoryNames()) {
+			  for (Property property : config.getCategory(categoryName).getOrderedValues()) {
+				  cfg.put(property.getName(), property);
+			  }
+		  }
+		  return cfg;
+	  }
 }

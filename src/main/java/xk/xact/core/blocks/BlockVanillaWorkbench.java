@@ -19,6 +19,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import xk.xact.XActMod;
 import xk.xact.core.tileentities.TileWorkbench;
+import xk.xact.util.References;
 import xk.xact.util.Textures;
 import xk.xact.util.Utils;
 import cpw.mods.fml.relauncher.Side;
@@ -108,5 +109,11 @@ public class BlockVanillaWorkbench extends BlockContainer {
 	@Override
 	public String getUnlocalizedName() {
 		return Blocks.crafting_table.getUnlocalizedName();
+	}
+	
+	@Override
+	public String getLocalizedName() {
+		// TODO Auto-generated method stub
+		return super.getLocalizedName();
 	}
 }
