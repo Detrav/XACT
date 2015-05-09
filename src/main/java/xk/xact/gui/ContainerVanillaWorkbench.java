@@ -1,22 +1,27 @@
 package xk.xact.gui;
 
 
-//import invtweaks.api.container.ChestContainer;
-//import invtweaks.api.container.ContainerSection;
-//import invtweaks.api.container.ContainerSectionCallback;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import xk.xact.core.tileentities.TileWorkbench;
-import xk.xact.inventory.InventoryUtils;
+
+import invtweaks.api.container.ChestContainer;
+import invtweaks.api.container.ContainerSection;
+import invtweaks.api.container.ContainerSectionCallback;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.SlotCrafting;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import xk.xact.core.tileentities.TileWorkbench;
+import xk.xact.inventory.InventoryUtils;
 
+@ChestContainer
 public class ContainerVanillaWorkbench extends Container {
 
 	private final TileWorkbench workbench;
@@ -117,16 +122,16 @@ public class ContainerVanillaWorkbench extends Container {
 
 	// -------------------- Compatibility with Inventory Tweaks --------------------
 
-//	@ContainerSectionCallback
-//	@SuppressWarnings({ "unchecked", "unused" })
-//	public java.util.Map<ContainerSection, List<Slot>> getContainerSections() {
-//		Map<ContainerSection, List<Slot>> map = new HashMap<ContainerSection, List<Slot>>();
-//		List<Slot> slots = inventorySlots;
-//
-//		map.put( ContainerSection.CRAFTING_OUT, slots.subList( 0, 1 ) ); // output slot
-//		map.put( ContainerSection.CRAFTING_IN, slots.subList( 1, 1 + 9 ) ); // crafting grid.
-//
-//		return map;
-//	}
+	@ContainerSectionCallback
+	@SuppressWarnings({ "unchecked" })
+	public java.util.Map<ContainerSection, List<Slot>> getContainerSections() {
+		Map<ContainerSection, List<Slot>> map = new HashMap<ContainerSection, List<Slot>>();
+		List<Slot> slots = inventorySlots;
+
+		map.put( ContainerSection.CRAFTING_OUT, slots.subList( 0, 1 ) ); // output slot
+		map.put( ContainerSection.CRAFTING_IN, slots.subList( 1, 1 + 9 ) ); // crafting grid.
+
+		return map;
+	}
 
 }

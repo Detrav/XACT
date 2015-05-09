@@ -9,9 +9,14 @@ buildscript {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
+	maven { // repo for NEI etc.
+        	name 'CB Repo'
+        	url "http://chickenbones.net/maven/"
+    	}
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+	
     }
 }
 
@@ -34,7 +39,12 @@ dependencies {
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
     //compile "some.group:artifact:version"
-      
+
+    //compile "appeng:appliedenergistics2:rv2-beta-33:dev"
+    //compile "codechicken:CodeChickenLib:1.7.10-1.1.1.105:dev"
+    //compile "codechicken:CodeChickenCore:1.7.10-1.0.2.29:dev"
+    //compile "codechicken:NotEnoughItems:1.7.10-1.0.2.64:dev"
+
     // real examples
     //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
     //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env

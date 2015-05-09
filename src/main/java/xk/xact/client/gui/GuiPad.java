@@ -124,7 +124,10 @@ public class GuiPad extends GuiCrafting {
 			GuiUtils.sendItemToServer((byte) -1, null);
 			return;
 		}
-		GuiUtils.sendItemsToServer(ingredients, 1);
+		if (buttonID != -1)
+			GuiUtils.sendItemsToServer(ingredients, 1);
+		else
+			GuiUtils.sendItemsToServer(ingredients, -1);
 	}
 
 	@Override

@@ -1,11 +1,18 @@
 package xk.xact.gui;
 
 
+import invtweaks.api.container.ChestContainer;
+import invtweaks.api.container.ContainerSection;
+import invtweaks.api.container.ContainerSectionCallback;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+
+
 
 //import invtweaks.api.container.ChestContainer;
 //import invtweaks.api.container.ContainerSection;
@@ -21,11 +28,12 @@ import xk.xact.recipes.CraftManager;
 import xk.xact.util.Utils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.common.Optional;
 
 /**
  * The container used for the Crafter's GUI.
  */
-
+@ChestContainer(showButtons = false)
 public class ContainerCrafter extends ContainerXACT implements InteractiveCraftingContainer {
 
 	public TileCrafter crafter;
@@ -439,18 +447,18 @@ public class ContainerCrafter extends ContainerXACT implements InteractiveCrafti
 	}
 
 	// -------------------- Compatibility with Inventory Tweaks --------------------
+	@Optional.Method(modid = "inventorytweaks")
+	@ContainerSectionCallback
+	public Map<ContainerSection, List<Slot>> getSections() {
+		Map<ContainerSection, List<Slot>> map = new HashMap<ContainerSection, List<Slot>>();
+		List<Slot> slots = inventorySlots;
 
-//	@ContainerSectionCallback
-//	@SuppressWarnings({ "unchecked", "unused" })
-//	public java.util.Map<ContainerSection, List<Slot>> getContainerSections() {
-//		Map<ContainerSection, List<Slot>> map = new HashMap<ContainerSection, List<Slot>>();
-//		List<Slot> slots = inventorySlots;
-//
-//		map.put( ContainerSection.CRAFTING_OUT, getSlots( 0, 1, 2, 3, 17 ) ); // output slots
-//		map.put( ContainerSection.CRAFTING_IN_PERSISTENT, slots.subList( 4, 17 ) ); // crafting grid and chips.
-//		map.put( ContainerSection.CHEST, slots.subList( 18, 18 + 27 ) ); // the resources buffer
-//		return map;
-//	}
+		map.put( ContainerSection.CRAFTING_OUT, getSlots( 0, 1, 2, 3, 17 ) ); // output slots
+		map.put( ContainerSection.CRAFTING_IN_PERSISTENT, slots.subList( 4, 17 ) ); // crafting grid and chips.
+		map.put( ContainerSection.CHEST, slots.subList( 18, 18 + 27 ) ); // the resources buffer
+		
+		return map;
+	}
 
 	private List<Slot> getSlots(int... indexes) {
 		List<Slot> slots = new ArrayList<Slot>();

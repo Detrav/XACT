@@ -21,9 +21,11 @@ public class MessageUpdateMissingItems implements IMessage, IMessageHandler<Mess
 	}
 	@Override
 	public IMessage onMessage(MessageUpdateMissingItems message, MessageContext ctx) {
-		InteractiveCraftingContainer container = (InteractiveCraftingContainer) ((EntityPlayer) ctx.getServerHandler().playerEntity).openContainer;
-		if (container != null && container instanceof ContainerCrafter) {
-			((ContainerCrafter) container).crafter.updateState();
+		if (((EntityPlayer) ctx.getServerHandler().playerEntity).openContainer instanceof InteractiveCraftingContainer) {
+			InteractiveCraftingContainer container = (InteractiveCraftingContainer) ((EntityPlayer) ctx.getServerHandler().playerEntity).openContainer;
+			if (container != null && container instanceof ContainerCrafter) {
+				((ContainerCrafter) container).crafter.updateState();
+			}
 		}
 		return null;
 	}

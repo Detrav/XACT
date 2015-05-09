@@ -5,6 +5,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import xk.xact.api.InteractiveCraftingContainer;
+import xk.xact.gui.ContainerCrafter;
+import xk.xact.gui.ContainerPad;
 import xk.xact.recipes.CraftManager;
 import xk.xact.recipes.CraftRecipe;
 import cpw.mods.fml.common.network.ByteBufUtils;
@@ -39,10 +41,22 @@ public class MessageSyncIngredients implements IMessage, IMessageHandler<Message
 		//Get the conatiner
 		InteractiveCraftingContainer container = (InteractiveCraftingContainer) thePlayer.openContainer;
 		
-		CraftRecipe recipe = CraftManager.generateRecipe(message.ingredients, thePlayer.worldObj);
-		ItemStack encodedChip = CraftManager.encodeRecipe(recipe);
-		
-		container.setStack(message.chipSlot, encodedChip); // Replace the old chip with the new encoded one
+		if (message.chipSlot == -1) { //If this is the case the player imports a recipe from NEI
+			if (container != null && container instanceof ContainerCrafter) { // Player tries to import into crafter
+				for (int i = 0; i < 9; i++) {
+					container.setStack(8 + i, message.ingredients[i]);
+				}
+			} else if (container != null && container instanceof ContainerPad) {
+				for (int i = 0; i < 9; i++) {
+					container.setStack(1 + i, message.ingredients[i]);
+				}
+			}
+		} else {
+			CraftRecipe recipe = CraftManager.generateRecipe(message.ingredients, thePlayer.worldObj);
+			ItemStack encodedChip = CraftManager.encodeRecipe(recipe);
+			
+			container.setStack(message.chipSlot, encodedChip); // Replace the old chip with the new encoded one
+		}
 		return null;
 	}
 

@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
+
+import net.mcft.copy.betterstorage.api.crate.ICrateStorage;
+import net.mcft.copy.betterstorage.api.crate.ICrateWatcher;
 //import net.mcft.copy.betterstorage.api.ICrateStorage;
 //import net.mcft.copy.betterstorage.api.ICrateWatcher;
 import net.minecraft.client.Minecraft;
@@ -42,7 +46,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 /**
  * @author Xhamolk_
  */
-public class TileCrafter extends TileMachine implements IInventory, ICraftingDevice {//, ICrateWatcher, IStorageAware, INonSignalBlock, IGridTileEntity {
+public class TileCrafter extends TileMachine implements IInventory, ICraftingDevice, ICrateWatcher {//, IStorageAware, INonSignalBlock, IGridTileEntity {
 	
 	/*
 	Available Inventories:
@@ -236,7 +240,7 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 	// Used to trigger updates if changes have been detected.
 	private void updateIfChangesDetected() {
 		if( neighborsUpdatePending && !worldObj.isRemote ) {
-			//checkForAdjacentCrates();
+			checkForAdjacentCrates();
 			neighborsUpdatePending = false;
 		}
 
@@ -462,39 +466,39 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 
 	// ---------- Better Storage integration ---------- //
 
-//	private ICrateStorage[] adjacentCrates = new ICrateStorage[6];
-//
-//	@Override
-//	public void onCrateItemsModified(ItemStack stack) {
-//		stateUpdatePending = true;
-//	}
-//
-//	private void checkForAdjacentCrates() {
-//		if( !ConfigurationManager.ENABLE_BETTER_STORAGE_PLUGIN )
-//			return;
-//
-//		boolean foundChanges = false;
-//
-//		for( int i = 0; i < 6; i++ ) {
-//			int x = xCoord + ForgeDirection.VALID_DIRECTIONS[i].offsetX;
-//			int y = yCoord + ForgeDirection.VALID_DIRECTIONS[i].offsetY;
-//			int z = zCoord + ForgeDirection.VALID_DIRECTIONS[i].offsetZ;
-//
-//			TileEntity tile = worldObj.getBlockTileEntity( x, y, z );
-//			if( tile != null && tile instanceof ICrateStorage ) {
-//				if( adjacentCrates[i] == null ) {
-//					adjacentCrates[i] = (ICrateStorage) tile;
-//					adjacentCrates[i].registerCrateWatcher( this );
-//					foundChanges = true;
-//				}
-//			} else if( adjacentCrates[i] != null  ) {
-//				adjacentCrates[i] = null;
-//				foundChanges = true;
-//			}
-//		}
-//		if( foundChanges )
-//			stateUpdatePending = true;
-//	}
+	private ICrateStorage[] adjacentCrates = new ICrateStorage[6];
+
+	@Override
+	public void onCrateItemsModified(ItemStack stack) {
+		stateUpdatePending = true;
+	}
+
+	private void checkForAdjacentCrates() {
+		if( !ConfigurationManager.ENABLE_BETTER_STORAGE_PLUGIN )
+			return;
+
+		boolean foundChanges = false;
+
+		for( int i = 0; i < 6; i++ ) {
+			int x = xCoord + ForgeDirection.VALID_DIRECTIONS[i].offsetX;
+			int y = yCoord + ForgeDirection.VALID_DIRECTIONS[i].offsetY;
+			int z = zCoord + ForgeDirection.VALID_DIRECTIONS[i].offsetZ;
+
+			TileEntity tile = worldObj.getTileEntity( x, y, z );
+			if( tile != null && tile instanceof ICrateStorage ) {
+				if( adjacentCrates[i] == null ) {
+					adjacentCrates[i] = (ICrateStorage) tile;
+					adjacentCrates[i].registerCrateWatcher( this );
+					foundChanges = true;
+				}
+			} else if( adjacentCrates[i] != null  ) {
+				adjacentCrates[i] = null;
+				foundChanges = true;
+			}
+		}
+		if( foundChanges )
+			stateUpdatePending = true;
+	}
 
 	// ---------- Applied Energistics integration ---------- //
 

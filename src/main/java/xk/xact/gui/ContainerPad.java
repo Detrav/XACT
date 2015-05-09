@@ -1,15 +1,17 @@
 package xk.xact.gui;
 
 
-//import invtweaks.api.container.ChestContainer;
-//import invtweaks.api.container.ContainerSection;
-//import invtweaks.api.container.ContainerSectionCallback;
+import invtweaks.api.container.ChestContainer;
+import invtweaks.api.container.ContainerSection;
+import invtweaks.api.container.ContainerSectionCallback;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import xk.xact.XActMod;
 import xk.xact.api.InteractiveCraftingContainer;
 import xk.xact.core.CraftPad;
@@ -18,11 +20,7 @@ import xk.xact.recipes.CraftManager;
 import xk.xact.recipes.CraftRecipe;
 import xk.xact.recipes.RecipeUtils;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-
+@ChestContainer(showButtons = false)
 public class ContainerPad extends ContainerItem implements InteractiveCraftingContainer {
 
 	public CraftPad craftPad;
@@ -356,17 +354,17 @@ public class ContainerPad extends ContainerItem implements InteractiveCraftingCo
 
 	// -------------------- Compatibility with Inventory Tweaks --------------------
 
-//	@ContainerSectionCallback
-//	@SuppressWarnings({ "unchecked", "unused" })
-//	public java.util.Map<ContainerSection, List<Slot>> getContainerSections() {
-//		Map<ContainerSection, List<Slot>> map = new HashMap<ContainerSection, List<Slot>>();
-//		int i = 0;
-//		List<Slot> slots = inventorySlots;
-//
-//		map.put( ContainerSection.CRAFTING_OUT, slots.subList( i, i += 1 ) ); // output slot
-//		map.put( ContainerSection.CRAFTING_IN_PERSISTENT, slots.subList( i, i += 9 ) ); // crafting grid.
-//		map.put( ContainerSection.CHEST, slots.subList( i, i += 1 ) ); // chip slot
-//		return map;
-//	}
+	@ContainerSectionCallback
+	@SuppressWarnings({ "unchecked" })
+	public java.util.Map<ContainerSection, List<Slot>> getContainerSections() {
+		Map<ContainerSection, List<Slot>> map = new HashMap<ContainerSection, List<Slot>>();
+		int i = 0;
+		List<Slot> slots = inventorySlots;
+
+		map.put( ContainerSection.CRAFTING_OUT, slots.subList( i, i += 1 ) ); // output slot
+		map.put( ContainerSection.CRAFTING_IN_PERSISTENT, slots.subList( i, i += 9 ) ); // crafting grid.
+		map.put( ContainerSection.CHEST, slots.subList( i, i += 1 ) ); // chip slot
+		return map;
+	}
 
 }

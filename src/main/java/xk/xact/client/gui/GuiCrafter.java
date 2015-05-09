@@ -150,7 +150,7 @@ public class GuiCrafter extends GuiCrafting {
 			for (int i = 0; i < 9; i++) {
 				Slot slot = container.getSlot(8 + i);
 				int color = getColorForGridSlot(slot);
-					if (color != -1) {
+					if (color != -1 && hoveredRecipe != null) {
 						// Paint the "ghost item"
 						GuiUtils.paintOverlay(slot.xDisplayPosition, slot.yDisplayPosition, 16, gray); //Paint gray over the slot so you wont see the old items
 						GuiUtils.paintItem(hoveredRecipe.getIngredients()[i], slot.xDisplayPosition, slot.yDisplayPosition, mc, itemRender, 200F);
@@ -257,13 +257,10 @@ public class GuiCrafter extends GuiCrafting {
 			GuiUtils.sendItemToServer((byte) -1, null);
 			return;
 		}
-		GuiUtils.sendItemsToServer(ingredients, 4 + buttonID); // 4 because the
-																// first
-																// chipslot is 4
-																// (and the
-																// corresponding
-																// buttonid is
-																// 0)
+		if (buttonID != -1)
+			GuiUtils.sendItemsToServer(ingredients, 4 + buttonID); 	// 4 because the first chipslot is 4 (and the corresponding buttonid is 0)
+		else
+			GuiUtils.sendItemsToServer(ingredients, buttonID);
 	}
 
 	// -------------------- Buttons --------------------
