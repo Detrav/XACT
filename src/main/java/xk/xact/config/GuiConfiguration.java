@@ -45,9 +45,7 @@ public class GuiConfiguration extends GuiConfig {
 				if (!element.get().equals(ConfigurationManager.ENABLE_ALT_TEXTURES)) {
 					entryList.saveConfigElements();
 				}
-			}
-				
-							
+			}			
 		}
 	}
 

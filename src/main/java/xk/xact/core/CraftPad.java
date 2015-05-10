@@ -17,16 +17,17 @@ import xk.xact.inventory.Inventory;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- *
- *
- */
+
 
 // Used by the GUI
 public class CraftPad implements ICraftingDevice {
 
 	private CraftRecipe lastRecipe = null;
-
+	/**
+	 * This stores the slot the pad was originally in
+	 * Only used if the player used the hotkey to open the gui
+	 */
+	public byte craftPadOriginalSlot;
 	private CraftingHandler handler;
 	private EntityPlayer player;
 
@@ -140,8 +141,13 @@ public class CraftPad implements ICraftingDevice {
 	/// NBT
 
 	public void readFromNBT(NBTTagCompound compound) {
-		if( compound == null )
+		if( compound == null ) {
 			compound= new NBTTagCompound();
+			craftPadOriginalSlot = -1;
+			
+		} else
+			craftPadOriginalSlot = compound.getByte("originalSlot");
+		
 		
 		NBTTagList content = compound.getTagList("Contents", 10);
 		for (int i = 0; i < content.tagCount() - 1; ++i) { // - 1 because the last entry is the chip
@@ -152,7 +158,7 @@ public class CraftPad implements ICraftingDevice {
 						.loadItemStackFromNBT(tag));
 			}
 		}
-		
+
 		NBTTagCompound chipTag = content.getCompoundTagAt(content.tagCount() - 1);
 		chipInv.setInventorySlotContents(0, ItemStack.loadItemStackFromNBT(chipTag));
 	}
@@ -186,9 +192,14 @@ public class CraftPad implements ICraftingDevice {
 		
 		pad.setTagCompound(recipeTag);
 		pad.setTagInfo("Contents", ingredients);
-		
 	}
-
+	
+	/**
+	 * The player that currently has the craft opened
+	 */
+	public EntityPlayer getPlayerOwner() {
+		return player;
+	}
 	/*
 		NBT Structure:
 

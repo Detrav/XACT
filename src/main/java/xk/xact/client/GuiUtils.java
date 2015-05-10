@@ -1,18 +1,12 @@
 package xk.xact.client;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -25,21 +19,15 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import xk.xact.client.gui.GuiXACT;
-import xk.xact.core.items.ItemChip;
+import xk.xact.XActMod;
 import xk.xact.gui.ContainerCrafter;
-import xk.xact.inventory.Inventory;
-import xk.xact.network.ClientProxy;
 import xk.xact.network.PacketHandler;
 import xk.xact.network.message.MessageSyncIngredients;
 import xk.xact.network.message.MessageSyncRecipeChip;
 import xk.xact.recipes.CraftManager;
-import xk.xact.recipes.CraftRecipe;
-import xk.xact.recipes.RecipeUtils;
-import xk.xact.util.CustomPacket;
-import xk.xact.util.Utils;
-
-import java.io.IOException;
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiUtils {
@@ -170,9 +158,7 @@ public class GuiUtils {
 
 	@SideOnly(Side.CLIENT)
 	public static boolean isRevealKeyPressed() {
-		return Keyboard
-				.isKeyDown(FMLClientHandler.instance().getClient().gameSettings.keyBindSneak
-						.getKeyCode());
+		return Keyboard.isKeyDown(FMLClientHandler.instance().getClient().gameSettings.keyBindSneak.getKeyCode());
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -279,14 +265,8 @@ public class GuiUtils {
 	 *            Truncated to short.
 	 */
 	@SideOnly(Side.CLIENT)
-	public static void openGui(int guiID, int meta) {
-		try {
-			ClientProxy.getNetClientHandler().addToSendQueue(
-					CustomPacket.openGui(guiID, meta, 0, 0, 0).toPacket());
-		} catch (IOException e) {
-			Utils.logException("Problem opening GUI (id: " + guiID + ", meta: "
-					+ meta + ")", e, false);
-		}
+	public static void openGui(int guiID) {
+		Minecraft.getMinecraft().thePlayer.openGui(XActMod.instance, guiID, Minecraft.getMinecraft().thePlayer.worldObj, 0, 0, 0);
 	}
 	
 

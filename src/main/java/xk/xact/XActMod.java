@@ -7,7 +7,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import xk.xact.config.ConfigurationManager;
 import xk.xact.core.Machines;
@@ -18,20 +17,16 @@ import xk.xact.gui.CreativeTabXACT;
 import xk.xact.network.CommonProxy;
 import xk.xact.network.PacketHandler;
 import xk.xact.plugin.PluginManager;
-import xk.xact.recipes.RecipeUtils;
 import xk.xact.util.References;
-import xk.xact.util.Utils;
-import xk.xact.util.References.Registry;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 /**
  * XACT adds an electronic crafting table capable of reading recipes encoded into chips.
@@ -62,7 +57,7 @@ public class XActMod {
 
 	public static CreativeTabXACT xactTab;
 
-	@Mod.EventHandler
+	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// Load Configurations
 		ConfigurationManager.loadConfiguration( event.getSuggestedConfigurationFile() );
@@ -75,7 +70,7 @@ public class XActMod {
 		proxy.registerKeybindings();
 	}
 
-	@Mod.EventHandler
+	@EventHandler
 	public void initializeAll(FMLInitializationEvent ignoredEvent) {
 		
 		xactTab = new CreativeTabXACT();
@@ -88,7 +83,10 @@ public class XActMod {
 
 		// Register side-sensitive Stuff
 		proxy.registerRenderInformation();
-
+		
+		// Register keybind handler
+		proxy.registerHandlers();
+		
 		// Register Blocks
 		GameRegistry.registerBlock( blockMachine, ItemMachine.class, "XACT Machine" );
 		if( blockWorkbench != null ) {
@@ -113,7 +111,7 @@ public class XActMod {
 		addRecipes();
 	}
 
-	@Mod.EventHandler
+	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		PluginManager.checkEverything();
 		PluginManager.initializePlugins();

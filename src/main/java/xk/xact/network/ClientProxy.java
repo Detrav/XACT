@@ -25,11 +25,11 @@ import xk.xact.gui.ContainerPad;
 import xk.xact.gui.ContainerVanillaWorkbench;
 import xk.xact.util.References;
 import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ClientProxy extends CommonProxy {
-
 
 	@SideOnly(Side.CLIENT)
 	public static GuiScreen getCurrentScreen() {
@@ -39,10 +39,14 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void registerRenderInformation() {
 		// Custom IItemRenderer
-		MinecraftForgeClient.registerItemRenderer( XActMod.itemRecipeEncoded, new ChipRenderer() );
+		MinecraftForgeClient.registerItemRenderer(XActMod.itemRecipeEncoded,new ChipRenderer());
 	}
-
-
+	
+	@Override
+	public void registerHandlers() {
+		FMLCommonHandler.instance().bus().register(new KeyBindingHandler());
+	}
+	
 	@Override
 	public void registerKeybindings() {
 		ClientRegistry.registerKeyBinding(Keybinds.clear);
@@ -50,18 +54,21 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.registerKeyBinding(Keybinds.prev);
 		ClientRegistry.registerKeyBinding(Keybinds.next);
 		ClientRegistry.registerKeyBinding(Keybinds.delete);
-		ClientRegistry.registerKeyBinding(Keybinds.reveal);
+		// ClientRegistry.registerKeyBinding(Keybinds.reveal); //Not used since
+		// shift would conflict with sneak which results int both now working
 		ClientRegistry.registerKeyBinding(Keybinds.openGrid);
-		//Old stuff
+		// Old stuff
 		// Register KeyBindingHandler
-		//KeyBindingRegistry.registerKeyBinding( new KeyBindingHandler() );
+		// KeyBindingRegistry.registerKeyBinding( new KeyBindingHandler() );
 
 		// Register TickHandler
-		//TickRegistry.registerTickHandler( GuiTickHandler.instance(), Side.CLIENT );
+		// TickRegistry.registerTickHandler( GuiTickHandler.instance(),
+		// Side.CLIENT );
 	}
 
 	@Override
-	public Object getClientGuiElement(int GuiID, EntityPlayer player, World world, int x, int y, int z) {
+	public Object getClientGuiElement(int GuiID, EntityPlayer player,
+			World world, int x, int y, int z) {
 		int ID = (GuiID & 0xFF);
 		int meta = (GuiID >> 8) & 0xFFFF;
 
@@ -73,34 +80,38 @@ public class ClientProxy extends CommonProxy {
 		// 4: plan (client only)
 		// 5: recipe
 
-		if( ID == 0 ) { // Machines
-			TileMachine machine = (TileMachine) world.getTileEntity( x, y, z );
-			if( machine == null )
+		if (ID == 0) { // Machines
+			TileMachine machine = (TileMachine) world.getTileEntity(x, y, z);
+			if (machine == null)
 				return null;
 
-			return machine.getGuiContainerFor( player );
+			return machine.getGuiContainerFor(player);
 		}
 
-		if( ID == 1 ) { // Chip Case
-			ChipCase chipCase = new ChipCase( player.inventory.getCurrentItem() );
-			return new GuiCase( new ContainerCase( chipCase, player ) );
+		if (ID == 1) { // Chip Case
+			ChipCase chipCase = new ChipCase(player.inventory.getCurrentItem());
+			return new GuiCase(new ContainerCase(chipCase, player));
 		}
 
-		if( ID == 2 ) { // Vanilla Workbench
-			TileWorkbench workbench = (TileWorkbench) world.getTileEntity( x, y, z );
-			if( workbench == null )
+		if (ID == 2) { // Vanilla Workbench
+			TileWorkbench workbench = (TileWorkbench) world.getTileEntity(x, y,
+					z);
+			if (workbench == null)
 				return null;
 
-			return new GuiVanillaWorkbench( new ContainerVanillaWorkbench( workbench, player ) );
+			return new GuiVanillaWorkbench(new ContainerVanillaWorkbench(
+					workbench, player));
 		}
 
-		if( ID == 3 ) { // Craft Pad
+		if (ID == 3) { // Craft Pad
 			int invSlot = meta == 0 ? player.inventory.currentItem : meta - 1;
-			CraftPad craftPad = new CraftPad( player.inventory.mainInventory[invSlot], player );
-			return new GuiPad( craftPad, new ContainerPad( craftPad, player, invSlot ) );
+			CraftPad craftPad = new CraftPad(
+					player.inventory.mainInventory[invSlot], player);
+			return new GuiPad(craftPad, new ContainerPad(craftPad, player,
+					invSlot));
 		}
 
-		if( ID == 4 ) { // Open the plan.
+		if (ID == 4) { // Open the plan.
 
 			// ItemStack item = player.inventory.getCurrentItem();
 			// if( item != null && item.getItem() instanceof ItemPlan ) {
@@ -110,7 +121,7 @@ public class ClientProxy extends CommonProxy {
 			// }
 		}
 
-		if( ID == 5 ) { // Set a recipe
+		if (ID == 5) { // Set a recipe
 
 			// GuiScreen screen = getCurrentScreen();
 			// if( screen instanceof GuiPlan ) {

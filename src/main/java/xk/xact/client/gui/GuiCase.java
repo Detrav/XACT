@@ -17,9 +17,10 @@ public class GuiCase extends GuiXACT {
 
 	private static final ResourceLocation guiTexture = new ResourceLocation(
 			Textures.GUI_CASE);
-
+	private Container container;
 	public GuiCase(Container container) {
 		super(container);
+		this.container = container;
 		this.xSize = 196;
 		this.ySize = 191;
 	}
@@ -33,7 +34,7 @@ public class GuiCase extends GuiXACT {
 	@Override
 	protected void keyTyped(char chartyped, int keyCode) {
 		InventoryPlayer invPlayer = Minecraft.getMinecraft().thePlayer.inventory;
-		Slot hoverdSlot = GuiUtils.getHoveredSlot(guiLeft, guiTop);
+		Slot hoverdSlot = GuiUtils.getHoveredSlot(container, mouseX, mouseY, guiLeft, guiTop);
 		// Please don't ask me what this mess is
 		// I just added if-statements until it stopped crashing
 		if (keyCode >= 1 && keyCode < 11) { // 1 - 9
@@ -58,6 +59,8 @@ public class GuiCase extends GuiXACT {
 	@Override
 	public void drawScreen(int x, int y, float p_73863_3_) {
 		super.drawScreen(x, y, p_73863_3_);
+		this.mouseX = x;
+		this.mouseY = y;
 	}
 
 	@Override

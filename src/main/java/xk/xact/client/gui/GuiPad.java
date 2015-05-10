@@ -9,6 +9,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import xk.xact.XActMod;
 import xk.xact.client.GuiUtils;
@@ -20,6 +21,7 @@ import xk.xact.core.items.ItemChip;
 import xk.xact.gui.ContainerPad;
 import xk.xact.network.ClientProxy;
 import xk.xact.network.PacketHandler;
+import xk.xact.network.message.MessageSwitchItems;
 import xk.xact.network.message.MessageUpdateMissingItems;
 import xk.xact.recipes.CraftManager;
 import xk.xact.recipes.CraftRecipe;
@@ -73,11 +75,11 @@ public class GuiPad extends GuiCrafting {
 	}
 	
 	@Override
-	public void drawScreen(int p_73863_1_, int p_73863_2_, float partialTick) {	
+	public void drawScreen(int x, int y, float partialTick) {	
 		// Update the missing ingredients 
 		if ((int) (partialTick * 10) == 1)
 			missingIngredients = craftPad.getMissingIngredients();
-		super.drawScreen(p_73863_1_, p_73863_2_, partialTick);
+		super.drawScreen(x, y, partialTick);
 	}
 	
 	@Override
@@ -94,6 +96,9 @@ public class GuiPad extends GuiCrafting {
 			 }
 			 RenderHelper.enableGUIStandardItemLighting();
 		}
+		
+		mouseX = x;
+		mouseY = y;
 	}
 	// title: (43,8) size: 88x12
 
@@ -103,7 +108,7 @@ public class GuiPad extends GuiCrafting {
 	@Override
 	protected void keyTyped(char chartyped, int keyCode) {
 		InventoryPlayer invPlayer = Minecraft.getMinecraft().thePlayer.inventory;
-		Slot hoverdSlot = GuiUtils.getHoveredSlot(guiLeft, guiTop);
+		Slot hoverdSlot = GuiUtils.getHoveredSlot(container, mouseX, mouseY, guiLeft, guiTop);
 		// Please don't ask me what this mess is
 		// I just added if-statements until it stopped crashing
 		if (keyCode >= 1 && keyCode < 11) { // 1 - 9
@@ -180,6 +185,29 @@ public class GuiPad extends GuiCrafting {
 				GuiUtils.sendItemToServer((byte) (button.id + 10), new ItemStack(XActMod.itemRecipeBlank));
 			}
 		}
+	}
+	
+	@Override
+	public void onGuiClosed() {
+		ItemStack craftpad = craftPad.getPlayerOwner().getHeldItem();
+		if (craftPad.craftPadOriginalSlot == -1) { // prevents the craftpad from switching when the player didn't use the keybind
+			if (craftpad.stackTagCompound == null)
+				craftpad.stackTagCompound = new NBTTagCompound();
+			craftpad.stackTagCompound.setByte("originalSlot", (byte) -1);
+			return;
+		}
+		ItemStack itemInInv = craftPad.getPlayerOwner().inventory.getStackInSlot((int)craftPad.craftPadOriginalSlot);
+
+		craftpad.setItemDamage(0);
+		if (craftpad.stackTagCompound == null)
+			craftpad.stackTagCompound = new NBTTagCompound();
+		craftpad.stackTagCompound.setByte("originalSlot", (byte) -1);
+		
+		//Switches the craftpad back where it was
+		PacketHandler.INSTANCE.sendToServer(new MessageSwitchItems(craftpad, craftPad.craftPadOriginalSlot,
+				itemInInv, craftPad.getPlayerOwner().inventory.currentItem));
+
+		super.onGuiClosed();
 	}
 
 }

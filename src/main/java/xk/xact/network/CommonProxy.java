@@ -39,6 +39,9 @@ public class CommonProxy implements IGuiHandler {
 		// Only on client side
 	}
 	
+	public void registerHandlers() {
+		//nothin
+	}
 	@Override
 	public Object getServerGuiElement(int GuiID, EntityPlayer player, World world, int x, int y, int z) {
 		int ID = (GuiID & 0xFF);
