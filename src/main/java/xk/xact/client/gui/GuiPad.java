@@ -189,25 +189,25 @@ public class GuiPad extends GuiCrafting {
 	
 	@Override
 	public void onGuiClosed() {
+		super.onGuiClosed();
 		ItemStack craftpad = craftPad.getPlayerOwner().getHeldItem();
-		if (craftPad.craftPadOriginalSlot == -1) { // prevents the craftpad from switching when the player didn't use the keybind
+		craftpad.setItemDamage(0);
+
+		if (craftPad.craftPadOriginalSlot < 0) { // prevents the craftpad from switching when the player didn't use the keybind
 			if (craftpad.stackTagCompound == null)
 				craftpad.stackTagCompound = new NBTTagCompound();
 			craftpad.stackTagCompound.setByte("originalSlot", (byte) -1);
 			return;
+		} else {
+			ItemStack itemInInv = craftPad.getPlayerOwner().inventory.getStackInSlot(craftPad.craftPadOriginalSlot);
+			//Switches the craftpad back where it was
+			if (craftpad.stackTagCompound == null)
+				craftpad.stackTagCompound = new NBTTagCompound();
+			craftpad.stackTagCompound.setByte("originalSlot", (byte) -1);
+			PacketHandler.INSTANCE.sendToServer(new MessageSwitchItems(craftpad, craftPad.craftPadOriginalSlot,
+					itemInInv, craftPad.getPlayerOwner().inventory.currentItem));
+			
 		}
-		ItemStack itemInInv = craftPad.getPlayerOwner().inventory.getStackInSlot((int)craftPad.craftPadOriginalSlot);
-
-		craftpad.setItemDamage(0);
-		if (craftpad.stackTagCompound == null)
-			craftpad.stackTagCompound = new NBTTagCompound();
-		craftpad.stackTagCompound.setByte("originalSlot", (byte) -1);
-		
-		//Switches the craftpad back where it was
-		PacketHandler.INSTANCE.sendToServer(new MessageSwitchItems(craftpad, craftPad.craftPadOriginalSlot,
-				itemInInv, craftPad.getPlayerOwner().inventory.currentItem));
-
-		super.onGuiClosed();
 	}
 
 }

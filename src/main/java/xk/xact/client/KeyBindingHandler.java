@@ -1,5 +1,7 @@
 package xk.xact.client;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.settings.KeyBinding;
@@ -31,19 +33,18 @@ public class KeyBindingHandler {// extends KeyBindingRegistry.KeyHandler {
 	// return "xact test bindings";
 	// }
 
-	private static KeyBinding getPressedKeybinding() {
-		if (Keybinds.clear.getIsKeyPressed()) {
-			
+	public static KeyBinding getPressedKeybinding() {
+		if (Keyboard.isKeyDown(Keybinds.clear.getKeyCode())) {
 			return Keybinds.clear;
-		} else if (Keybinds.delete.getIsKeyPressed()) {
+		} else if (Keyboard.isKeyDown(Keybinds.delete.getKeyCode())) {
 			return Keybinds.delete;
-		} else if (Keybinds.load.getIsKeyPressed()) {
+		} else if (Keyboard.isKeyDown(Keybinds.load.getKeyCode())) {
 			return Keybinds.load;
-		} else if (Keybinds.next.getIsKeyPressed()) {
+		} else if (Keyboard.isKeyDown(Keybinds.next.getKeyCode())) {
 			return Keybinds.next;
-		} else if (Keybinds.openGrid.getIsKeyPressed()) {
+		} else if (Keyboard.isKeyDown(Keybinds.openGrid.getKeyCode())) {
 			return Keybinds.openGrid;
-		} else if (Keybinds.prev.getIsKeyPressed()) {
+		} else if (Keyboard.isKeyDown(Keybinds.prev.getKeyCode())) {
 			return Keybinds.prev;
 		}
 
@@ -52,13 +53,12 @@ public class KeyBindingHandler {// extends KeyBindingRegistry.KeyHandler {
 
 	@SubscribeEvent
 	public void handleKeyInputEvent(InputEvent.KeyInputEvent event) {
-		if (FMLClientHandler.instance().getClient().inGameHasFocus
-				&& getPressedKeybinding() != null) {
+		if (getPressedKeybinding() != null) {
 			if (FMLClientHandler.instance().getClientPlayerEntity() != null) {
 				EntityPlayer entityPlayer = FMLClientHandler.instance().getClientPlayerEntity();
 				{
 					GuiScreen currentScreen = FMLClientHandler.instance().getClient().currentScreen;
-
+					
 					if (currentScreen == null) {
 						if (getPressedKeybinding().equals(Keybinds.openGrid)) {
 							int slot = getFirstCraftPad(entityPlayer);//getCraftPadIndex();
@@ -77,13 +77,6 @@ public class KeyBindingHandler {// extends KeyBindingRegistry.KeyHandler {
 						}
 						return;
 					}
-					if (currentScreen instanceof InteractiveCraftingGui) {
-						((InteractiveCraftingGui) currentScreen)
-								.handleKeyBinding(getPressedKeybinding()
-										.getKeyCode(), getPressedKeybinding()
-										.getKeyDescription());
-					}
-
 				}
 			}
 		}
@@ -105,7 +98,7 @@ public class KeyBindingHandler {// extends KeyBindingRegistry.KeyHandler {
 	
 	private int getFirstCraftPad(EntityPlayer player)  {
 		InventoryPlayer playerinv = player.inventory;
-		for (int i = 9; i < playerinv.getSizeInventory(); i++) {
+		for (int i = 0; i < playerinv.getSizeInventory(); i++) {
 			if (playerinv.getStackInSlot(i) != null && playerinv.getStackInSlot(i).getItem().equals(XActMod.itemCraftPad))
 				return i;
 		}

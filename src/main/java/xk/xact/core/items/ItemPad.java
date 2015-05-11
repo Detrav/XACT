@@ -7,6 +7,8 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagByte;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import xk.xact.XActMod;
@@ -51,6 +53,13 @@ public class ItemPad extends Item {
 	public ItemStack onItemRightClick(ItemStack itemStack, World world,
 			EntityPlayer player) {
 		itemStack.setItemDamage(1);
+		if (itemStack.stackTagCompound == null) {
+			itemStack.stackTagCompound = new NBTTagCompound();
+			NBTTagCompound bytetag = new NBTTagCompound();
+			bytetag.setByte("originalSlot", (byte) -1);
+			itemStack.writeToNBT(bytetag);
+		}
+		
 		if (!world.isRemote)
 			player.openGui(XActMod.instance, 3, world, 0, 0, 0);
 		return itemStack;

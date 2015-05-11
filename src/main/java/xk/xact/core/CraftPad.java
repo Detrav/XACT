@@ -27,7 +27,7 @@ public class CraftPad implements ICraftingDevice {
 	 * This stores the slot the pad was originally in
 	 * Only used if the player used the hotkey to open the gui
 	 */
-	public byte craftPadOriginalSlot;
+	public byte craftPadOriginalSlot = -1;
 	private CraftingHandler handler;
 	private EntityPlayer player;
 
@@ -144,10 +144,7 @@ public class CraftPad implements ICraftingDevice {
 		if( compound == null ) {
 			compound= new NBTTagCompound();
 			craftPadOriginalSlot = -1;
-			
-		} else
-			craftPadOriginalSlot = compound.getByte("originalSlot");
-		
+		}
 		
 		NBTTagList content = compound.getTagList("Contents", 10);
 		for (int i = 0; i < content.tagCount() - 1; ++i) { // - 1 because the last entry is the chip
@@ -203,7 +200,7 @@ public class CraftPad implements ICraftingDevice {
 	/*
 		NBT Structure:
 
-		main tag:
+		main tag:p_74774_2_
 			"craftPad":
 				chipInv
 				gridInv

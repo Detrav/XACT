@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -192,7 +193,7 @@ public class GuiCrafter extends GuiCrafting {
 	}
 
 	private int getColorForGridSlot(Slot slot) {
-		//This was commented
+		//This was commented out
 		// ItemStack itemInSlot = slot.getStack();
 		// if( itemInSlot != null && itemInSlot.stackSize > 0 ) {
 		// return -1; // no overlay when the slot contains "real" items.
@@ -249,6 +250,12 @@ public class GuiCrafter extends GuiCrafting {
 		RenderHelper.enableGUIStandardItemLighting();
 	}
 	
+	@Override
+	public void handleKeyboardInput() {
+		handleKeyBinding(container);
+		super.handleKeyboardInput();
+	}
+	
 	// -------------------- InteractiveCraftingGui --------------------
 
 	@Override
@@ -263,6 +270,10 @@ public class GuiCrafter extends GuiCrafting {
 			GuiUtils.sendItemsToServer(ingredients, buttonID);
 	}
 
+	@Override
+	public void handleKeyBinding(Container container) {
+		super.handleKeyBinding(container);
+	}
 	// -------------------- Buttons --------------------
 
 	private GuiButtonCustom[] buttons = new GuiButtonCustom[4];
