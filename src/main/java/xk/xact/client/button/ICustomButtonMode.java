@@ -1,6 +1,5 @@
 package xk.xact.client.button;
 
-
 public interface ICustomButtonMode {
 
 	@Override
@@ -12,7 +11,6 @@ public interface ICustomButtonMode {
 			return "NULL";
 		}
 	};
-
 
 	public static enum ItemModes implements ICustomButtonMode {
 		NORMAL, SPECIAL;

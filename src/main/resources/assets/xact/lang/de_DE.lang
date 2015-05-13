@@ -1,0 +1,35 @@
+# Lang file for XACT
+
+# Items
+item.xact:recipeChip.blank.name=Rezept Chip
+item.xact:craftPad.name=Craft Pad
+item.xact:recipeChip.encoded.name=Enkodierter Rezept Chip
+item.xact:chipCase.name=Chip Behälter
+
+item.xact:recipeChip.blank.desc=leer
+item.xact:recipeChip.invalid.desc=ungültig
+item.xact:recipeChip.recipe=Rezept
+# Blocks
+xact:tile.machine.crafter.name=X.A.C.T. Crafter
+
+# Tab
+itemGroup.xact=X.A.C.T.
+
+# Gui
+gui.xact:crafter.name=X.A.C.T. Crafter
+gui.xact:crafter.inventory.name=Spieler Inventar
+gui.xact:craftpad.name=Craft Pad
+gui.xact:craftpad.chip.name=Chip
+
+# Keybinds
+key.categories.xact=X.A.C.T.
+xact.key.clear=Leere Crafting Feld
+xact.key.load=Lade Rezept vom Chip
+xact.key.prev=Lade voriges Rezept
+xact.key.next=Lade nächstes Rezept
+xact.key.delete=Leere Rezept Liste
+xact.key.opengrid=Hole Craft Pad
+
+#Configuration Gui
+xact.cfg.miscellaneous.tooltip=Änder Texturen zu alternativen und schalte das alternative Crafting Table aus
+xact.cfg.plug-ins.tooltip=Schalte Plug-ins an/aus welche support für andere Mods hinzufügen

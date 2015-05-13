@@ -21,16 +21,18 @@ public class JointInventory implements IInventory {
 	 * <p/>
 	 * The order of the arguments matter.
 	 *
-	 * @param name the name for this compound inventory.
-	 * @param inventories all the inventories that will take part of this inventory.
+	 * @param name
+	 *            the name for this compound inventory.
+	 * @param inventories
+	 *            all the inventories that will take part of this inventory.
 	 */
 	public JointInventory(String name, IInventory... inventories) {
 		this.name = name;
 		this.inventories = inventories;
 		this.inventorySizes = new int[inventories.length];
 		int sum = 0;
-		for( int i = 0; i < inventories.length; i++ ) {
-			if( inventories[i] != null ) {
+		for (int i = 0; i < inventories.length; i++) {
+			if (inventories[i] != null) {
 				inventorySizes[i] = inventories[i].getSizeInventory();
 				sum += inventorySizes[i];
 			} else {
@@ -41,13 +43,13 @@ public class JointInventory implements IInventory {
 	}
 
 	private int findIndex(int index) {
-		if( index < 0 || index >= totalSize )
+		if (index < 0 || index >= totalSize)
 			return -1;
 
 		int i = 0; // array index
 		int sum = 0; // sum of slots.
-		for( int s : inventorySizes ) {
-			if( sum + s > index )
+		for (int s : inventorySizes) {
+			if (sum + s > index)
 				return i;
 			sum += s;
 			i++;
@@ -56,8 +58,8 @@ public class JointInventory implements IInventory {
 	}
 
 	private IInventory getInventoryFromIndex(int index) {
-		int find = findIndex( index );
-		if( find == -1 ) {
+		int find = findIndex(index);
+		if (find == -1) {
 			return null;
 		} else {
 			return inventories[find];
@@ -65,12 +67,12 @@ public class JointInventory implements IInventory {
 	}
 
 	private int getSlotFromIndex(int index) {
-		int find = findIndex( index );
-		if( find == -1 )
+		int find = findIndex(index);
+		if (find == -1)
 			return -1;
 
 		int sum = 0;
-		for( int i = 0; i < find; i++ ) {
+		for (int i = 0; i < find; i++) {
 			sum += inventorySizes[i];
 		}
 		return index - sum;
@@ -87,38 +89,38 @@ public class JointInventory implements IInventory {
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		if( !validIndex( i ))
+		if (!validIndex(i))
 			return null;
-		IInventory inv = getInventoryFromIndex( i );
-		int slot = getSlotFromIndex( i );
-		return inv.getStackInSlot( slot );
+		IInventory inv = getInventoryFromIndex(i);
+		int slot = getSlotFromIndex(i);
+		return inv.getStackInSlot(slot);
 	}
 
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if( !validIndex( i ))
+		if (!validIndex(i))
 			return null;
-		IInventory inv = getInventoryFromIndex( i );
-		int slot = getSlotFromIndex( i );
-		return inv.decrStackSize( slot, j );
+		IInventory inv = getInventoryFromIndex(i);
+		int slot = getSlotFromIndex(i);
+		return inv.decrStackSize(slot, j);
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if( !validIndex( i ))
+		if (!validIndex(i))
 			return null;
-		IInventory inv = getInventoryFromIndex( i );
-		int slot = getSlotFromIndex( i );
-		return inv.getStackInSlotOnClosing( slot );
+		IInventory inv = getInventoryFromIndex(i);
+		int slot = getSlotFromIndex(i);
+		return inv.getStackInSlotOnClosing(slot);
 	}
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		if( !validIndex( i ))
+		if (!validIndex(i))
 			return;
-		IInventory inv = getInventoryFromIndex( i );
-		int slot = getSlotFromIndex( i );
-		inv.setInventorySlotContents( slot, itemstack );
+		IInventory inv = getInventoryFromIndex(i);
+		int slot = getSlotFromIndex(i);
+		inv.setInventorySlotContents(slot, itemstack);
 	}
 
 	@Override
@@ -139,7 +141,7 @@ public class JointInventory implements IInventory {
 
 	@Override
 	public void markDirty() {
-		for(IInventory inv : inventories) {
+		for (IInventory inv : inventories) {
 			inv.markDirty();
 		}
 	}
@@ -151,25 +153,23 @@ public class JointInventory implements IInventory {
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-		if( !validIndex( i ))
+		if (!validIndex(i))
 			return false;
-		IInventory inv = getInventoryFromIndex( i );
-		int slot = getSlotFromIndex( i );
-		return inv.isItemValidForSlot( slot, itemstack );
+		IInventory inv = getInventoryFromIndex(i);
+		int slot = getSlotFromIndex(i);
+		return inv.isItemValidForSlot(slot, itemstack);
 	}
-
-
 
 	@Override
 	public void openInventory() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void closeInventory() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

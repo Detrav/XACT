@@ -15,8 +15,8 @@ import xk.xact.util.Utils;
 public class Inventory implements IInventory, IInventoryNBT {
 
 	/**
-	 * The size of this IInventory.
-	 * Consider this as the amount of stacks that can fit inside.
+	 * The size of this IInventory. Consider this as the amount of stacks that
+	 * can fit inside.
 	 */
 	protected int size;
 
@@ -35,12 +35,13 @@ public class Inventory implements IInventory, IInventoryNBT {
 	 */
 	protected int maxStackSize = 64;
 
-
 	/**
 	 * Creates a new Inventory with the specified size and name.
 	 *
-	 * @param size the size of this inventory.
-	 * @param name the name that describes this inventory.
+	 * @param size
+	 *            the size of this inventory.
+	 * @param name
+	 *            the name that describes this inventory.
 	 */
 	public Inventory(int size, String name) {
 		this.size = size;
@@ -51,55 +52,60 @@ public class Inventory implements IInventory, IInventoryNBT {
 	/**
 	 * Sets the new contents on the inventory, replacing the previous ones.
 	 *
-	 * @param contents the array containing all the contents.
+	 * @param contents
+	 *            the array containing all the contents.
 	 */
 	public void setContents(ItemStack... contents) {
 		this.size = contents.length;
 		this.internalInv = contents;
 		this.markDirty();
-		
+
 	}
-	
+
 	public void setContens(ItemStack[] stacks) {
 		for (int i = 0; i < stacks.length; i++)
 			if (i <= this.size)
 				this.setInventorySlotContents(i, stacks[i]);
 	}
+
 	public ItemStack[] getContents() {
 		return this.internalInv.clone();
 	}
 
 	public boolean isEmpty() {
-		for( int i = 0; i < this.size; i++ ) {
-			if( internalInv[i] != null )
+		for (int i = 0; i < this.size; i++) {
+			if (internalInv[i] != null)
 				return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Tries to add the stack into this inventory.
-	 * First will try to merge with the not-full stacks, and the remaining will be placed on the first empty slot.
+	 * Tries to add the stack into this inventory. First will try to merge with
+	 * the not-full stacks, and the remaining will be placed on the first empty
+	 * slot.
 	 * <p/>
 	 * Note: the stack will be manipulated.
 	 *
-	 * @param stack the stack to add to this inventory. if null, will return true.
+	 * @param stack
+	 *            the stack to add to this inventory. if null, will return true.
 	 * @return true if the stack was added entirely, false otherwise.
 	 */
 	public boolean addStack(ItemStack stack) {
-		if( stack == null )
+		if (stack == null)
 			return true;
 
 		// Merge with existing stacks.
-		ItemStack remaining = InventoryUtils.addStackToInventory( stack, this, true );
-		if( remaining == null ) {
+		ItemStack remaining = InventoryUtils.addStackToInventory(stack, this,
+				true);
+		if (remaining == null) {
 			stack.stackSize = 0;
 			return true;
 		}
 
 		// Add to the first empty slot available.
-		remaining = InventoryUtils.addStackToInventory( remaining, this, false );
-		if( remaining == null ) {
+		remaining = InventoryUtils.addStackToInventory(remaining, this, false);
+		if (remaining == null) {
 			stack.stackSize = 0;
 			return true;
 		}
@@ -115,18 +121,18 @@ public class Inventory implements IInventory, IInventoryNBT {
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		if( 0 <= slot && slot < size )
+		if (0 <= slot && slot < size)
 			return internalInv[slot];
 		return null;
 	}
 
 	@Override
 	public ItemStack decrStackSize(int slot, int count) {
-		if( internalInv[slot] == null )
+		if (internalInv[slot] == null)
 			return null;
 		ItemStack retValue;
-		if( internalInv[slot].stackSize > count ) {
-			retValue = internalInv[slot].splitStack( count );
+		if (internalInv[slot].stackSize > count) {
+			retValue = internalInv[slot].splitStack(count);
 		} else {
 			retValue = internalInv[slot];
 			internalInv[slot] = null;
@@ -137,14 +143,14 @@ public class Inventory implements IInventory, IInventoryNBT {
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) {
-		ItemStack retValue = getStackInSlot( slot );
-		setInventorySlotContents( slot, null );
+		ItemStack retValue = getStackInSlot(slot);
+		setInventorySlotContents(slot, null);
 		return retValue;
 	}
 
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack itemStack) {
-		if( 0 <= slot && slot < size )
+		if (0 <= slot && slot < size)
 			internalInv[slot] = itemStack;
 	}
 
@@ -153,54 +159,50 @@ public class Inventory implements IInventory, IInventoryNBT {
 		return name;
 	}
 
-
-
-    @Override
+	@Override
 	public int getInventoryStackLimit() {
 		return maxStackSize;
 	}
-
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer var1) {
 		return true;
 	}
 
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
+		return true;
+	}
 
-    @Override
-    public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
-        return true;
-    }
-
-
-    ///////////////
-	///// NBT
+	// /////////////
+	// /// NBT
 
 	public void readFromNBT(NBTTagCompound compound) {
-		NBTTagCompound c = ((NBTTagCompound) compound.getTag( "inv." + name ));
-		if( c == null ) return;
+		NBTTagCompound c = ((NBTTagCompound) compound.getTag("inv." + name));
+		if (c == null)
+			return;
 
-		NBTTagList list = c.getTagList( "inventoryContents", 0); //0??
-		for( int i = 0; i < list.tagCount() && i < internalInv.length; i++ ) {
-			NBTTagCompound tag = (NBTTagCompound) list.getCompoundTagAt( i );
-			int index = tag.getInteger( "index" );
-			internalInv[index] = Utils.readStackFromNBT( tag );
+		NBTTagList list = c.getTagList("inventoryContents", 0); // 0??
+		for (int i = 0; i < list.tagCount() && i < internalInv.length; i++) {
+			NBTTagCompound tag = (NBTTagCompound) list.getCompoundTagAt(i);
+			int index = tag.getInteger("index");
+			internalInv[index] = Utils.readStackFromNBT(tag);
 		}
 	}
 
 	public void writeToNBT(NBTTagCompound compound) {
 		NBTTagList list = new NBTTagList();
-		for( int i = 0; i < internalInv.length; i++ ) {
-			if( internalInv[i] != null && internalInv[i].stackSize > 0 ) {
+		for (int i = 0; i < internalInv.length; i++) {
+			if (internalInv[i] != null && internalInv[i].stackSize > 0) {
 				NBTTagCompound tag = new NBTTagCompound();
-				list.appendTag( tag );
-				tag.setInteger( "index", i );
-				internalInv[i].writeToNBT( tag );
+				list.appendTag(tag);
+				tag.setInteger("index", i);
+				internalInv[i].writeToNBT(tag);
 			}
 		}
 		NBTTagCompound ownTag = new NBTTagCompound();
-		ownTag.setTag( "inventoryContents", list );
-		compound.setTag( "inv." + name, ownTag );
+		ownTag.setTag("inventoryContents", list);
+		compound.setTag("inv." + name, ownTag);
 	}
 
 	@Override
@@ -210,22 +212,22 @@ public class Inventory implements IInventory, IInventoryNBT {
 
 	@Override
 	public void markDirty() {
-		for( int i = 0; i < this.size; i++ ) {
-			ItemStack stack = this.getStackInSlot( i );
-			if( stack != null && stack.stackSize == 0 )
-				this.setInventorySlotContents( i, null );
+		for (int i = 0; i < this.size; i++) {
+			ItemStack stack = this.getStackInSlot(i);
+			if (stack != null && stack.stackSize == 0)
+				this.setInventorySlotContents(i, null);
 		}
 	}
 
 	@Override
 	public void openInventory() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void closeInventory() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

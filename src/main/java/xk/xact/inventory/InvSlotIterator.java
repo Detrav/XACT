@@ -1,10 +1,9 @@
 package xk.xact.inventory;
 
+import java.util.Iterator;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-
-import java.util.Iterator;
 
 // used by InventoryUtils.inventoryIterator(IInventory)
 public class InvSlotIterator implements Iterable<InvSlot>, Iterator<InvSlot> {
@@ -20,15 +19,16 @@ public class InvSlotIterator implements Iterable<InvSlot>, Iterator<InvSlot> {
 	}
 
 	/**
-	 * Generates an Iterator for the specified IInventory.
-	 * This is helpful to iterate through every slot on the inventory.
+	 * Generates an Iterator for the specified IInventory. This is helpful to
+	 * iterate through every slot on the inventory.
 	 *
-	 * @param inventory the inventory that holds the items.
+	 * @param inventory
+	 *            the inventory that holds the items.
 	 * @return an iterable representation of the IInventory.
 	 */
 	public static InvSlotIterator createNewFor(IInventory inventory) {
-		if( inventory != null )
-			return new InvSlotIterator( inventory );
+		if (inventory != null)
+			return new InvSlotIterator(inventory);
 		return null;
 	}
 
@@ -44,9 +44,9 @@ public class InvSlotIterator implements Iterable<InvSlot>, Iterator<InvSlot> {
 
 	@Override
 	public InvSlot next() {
-		if( ++currentSlot < size ) {
-			ItemStack stack = inv.getStackInSlot( currentSlot );
-			return new InvSlot( currentSlot, stack );
+		if (++currentSlot < size) {
+			ItemStack stack = inv.getStackInSlot(currentSlot);
+			return new InvSlot(currentSlot, stack);
 		}
 		return null;
 	}

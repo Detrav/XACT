@@ -1,48 +1,43 @@
 package xk.xact.network;
 
-import java.util.EnumSet;
-
-import net.minecraft.entity.player.EntityPlayer;
-import xk.xact.gui.ContainerXACT;
-
 // Tick handler used to make my Containers able to "tick", both server and client sides.
-public class GuiTickHandler {//implements ITickHandler {
+public class GuiTickHandler {// implements ITickHandler {
 //
-//	private GuiTickHandler() { }
+// private GuiTickHandler() { }
 //
-//	private static GuiTickHandler instance;
+// private static GuiTickHandler instance;
 //
-//	public static GuiTickHandler instance() {
-//		if( instance == null )
-//			instance = new GuiTickHandler();
-//		return instance;
-//	}
+// public static GuiTickHandler instance() {
+// if( instance == null )
+// instance = new GuiTickHandler();
+// return instance;
+// }
 //
-//	@Override
-//	public void tickStart(EnumSet<TickType> type, Object... tickData) {
-//		EntityPlayer player = (EntityPlayer) tickData[0];
-////		World world = (World) tickData[1];
+// @Override
+// public void tickStart(EnumSet<TickType> type, Object... tickData) {
+// EntityPlayer player = (EntityPlayer) tickData[0];
+// // World world = (World) tickData[1];
 //
-//		if( player.openContainer == player.inventoryContainer )
-//			return;
+// if( player.openContainer == player.inventoryContainer )
+// return;
 //
-//		if( player.openContainer instanceof ContainerXACT ) {
-//			((ContainerXACT) player.openContainer).onTickUpdate( player );
-//		}
-//	}
+// if( player.openContainer instanceof ContainerXACT ) {
+// ((ContainerXACT) player.openContainer).onTickUpdate( player );
+// }
+// }
 //
-//	@Override
-//	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
+// @Override
+// public void tickEnd(EnumSet<TickType> type, Object... tickData) {
 //
-//	}
+// }
 //
-//	@Override
-//	public EnumSet<TickType> ticks() {
-//		return EnumSet.of( TickType.PLAYER );
-//	}
+// @Override
+// public EnumSet<TickType> ticks() {
+// return EnumSet.of( TickType.PLAYER );
+// }
 //
-//	@Override
-//	public String getLabel() {
-//		return "XACT-GUI_TH";
-//	}
+// @Override
+// public String getLabel() {
+// return "XACT-GUI_TH";
+// }
 }

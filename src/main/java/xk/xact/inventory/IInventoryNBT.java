@@ -11,3 +11,4 @@ public interface IInventoryNBT extends IInventory {
 	public void writeToNBT(NBTTagCompound compound);
 
 }
+	

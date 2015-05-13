@@ -8,10 +8,8 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
@@ -19,7 +17,6 @@ import xk.xact.api.OverriddenBlock;
 import xk.xact.inventory.Inventory;
 import xk.xact.inventory.InventoryUtils;
 import xk.xact.util.Utils;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 // the TE for the vanilla crafting table
 public class TileWorkbench extends TileEntity implements ISidedInventory,
@@ -72,14 +69,14 @@ public class TileWorkbench extends TileEntity implements ISidedInventory,
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 		super.readFromNBT(nbtTagCompound);
-		
+
 		NBTTagList tagList = nbtTagCompound.getTagList("Items", 10);
 		for (int i = 0; i < tagList.tagCount(); ++i) {
 			NBTTagCompound tagCompound = tagList.getCompoundTagAt(i);
 			byte slotIndex = tagCompound.getByte("Slot");
 			if (slotIndex >= 0 && slotIndex < this.getSizeInventory()) {
-				craftingGrid.setInventorySlotContents(slotIndex, ItemStack
-						.loadItemStackFromNBT(tagCompound));
+				craftingGrid.setInventorySlotContents(slotIndex,
+						ItemStack.loadItemStackFromNBT(tagCompound));
 			}
 		}
 	}
@@ -99,7 +96,7 @@ public class TileWorkbench extends TileEntity implements ISidedInventory,
 	// }
 
 	/*
-	 *  ********** Automation ********** *
+	 * ********** Automation ********** *
 	 * 
 	 * The bottom side is for extraction, all other sides are for insertion.
 	 * 

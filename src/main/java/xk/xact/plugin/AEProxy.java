@@ -4,12 +4,13 @@ package xk.xact.plugin;
 
 /**
  * Proxy used for AE.
+ * 
  * @author Xhamolk_
  */
 public interface AEProxy {
 
-//	public void fireTileLoadEvent(IGridTileEntity tile);
-//
-//	public void fireTileUnloadEvent(IGridTileEntity tile);
+	// public void fireTileLoadEvent(IGridTileEntity tile);
+	//
+	// public void fireTileUnloadEvent(IGridTileEntity tile);
 
 }

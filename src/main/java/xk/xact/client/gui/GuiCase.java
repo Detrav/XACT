@@ -10,7 +10,6 @@ import xk.xact.XActMod;
 import xk.xact.client.GuiUtils;
 import xk.xact.recipes.CraftManager;
 import xk.xact.recipes.CraftRecipe;
-import xk.xact.recipes.RecipeUtils;
 import xk.xact.util.Textures;
 
 public class GuiCase extends GuiXACT {
@@ -18,6 +17,7 @@ public class GuiCase extends GuiXACT {
 	private static final ResourceLocation guiTexture = new ResourceLocation(
 			Textures.GUI_CASE);
 	private Container container;
+
 	public GuiCase(Container container) {
 		super(container);
 		this.container = container;
@@ -31,24 +31,41 @@ public class GuiCase extends GuiXACT {
 	protected ResourceLocation getBaseTexture() {
 		return guiTexture;
 	}
+
 	@Override
 	protected void keyTyped(char chartyped, int keyCode) {
 		InventoryPlayer invPlayer = Minecraft.getMinecraft().thePlayer.inventory;
-		Slot hoverdSlot = GuiUtils.getHoveredSlot(container, mouseX, mouseY, guiLeft, guiTop);
+		Slot hoverdSlot = GuiUtils.getHoveredSlot(container, mouseX, mouseY,
+				guiLeft, guiTop);
 		// Please don't ask me what this mess is
 		// I just added if-statements until it stopped crashing
 		if (keyCode >= 1 && keyCode < 11) { // 1 - 9
-			if (hoverdSlot != null && hoverdSlot.getSlotIndex() <= invPlayer.getSizeInventory() //Ignore keypress if the player tries to switch items from the hotbar with items in the case
-				&& hoverdSlot.getHasStack() // Do not handle the number key if the player tries to switch the Case
-				&& hoverdSlot.getStack().getItem().equals(XActMod.itemChipCase))
+			if (hoverdSlot != null
+					&& hoverdSlot.getSlotIndex() <= invPlayer
+							.getSizeInventory() // Ignore keypress if the player
+												// tries to switch items from
+												// the hotbar with items in the
+												// case
+					&& hoverdSlot.getHasStack() // Do not handle the number key
+												// if the player tries to switch
+												// the Case
+					&& hoverdSlot.getStack().getItem()
+							.equals(XActMod.itemChipCase))
 				return;
-			if (keyCode - 2 >= 0 && invPlayer.getStackInSlot(keyCode - 2) != null)
-				if (invPlayer.getStackInSlot(keyCode - 2).equals(invPlayer.getCurrentItem())) // - 2 because the keycode is 2 ahead (e.g pressing 1 returns 2 and corresponds to inv slot 0)
-					return; // Dont handle the number key when it would replace the currently open Case
+			if (keyCode - 2 >= 0
+					&& invPlayer.getStackInSlot(keyCode - 2) != null)
+				if (invPlayer.getStackInSlot(keyCode - 2).equals(
+						invPlayer.getCurrentItem())) // - 2 because the keycode
+														// is 2 ahead (e.g
+														// pressing 1 returns 2
+														// and corresponds to
+														// inv slot 0)
+					return; // Dont handle the number key when it would replace
+							// the currently open Case
 		}
 		super.keyTyped(chartyped, keyCode);
 	}
-	
+
 	@Override
 	protected void drawPostForeground(int x, int y) {
 		if (slot != null) {

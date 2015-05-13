@@ -15,13 +15,14 @@ public class ItemMachine extends ItemBlock {
 
 	public ItemMachine(Block block) {
 		super(block);
-		this.setHasSubtypes( true );
-		this.setCreativeTab( XActMod.xactTab );
+		this.setHasSubtypes(true);
+		this.setCreativeTab(XActMod.xactTab);
 	}
 
 	@Override
 	public String getUnlocalizedName(ItemStack itemStack) {
-		return References.MOD_ID + ":tile.machine." + Machines.getMachineName( itemStack );
+		return References.MOD_ID + ":tile.machine."
+				+ Machines.getMachineName(itemStack);
 	}
 
 }

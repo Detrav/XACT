@@ -35,14 +35,13 @@ public class ChipRenderer implements IItemRenderer {
 			Object... data) {
 		drawing = true;
 
-	
 		GL11.glPushMatrix();
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_BLEND);
 		CraftRecipe recipe = RecipeUtils.getRecipe(itemStack,
 				Minecraft.getMinecraft().theWorld);
 		if (recipe != null) {
-		
+
 			GuiUtils.paintItem(recipe.getResult(), 0, 0,
 					Minecraft.getMinecraft(), GuiUtils.itemRender, 120.0F);
 
@@ -54,7 +53,7 @@ public class ChipRenderer implements IItemRenderer {
 			GuiUtils.paintItem(ItemChip.invalidChip, 0, 0,
 					Minecraft.getMinecraft(), GuiUtils.itemRender, 120.0F);
 		}
-		
+
 		RenderHelper.enableGUIStandardItemLighting();
 		drawing = false;
 		GL11.glEnable(GL11.GL_CULL_FACE);

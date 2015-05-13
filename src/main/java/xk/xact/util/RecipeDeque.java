@@ -1,9 +1,9 @@
 package xk.xact.util;
 
 
-import xk.xact.recipes.CraftRecipe;
-
 import java.util.Stack;
+
+import xk.xact.recipes.CraftRecipe;
 
 public class RecipeDeque {
 

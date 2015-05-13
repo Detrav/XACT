@@ -1,7 +1,5 @@
 package xk.xact.gui;
 
-
-
 import invtweaks.api.container.ChestContainer;
 import invtweaks.api.container.ContainerSection;
 import invtweaks.api.container.ContainerSectionCallback;
@@ -28,82 +26,99 @@ public class ContainerVanillaWorkbench extends Container {
 	private final EntityPlayer player;
 	private final InventoryCrafting grid;
 
-	public ContainerVanillaWorkbench(TileWorkbench workbench, EntityPlayer player) {
+	public ContainerVanillaWorkbench(TileWorkbench workbench,
+			EntityPlayer player) {
 		this.workbench = workbench;
 		this.player = player;
-		this.grid = InventoryUtils.simulateCraftingInventory( this, workbench.craftingGrid );
+		this.grid = InventoryUtils.simulateCraftingInventory(this,
+				workbench.craftingGrid);
 		buildContainer();
-		this.onCraftMatrixChanged( grid );
+		this.onCraftMatrixChanged(grid);
 	}
 
 	private void buildContainer() {
-		this.addSlotToContainer( new SlotCrafting( player, grid, workbench.outputInv, 0, 124, 35 ) );
+		this.addSlotToContainer(new SlotCrafting(player, grid,
+				workbench.outputInv, 0, 124, 35));
 
-		for( int i = 0; i < 3; i++ ) {
-			for( int e = 0; e < 3; e++ ) {
-				this.addSlotToContainer( new Slot( grid, e + i * 3, 30 + e * 18, 17 + i * 18 ) );
+		for (int i = 0; i < 3; i++) {
+			for (int e = 0; e < 3; e++) {
+				this.addSlotToContainer(new Slot(grid, e + i * 3, 30 + e * 18,
+						17 + i * 18));
 			}
 		}
 
-		for( int i = 0; i < 3; i++ ) {
-			for( int e = 0; e < 9; e++ ) {
-				this.addSlotToContainer( new Slot( player.inventory, e + i * 9 + 9, 8 + e * 18, 84 + i * 18 ) );
+		for (int i = 0; i < 3; i++) {
+			for (int e = 0; e < 9; e++) {
+				this.addSlotToContainer(new Slot(player.inventory, e + i * 9
+						+ 9, 8 + e * 18, 84 + i * 18));
 			}
 		}
 
-		for( int i = 0; i < 9; i++ ) {
-			this.addSlotToContainer( new Slot( player.inventory, i, 8 + i * 18, 142 ) );
+		for (int i = 0; i < 9; i++) {
+			this.addSlotToContainer(new Slot(player.inventory, i, 8 + i * 18,
+					142));
 		}
 
-		this.onCraftMatrixChanged( grid );
+		this.onCraftMatrixChanged(grid);
 	}
 
 	@Override
 	public void onCraftMatrixChanged(IInventory inv) {
-		ItemStack result = CraftingManager.getInstance().findMatchingRecipe( grid, workbench.getWorldObj() );
-		workbench.outputInv.setInventorySlotContents( 0, result );
+		ItemStack result = CraftingManager.getInstance().findMatchingRecipe(
+				grid, workbench.getWorldObj());
+		workbench.outputInv.setInventorySlotContents(0, result);
 	}
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player1, int slotID) {
 
 		ItemStack retValue = null;
-		Slot slot = (Slot) this.inventorySlots.get( slotID );
+		Slot slot = (Slot) this.inventorySlots.get(slotID);
 
-		if( slot != null && slot.getHasStack() ) {
+		if (slot != null && slot.getHasStack()) {
 			ItemStack slotStack = slot.getStack();
 			retValue = slotStack.copy();
 
-			if( slotID == 0 ) { // output slot
-				if( !this.mergeItemStack( slotStack, 10, 46, false ) ) { // changed last param to false.
+			if (slotID == 0) { // output slot
+				if (!this.mergeItemStack(slotStack, 10, 46, false)) { // changed
+																		// last
+																		// param
+																		// to
+																		// false.
 					return null;
 				}
-				slot.onSlotChange( slotStack, retValue );
-			} else if( slotID >= 10 && slotID < 37 ) { // player's main inv
-				if( !this.mergeItemStack( slotStack, 37, 46, false ) ) {
+				slot.onSlotChange(slotStack, retValue);
+			} else if (slotID >= 10 && slotID < 37) { // player's main inv
+				if (!this.mergeItemStack(slotStack, 37, 46, false)) {
 					return null;
 				}
 
-			} else if( slotID >= 37 && slotID < 46 ) { // player's hot bat
-				if( !this.mergeItemStack( slotStack, 10, 37, false ) ) {
+			} else if (slotID >= 37 && slotID < 46) { // player's hot bat
+				if (!this.mergeItemStack(slotStack, 10, 37, false)) {
 					return null;
 				}
 
-			} else if( !this.mergeItemStack( slotStack, 10, 46, false ) ) { // from the grid to the player's inv (both).
+			} else if (!this.mergeItemStack(slotStack, 10, 46, false)) { // from
+																			// the
+																			// grid
+																			// to
+																			// the
+																			// player's
+																			// inv
+																			// (both).
 				return null;
 			}
 
-			if( slotStack.stackSize == 0 ) {
-				slot.putStack( null );
+			if (slotStack.stackSize == 0) {
+				slot.putStack(null);
 			}
 			slot.onSlotChanged();
 
-
-			if( slotStack.stackSize == retValue.stackSize ) {
+			if (slotStack.stackSize == retValue.stackSize) {
 				return null;
 			}
 
-			slot.onPickupFromSlot( player1, slotStack );
+			slot.onPickupFromSlot(player1, slotStack);
 		}
 
 		return retValue;
@@ -120,7 +135,8 @@ public class ContainerVanillaWorkbench extends Container {
 		return slot.inventory != workbench.outputInv;
 	}
 
-	// -------------------- Compatibility with Inventory Tweaks --------------------
+	// -------------------- Compatibility with Inventory Tweaks
+	// --------------------
 
 	@ContainerSectionCallback
 	@SuppressWarnings({ "unchecked" })
@@ -128,8 +144,10 @@ public class ContainerVanillaWorkbench extends Container {
 		Map<ContainerSection, List<Slot>> map = new HashMap<ContainerSection, List<Slot>>();
 		List<Slot> slots = inventorySlots;
 
-		map.put( ContainerSection.CRAFTING_OUT, slots.subList( 0, 1 ) ); // output slot
-		map.put( ContainerSection.CRAFTING_IN, slots.subList( 1, 1 + 9 ) ); // crafting grid.
+		map.put(ContainerSection.CRAFTING_OUT, slots.subList(0, 1)); // output
+																		// slot
+		map.put(ContainerSection.CRAFTING_IN, slots.subList(1, 1 + 9)); // crafting
+																		// grid.
 
 		return map;
 	}

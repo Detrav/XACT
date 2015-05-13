@@ -2,10 +2,8 @@ package xk.xact.inventory;
 
 import net.minecraft.item.ItemStack;
 
-
 /**
- * Represents a slot on an inventory.
- * Provides it's index and it's contents.
+ * Represents a slot on an inventory. Provides it's index and it's contents.
  * <p/>
  * Mainly used by SlotIterator and InvSlotIterator
  */
@@ -24,20 +22,20 @@ public class InvSlot {
 	}
 
 	public boolean isFull() {
-		return !isEmpty() && this.stack.stackSize == this.stack.getMaxStackSize();
+		return !isEmpty()
+				&& this.stack.stackSize == this.stack.getMaxStackSize();
 	}
 
 	public boolean containsItemsFrom(ItemStack otherStack) {
-		return InventoryUtils.similarStacks( this.stack, otherStack, true );
+		return InventoryUtils.similarStacks(this.stack, otherStack, true);
 	}
 
 	public int getSpaceFor(ItemStack otherStack) {
-		if( isEmpty() )
+		if (isEmpty())
 			return 64;
-		if( isFull() )
+		if (isFull())
 			return 0;
-		return InventoryUtils.getSpaceInStackFor( this.stack, otherStack );
+		return InventoryUtils.getSpaceInStackFor(this.stack, otherStack);
 	}
-
 
 }

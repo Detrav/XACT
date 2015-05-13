@@ -7,8 +7,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagByte;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import xk.xact.XActMod;
@@ -32,34 +30,28 @@ public class ItemPad extends Item {
 	@Override
 	public void addInformation(ItemStack itemStack, EntityPlayer player,
 			List list, boolean par4) {
-		// Tell which is recipe is loaded on the grid.
+
 		if (itemStack == null || itemStack.stackTagCompound == null)
 			return;
-		
-		ItemStack recipeResult = ItemStack.loadItemStackFromNBT(
-				itemStack.stackTagCompound);
-		if (recipeResult != null) {
-			String loadedRecipe = recipeResult.getDisplayName();
-			if (loadedRecipe != null && !loadedRecipe.equals(""))
-				list.add(I18n.format(References.Localization.CHIP_RECIPE) + ": "
-						+ I18n.format(loadedRecipe));
+
+		// Tell which is recipe is loaded on the grid.
+		int id = itemStack.stackTagCompound.getInteger("currentRecipe");
+		if (id != -1) {
+			String resultName = new ItemStack(Item.getItemById(id))
+					.getDisplayName();
+			if (resultName != null && !resultName.equals(""))
+				list.add(I18n.format(References.Localization.CHIP_RECIPE)
+						+ ": " + resultName);
 			if (itemStack.getDisplayName() == "Unnamed")
 				itemStack.setStackDisplayName(getUnlocalizedName());
 		}
-	
 	}
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemStack, World world,
 			EntityPlayer player) {
 		itemStack.setItemDamage(1);
-		if (itemStack.stackTagCompound == null) {
-			itemStack.stackTagCompound = new NBTTagCompound();
-			NBTTagCompound bytetag = new NBTTagCompound();
-			bytetag.setByte("originalSlot", (byte) -1);
-			itemStack.writeToNBT(bytetag);
-		}
-		
+
 		if (!world.isRemote)
 			player.openGui(XActMod.instance, 3, world, 0, 0, 0);
 		return itemStack;

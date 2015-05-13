@@ -15,6 +15,5 @@ public class Keybinds {
 	public static KeyBinding prev = new KeyBinding(References.Keys.KEY_PREV, Keyboard.KEY_LEFT, References.Keys.KEY_CATEGORY);
 	public static KeyBinding next = new KeyBinding(References.Keys.KEY_NEXT, Keyboard.KEY_RIGHT, References.Keys.KEY_CATEGORY);
 	public static KeyBinding delete = new KeyBinding(References.Keys.KEY_DELETE, Keyboard.KEY_DELETE, References.Keys.KEY_CATEGORY);
-//	public static KeyBinding reveal = new KeyBinding(References.Keys.KEY_REVEAL, Keyboard.KEY_LSHIFT, References.Keys.KEY_CATEGORY);
 	public static KeyBinding openGrid = new KeyBinding(References.Keys.KEY_OPENGRID, Keyboard.KEY_Z, References.Keys.KEY_CATEGORY);
 }

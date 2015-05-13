@@ -1,38 +1,37 @@
 package xk.xact.util;
 
-
-import net.minecraft.item.ItemStack;
+import static xk.xact.util.ItemsReference.wrap;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import static xk.xact.util.ItemsReference.wrap;
+import net.minecraft.item.ItemStack;
 
 public class ItemsList extends ArrayList<ItemsReference> {
 
 	public void addStack(ItemStack stack) {
-		if( stack != null )
-			addStack( stack, stack.stackSize );
+		if (stack != null)
+			addStack(stack, stack.stackSize);
 	}
 
 	public void addStack(ItemStack stack, int amount) {
-		if( stack != null ) {
-			ItemsReference reference = getOrCreateReference( stack );
+		if (stack != null) {
+			ItemsReference reference = getOrCreateReference(stack);
 			reference.amount += amount;
 		}
 	}
 
 	public boolean contains(ItemStack itemStack) {
-		return contains( wrap( itemStack ) );
+		return contains(wrap(itemStack));
 	}
 
 	public ItemsReference getOrCreateReference(ItemStack stack) {
-		ItemsReference reference = ItemsReference.wrap( stack );
-		int index = indexOf( reference );
-		if( index == -1 ) {
-			add( reference );
+		ItemsReference reference = ItemsReference.wrap(stack);
+		int index = indexOf(reference);
+		if (index == -1) {
+			add(reference);
 		} else {
-			reference = get( index );
+			reference = get(index);
 		}
 		return reference;
 	}
@@ -40,8 +39,8 @@ public class ItemsList extends ArrayList<ItemsReference> {
 	public ItemStack[] toArray() {
 		int size = size();
 		ItemStack[] retValue = new ItemStack[size];
-		for( int i = 0; i < size; i++ ) {
-			retValue[i] = get( i ).toItemStack();
+		for (int i = 0; i < size; i++) {
+			retValue[i] = get(i).toItemStack();
 		}
 		return retValue;
 	}
@@ -57,7 +56,7 @@ public class ItemsList extends ArrayList<ItemsReference> {
 
 			@Override
 			public ItemStack next() {
-				return get( iteratorIndex++ ).toItemStack();
+				return get(iteratorIndex++).toItemStack();
 			}
 
 			@Override

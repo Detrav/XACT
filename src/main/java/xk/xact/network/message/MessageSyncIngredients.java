@@ -1,7 +1,6 @@
 package xk.xact.network.message;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import xk.xact.api.InteractiveCraftingContainer;
@@ -14,12 +13,13 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
-public class MessageSyncIngredients implements IMessage, IMessageHandler<MessageSyncIngredients, IMessage> {
+public class MessageSyncIngredients implements IMessage,
+		IMessageHandler<MessageSyncIngredients, IMessage> {
 	/**
 	 * The ingredients that shall be saved onto a chip
 	 */
 	public ItemStack[] ingredients = new ItemStack[9];
-	
+
 	/**
 	 * The slotid the chip is located in
 	 */
@@ -35,14 +35,20 @@ public class MessageSyncIngredients implements IMessage, IMessageHandler<Message
 
 	@Override
 	public IMessage onMessage(MessageSyncIngredients message, MessageContext ctx) {
-		//Get the player
+		// Get the player
 		EntityPlayer thePlayer = ctx.getServerHandler().playerEntity;
-		
-		//Get the conatiner
+
+		// Get the conatiner
 		InteractiveCraftingContainer container = (InteractiveCraftingContainer) thePlayer.openContainer;
-		
-		if (message.chipSlot == -1) { //If this is the case the player imports a recipe from NEI
-			if (container != null && container instanceof ContainerCrafter) { // Player tries to import into crafter
+
+		if (message.chipSlot == -1) { // If this is the case the player imports
+										// a recipe from NEI
+			if (container != null && container instanceof ContainerCrafter) { // Player
+																				// tries
+																				// to
+																				// import
+																				// into
+																				// crafter
 				for (int i = 0; i < 9; i++) {
 					container.setStack(8 + i, message.ingredients[i]);
 				}
@@ -52,10 +58,14 @@ public class MessageSyncIngredients implements IMessage, IMessageHandler<Message
 				}
 			}
 		} else {
-			CraftRecipe recipe = CraftManager.generateRecipe(message.ingredients, thePlayer.worldObj);
+			CraftRecipe recipe = CraftManager.generateRecipe(
+					message.ingredients, thePlayer.worldObj);
 			ItemStack encodedChip = CraftManager.encodeRecipe(recipe);
-			
-			container.setStack(message.chipSlot, encodedChip); // Replace the old chip with the new encoded one
+
+			container.setStack(message.chipSlot, encodedChip); // Replace the
+																// old chip with
+																// the new
+																// encoded one
 		}
 		return null;
 	}

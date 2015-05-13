@@ -1,39 +1,40 @@
 package xk.xact.plugin.nei;
 
+import java.util.List;
 
-import codechicken.nei.PositionedStack;
-import codechicken.nei.api.IOverlayHandler;
-import codechicken.nei.recipe.IRecipeHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import xk.xact.api.InteractiveCraftingGui;
-
-import java.util.List;
+import codechicken.nei.PositionedStack;
+import codechicken.nei.api.IOverlayHandler;
+import codechicken.nei.recipe.IRecipeHandler;
 
 public class XactOverlayHandler implements IOverlayHandler {
 
-
 	@Override
-	public void overlayRecipe(GuiContainer firstGui, IRecipeHandler recipe, int recipeIndex, boolean shift) {
-		List<PositionedStack> ingredients = recipe.getIngredientStacks( recipeIndex );
-		
-		if( firstGui instanceof InteractiveCraftingGui ) {
-			
+	public void overlayRecipe(GuiContainer firstGui, IRecipeHandler recipe,
+			int recipeIndex, boolean shift) {
+		List<PositionedStack> ingredients = recipe
+				.getIngredientStacks(recipeIndex);
+
+		if (firstGui instanceof InteractiveCraftingGui) {
+
 			// get the ingredients and align them to the grid.
-			ItemStack[] alignedIngredients = getAlignedIngredients( ingredients );
-			
+			ItemStack[] alignedIngredients = getAlignedIngredients(ingredients);
+
 			// send the ingredients to the Gui (client-side)
-			((InteractiveCraftingGui) firstGui).sendGridIngredients( alignedIngredients, -1);
+			((InteractiveCraftingGui) firstGui).sendGridIngredients(
+					alignedIngredients, -1);
 		}
 
 	}
 
-
-	public static ItemStack[] getAlignedIngredients(List<PositionedStack> ingredients) {
+	public static ItemStack[] getAlignedIngredients(
+			List<PositionedStack> ingredients) {
 		ItemStack[] alignedIngredients = new ItemStack[9];
 
-		for( PositionedStack current : ingredients ) {
-			if( current == null )
+		for (PositionedStack current : ingredients) {
+			if (current == null)
 				continue;
 
 			int row = (current.relx - 25) / 18;

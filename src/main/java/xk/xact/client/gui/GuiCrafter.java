@@ -1,12 +1,8 @@
 package xk.xact.client.gui;
 
-import org.lwjgl.input.Keyboard;
-
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
@@ -14,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import xk.xact.XActMod;
 import xk.xact.client.GuiUtils;
-import xk.xact.client.Keybinds;
 import xk.xact.client.button.CustomButtons;
 import xk.xact.client.button.GuiButtonCustom;
 import xk.xact.client.button.ICustomButtonMode;
@@ -22,7 +17,6 @@ import xk.xact.config.ConfigurationManager;
 import xk.xact.core.items.ItemChip;
 import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.gui.ContainerCrafter;
-import xk.xact.gui.SlotCraft;
 import xk.xact.network.PacketHandler;
 import xk.xact.network.message.MessageUpdateMissingItems;
 import xk.xact.recipes.CraftManager;
@@ -31,17 +25,16 @@ import xk.xact.util.NumberHelper;
 import xk.xact.util.References;
 import xk.xact.util.Textures;
 import xk.xact.util.Utils;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.common.network.NetworkRegistry;
 
 public class GuiCrafter extends GuiCrafting {
 
 	private static final ResourceLocation guiTexture = new ResourceLocation(
 			Textures.GUI_CRAFTER);
-	
+
 	private TileCrafter crafter;
 	private ContainerCrafter container;
 	private boolean areSlotsHidden = false;
+
 	public GuiCrafter(TileCrafter crafter, EntityPlayer player) {
 		super(new ContainerCrafter(crafter, player));
 		this.crafter = crafter;
@@ -68,7 +61,7 @@ public class GuiCrafter extends GuiCrafting {
 		}
 		invalidated = true;
 	}
-	
+
 	@Override
 	public void updateScreen() {
 		super.updateScreen();
@@ -133,35 +126,46 @@ public class GuiCrafter extends GuiCrafting {
 	@Override
 	public void drawGuiContainerForegroundLayer(int x, int y) {
 		super.drawGuiContainerForegroundLayer(x, y);
-		
+		mouseX = x;
+		mouseY = y; // Used in guiCrafting
 		int gray = NumberHelper.argb(255, 139, 139, 139);
 		if (hoveredRecipe == -1) {
-			for (int i = 0; i < 9 ;i++) {
+			for (int i = 0; i < 9; i++) {
 				Slot slot = container.getSlot(8 + i);
 				int color = getColorForGridSlot(slot);
 				if (slot.getHasStack()) {
-					GuiUtils.paintOverlay(slot.xDisplayPosition, slot.yDisplayPosition, 16, color);
+					GuiUtils.paintOverlay(slot.xDisplayPosition,
+							slot.yDisplayPosition, 16, color);
 				}
 			}
 			RenderHelper.enableGUIStandardItemLighting();
 		} else {
-			ItemStack hoveredChip = container.crafter.circuits.getStackInSlot(hoveredRecipe);
+			ItemStack hoveredChip = container.crafter.circuits
+					.getStackInSlot(hoveredRecipe);
 			CraftRecipe hoveredRecipe = CraftManager.decodeRecipe(hoveredChip);
-			
+
 			for (int i = 0; i < 9; i++) {
 				Slot slot = container.getSlot(8 + i);
 				int color = getColorForGridSlot(slot);
-					if (color != -1 && hoveredRecipe != null) {
-						// Paint the "ghost item"
-						GuiUtils.paintOverlay(slot.xDisplayPosition, slot.yDisplayPosition, 16, gray); //Paint gray over the slot so you wont see the old items
-						GuiUtils.paintItem(hoveredRecipe.getIngredients()[i], slot.xDisplayPosition, slot.yDisplayPosition, mc, itemRender, 200F);
-						GuiUtils.paintOverlay(slot.xDisplayPosition,
-								slot.yDisplayPosition, 16, color);
-					}
+				if (color != -1 && hoveredRecipe != null) {
+					// Paint the "ghost item"
+					GuiUtils.paintOverlay(slot.xDisplayPosition,
+							slot.yDisplayPosition, 16, gray); // Paint gray over
+																// the slot so
+																// you wont see
+																// the old items
+					GuiUtils.paintItem(hoveredRecipe.getIngredients()[i],
+							slot.xDisplayPosition, slot.yDisplayPosition, mc,
+							itemRender, 200F);
+					GuiUtils.paintOverlay(slot.xDisplayPosition,
+							slot.yDisplayPosition, 16, color);
+				}
 			}
 		}
-		//Draw highlight around current recipe
-		drawRecipeBorder(GuiUtils.getHoveredSlot(container, x, y, guiLeft, guiTop), getColorForOutputSlot(hoveredRecipe));
+		// Draw highlight around current recipe
+		drawRecipeBorder(
+				GuiUtils.getHoveredSlot(container, x, y, guiLeft, guiTop),
+				getColorForOutputSlot(hoveredRecipe));
 	}
 
 	@Override
@@ -172,14 +176,15 @@ public class GuiCrafter extends GuiCrafting {
 	@Override
 	public void drawScreen(int mousex, int mousey, float partialtick) {
 		if (partialtick > 0.6) // Reduces updates by i dunno ... a bit
-			PacketHandler.INSTANCE.sendToServer(new MessageUpdateMissingItems());
+			PacketHandler.INSTANCE
+					.sendToServer(new MessageUpdateMissingItems());
 		super.drawScreen(mousex, mousey, partialtick);
 	}
-	
 
 	private int getColorForOutputSlot(int recipeIndex) {
 		int color;
-		if (recipeIndex < 0) return 0;
+		if (recipeIndex < 0)
+			return 0;
 		if (this.mc.thePlayer.capabilities.isCreativeMode) {
 			color = GuiUtils.COLOR_BLUE;
 		} else if (Utils.anyOf(container.recipeStates[recipeIndex])) {
@@ -193,7 +198,7 @@ public class GuiCrafter extends GuiCrafting {
 	}
 
 	private int getColorForGridSlot(Slot slot) {
-		//This was commented out
+		// This was commented out
 		// ItemStack itemInSlot = slot.getStack();
 		// if( itemInSlot != null && itemInSlot.stackSize > 0 ) {
 		// return -1; // no overlay when the slot contains "real" items.
@@ -233,29 +238,35 @@ public class GuiCrafter extends GuiCrafting {
 			gridContents = recipe == null ? emptyGrid : recipe.getIngredients();
 		}
 	}
-	
+
 	private void drawRecipeBorder(Slot hoveredSlot, int color) {
-		if (hoveredSlot == null) return;
-		if (hoveredSlot.slotNumber > 3) return;
-		int slotLeft   = hoveredSlot.xDisplayPosition;
-		int slotTop    = hoveredSlot.yDisplayPosition;
+		if (hoveredSlot == null)
+			return;
+		if (hoveredSlot.slotNumber > 3)
+			return;
+		int slotLeft = hoveredSlot.xDisplayPosition;
+		int slotTop = hoveredSlot.yDisplayPosition;
 		int slotBottom = slotTop + 16;
-		int slotRight  = slotLeft + 16;
-		
-		drawGradientRect(slotLeft - 5, slotTop - 5, slotLeft - 4, slotBottom + 5, color, color);
-		drawGradientRect(slotLeft - 4, slotTop - 5, slotRight + 4, slotTop - 4, color, color);
-		drawGradientRect(slotLeft - 4, slotBottom + 4, slotRight + 4, slotBottom + 5, color, color);
-		drawGradientRect(slotRight + 5, slotBottom + 5, slotRight + 4, slotTop - 5, color, color);
+		int slotRight = slotLeft + 16;
+
+		drawGradientRect(slotLeft - 5, slotTop - 5, slotLeft - 4,
+				slotBottom + 5, color, color);
+		drawGradientRect(slotLeft - 4, slotTop - 5, slotRight + 4, slotTop - 4,
+				color, color);
+		drawGradientRect(slotLeft - 4, slotBottom + 4, slotRight + 4,
+				slotBottom + 5, color, color);
+		drawGradientRect(slotRight + 5, slotBottom + 5, slotRight + 4,
+				slotTop - 5, color, color);
 		RenderHelper.enableStandardItemLighting();
 		RenderHelper.enableGUIStandardItemLighting();
 	}
-	
+
 	@Override
 	public void handleKeyboardInput() {
 		handleKeyBinding(container);
 		super.handleKeyboardInput();
 	}
-	
+
 	// -------------------- InteractiveCraftingGui --------------------
 
 	@Override
@@ -265,7 +276,14 @@ public class GuiCrafter extends GuiCrafting {
 			return;
 		}
 		if (buttonID != -1)
-			GuiUtils.sendItemsToServer(ingredients, 4 + buttonID); 	// 4 because the first chipslot is 4 (and the corresponding buttonid is 0)
+			GuiUtils.sendItemsToServer(ingredients, 4 + buttonID); // 4 because
+																	// the first
+																	// chipslot
+																	// is 4 (and
+																	// the
+																	// corresponding
+																	// buttonid
+																	// is 0)
 		else
 			GuiUtils.sendItemsToServer(ingredients, buttonID);
 	}
@@ -274,6 +292,7 @@ public class GuiCrafter extends GuiCrafting {
 	public void handleKeyBinding(Container container) {
 		super.handleKeyBinding(container);
 	}
+
 	// -------------------- Buttons --------------------
 
 	private GuiButtonCustom[] buttons = new GuiButtonCustom[4];

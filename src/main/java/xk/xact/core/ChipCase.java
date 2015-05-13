@@ -1,6 +1,5 @@
 package xk.xact.core;
 
-
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,7 +15,7 @@ public class ChipCase {
 	public boolean inventoryChanged = false;
 
 	public ChipCase(ItemStack itemStack) {
-		this.internalInventory = new Inventory( 30, "libraryStorage" ) {
+		this.internalInventory = new Inventory(30, "libraryStorage") {
 			@Override
 			public void markDirty() {
 				super.markDirty();
@@ -25,19 +24,24 @@ public class ChipCase {
 		};
 
 		// Load contents from NBT
-		if( !itemStack.hasTagCompound() )
+		if (!itemStack.hasTagCompound())
 			itemStack.stackTagCompound = new NBTTagCompound();
-		
-		NBTTagList chips = itemStack.stackTagCompound.getTagList("Chips", 10); // Load Chips... om nom nom
+
+		NBTTagList chips = itemStack.stackTagCompound.getTagList("Chips", 10); // Load
+																				// Chips...
+																				// om
+																				// nom
+																				// nom
 		for (int i = 0; i < chips.tagCount(); ++i) {
 			NBTTagCompound tag = chips.getCompoundTagAt(i);
 			byte slotIndex = tag.getByte("ChipSlot");
-			if (slotIndex >= 0 && slotIndex < getInternalInventory().getSizeInventory()) {
-				getInternalInventory().setInventorySlotContents(slotIndex, ItemStack
-						.loadItemStackFromNBT(tag));
+			if (slotIndex >= 0
+					&& slotIndex < getInternalInventory().getSizeInventory()) {
+				getInternalInventory().setInventorySlotContents(slotIndex,
+						ItemStack.loadItemStackFromNBT(tag));
 			}
 		}
-//		readFromNBT( itemStack.getTagCompound() );
+		// readFromNBT( itemStack.getTagCompound() );
 	}
 
 	public IInventory getInternalInventory() {
@@ -46,30 +50,30 @@ public class ChipCase {
 
 	public int getChipsCount() {
 		int count = 0;
-		for( InvSlot current : InvSlotIterator.createNewFor( internalInventory ) ) {
-			if( current != null && !current.isEmpty() ) {
+		for (InvSlot current : InvSlotIterator.createNewFor(internalInventory)) {
+			if (current != null && !current.isEmpty()) {
 				count += current.stack.stackSize;
 			}
 		}
 		return count;
 	}
 
-	////////////
-	/// NBT
+	// //////////
+	// / NBT
 
 	public void readFromNBT(NBTTagCompound compound) {
-		if( compound == null )
+		if (compound == null)
 			return;
 
-		internalInventory.readFromNBT( compound );
+		internalInventory.readFromNBT(compound);
 	}
 
 	public void writeToNBT(NBTTagCompound compound) {
-		if( compound == null )
+		if (compound == null)
 			return;
 
-		internalInventory.writeToNBT( compound );
-		compound.setInteger( "chipCount", getChipsCount() );
+		internalInventory.writeToNBT(compound);
+		compound.setInteger("chipCount", getChipsCount());
 	}
 
 }

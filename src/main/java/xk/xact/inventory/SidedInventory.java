@@ -7,7 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 /**
- * Adapter used to hide all the inaccessible slots from the original ISidedInventory.
+ * Adapter used to hide all the inaccessible slots from the original
+ * ISidedInventory.
  *
  * @author Xhamolk_
  */
@@ -17,11 +18,10 @@ public class SidedInventory implements IInventory, ISidedInventory {
 	private int[] slots;
 	private int side; // as expected by vanilla ISided.
 
-
 	public SidedInventory(ISidedInventory inventory, ForgeDirection side) {
 		this.inv = inventory;
 		this.side = side.ordinal();
-		this.slots = inventory.getAccessibleSlotsFromSide( side.ordinal() );
+		this.slots = inventory.getAccessibleSlotsFromSide(side.ordinal());
 	}
 
 	// ----- IInventory -----
@@ -33,24 +33,23 @@ public class SidedInventory implements IInventory, ISidedInventory {
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return inv.getStackInSlot( slots[i] );
+		return inv.getStackInSlot(slots[i]);
 	}
 
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		return inv.decrStackSize( slots[i], j );
+		return inv.decrStackSize(slots[i], j);
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		return inv.getStackInSlotOnClosing( slots[i] );
+		return inv.getStackInSlotOnClosing(slots[i]);
 	}
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		inv.setInventorySlotContents( slots[i], itemstack );
+		inv.setInventorySlotContents(slots[i], itemstack);
 	}
-
 
 	@Override
 	public int getInventoryStackLimit() {
@@ -64,14 +63,12 @@ public class SidedInventory implements IInventory, ISidedInventory {
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		return inv.isUseableByPlayer( player );
+		return inv.isUseableByPlayer(player);
 	}
-
-
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-		return inv.isItemValidForSlot( slots[i], itemstack );
+		return inv.isItemValidForSlot(slots[i], itemstack);
 	}
 
 	// ----- ISided Inventory -----
@@ -82,9 +79,9 @@ public class SidedInventory implements IInventory, ISidedInventory {
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int var1) {
-		if( availableSlots == null ) {
+		if (availableSlots == null) {
 			availableSlots = new int[slots.length];
-			for( int i = 0; i < slots.length; i++ ) {
+			for (int i = 0; i < slots.length; i++) {
 				availableSlots[i] = i;
 			}
 		}
@@ -93,12 +90,12 @@ public class SidedInventory implements IInventory, ISidedInventory {
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemstack, int j) {
-		return inv.canInsertItem( slots[i], itemstack, side );
+		return inv.canInsertItem(slots[i], itemstack, side);
 	}
 
 	@Override
 	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
-		return inv.canExtractItem( slots[i], itemstack, side );
+		return inv.canExtractItem(slots[i], itemstack, side);
 	}
 
 	@Override

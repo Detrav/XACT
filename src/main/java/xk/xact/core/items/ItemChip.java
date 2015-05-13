@@ -2,27 +2,15 @@ package xk.xact.core.items;
 
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
-import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 import xk.xact.XActMod;
 import xk.xact.recipes.CraftManager;
-import xk.xact.recipes.CraftRecipe;
-import xk.xact.recipes.RecipeUtils;
 import xk.xact.util.References;
 import xk.xact.util.Textures;
 import cpw.mods.fml.relauncher.Side;
@@ -36,8 +24,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemChip extends Item {
 
 	/*
-	Note: The actual encoding happens on the stack's NBT,
-	and is performed by CraftManager.encodeRecipe
+	 * Note: The actual encoding happens on the stack's NBT, and is performed by
+	 * CraftManager.encodeRecipe
 	 */
 
 	public final boolean encoded;
@@ -45,10 +33,11 @@ public class ItemChip extends Item {
 	public ItemChip(boolean encoded) {
 		super();
 		this.encoded = encoded;
-		this.setUnlocalizedName( References.MOD_ID + ":recipeChip." + (encoded ? "encoded" : "blank") );
-		this.setCreativeTab( XActMod.xactTab );
-		if( encoded )
-			invalidChip = new ItemStack( this, 1, 1 );
+		this.setUnlocalizedName(References.MOD_ID + ":recipeChip."
+				+ (encoded ? "encoded" : "blank"));
+		this.setCreativeTab(XActMod.xactTab);
+		if (encoded)
+			invalidChip = new ItemStack(this, 1, 1);
 	}
 
 	@Override
@@ -59,34 +48,45 @@ public class ItemChip extends Item {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) {
-		if(itemStack.getItem() instanceof ItemChip) {
+	public void addInformation(ItemStack itemStack, EntityPlayer player,
+			List list, boolean par4) {
+		if (itemStack.getItem() instanceof ItemChip) {
 			if (((ItemChip) itemStack.getItem()).encoded) {
 				if (CraftManager.decodeRecipe(itemStack) != null) {
-					ItemStack result = CraftManager.decodeRecipe(itemStack).getResult();
-					String itemName = result.getItem().getItemStackDisplayName(result);
-					list.add( "\u00a73" + I18n.format(References.Localization.CHIP_RECIPE) + ": " + itemName);				
+					ItemStack result = CraftManager.decodeRecipe(itemStack)
+							.getResult();
+					String itemName = result.getItem().getItemStackDisplayName(
+							result);
+					list.add("\u00a73"
+							+ I18n.format(References.Localization.CHIP_RECIPE)
+							+ ": " + itemName);
 				} else {
-					list.add( "\u00a7c<" + I18n.format(References.Localization.CHIP_INVALID) + ">");
+					list.add("\u00a7c<"
+							+ I18n.format(References.Localization.CHIP_INVALID)
+							+ ">");
 				}
 			} else {
 				// blank recipes.
-				list.add( "\u00a77<" + I18n.format(References.Localization.CHIP_BLANK) + ">");
+				list.add("\u00a77<"
+						+ I18n.format(References.Localization.CHIP_BLANK) + ">");
 			}
-			
+
 		}
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT) // Item Texture
+	@SideOnly(Side.CLIENT)
+	// Item Texture
 	public void registerIcons(IIconRegister iconRegister) {
-		if( encoded )
-			this.itemIcon = iconRegister.registerIcon( Textures.ITEM_CHIP_ENCODED );
+		if (encoded)
+			this.itemIcon = iconRegister
+					.registerIcon(Textures.ITEM_CHIP_ENCODED);
 		else
-			this.itemIcon = iconRegister.registerIcon( Textures.ITEM_CHIP_BLANK );
+			this.itemIcon = iconRegister.registerIcon(Textures.ITEM_CHIP_BLANK);
 
-		if( invalidChipIcon == null )
-			invalidChipIcon = iconRegister.registerIcon( Textures.ITEM_CHIP_INVALID );
+		if (invalidChipIcon == null)
+			invalidChipIcon = iconRegister
+					.registerIcon(Textures.ITEM_CHIP_INVALID);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -95,21 +95,23 @@ public class ItemChip extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamage(int damage) {
-		if( damage == 1 )
+		if (damage == 1)
 			return invalidChipIcon;
-		return super.getIconFromDamage( damage );
+		return super.getIconFromDamage(damage);
 	}
-	
+
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 		if (stack.getItem() instanceof ItemChip) {
 			if (((ItemChip) stack.getItem()).encoded) {
-				return EnumChatFormatting.DARK_GREEN + super.getItemStackDisplayName(stack) + EnumChatFormatting.RESET;
+				return EnumChatFormatting.DARK_GREEN
+						+ super.getItemStackDisplayName(stack)
+						+ EnumChatFormatting.RESET;
 			}
 		}
 		return super.getItemStackDisplayName(stack);
 	}
-	
+
 	public static ItemStack invalidChip;
 
 }

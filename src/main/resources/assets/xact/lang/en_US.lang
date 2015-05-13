@@ -13,7 +13,7 @@ item.xact:recipeChip.recipe=Recipe
 xact:tile.machine.crafter.name=X.A.C.T. Crafter
 
 # Tab
-itemGroup.xact=X.A.C.T
+itemGroup.xact=X.A.C.T.
 
 # Gui
 gui.xact:crafter.name=X.A.C.T. Crafter
@@ -28,5 +28,8 @@ xact.key.load=Load recipe from chip
 xact.key.prev=Get Previous Recipe
 xact.key.next=Get Next Recipe
 xact.key.delete=Clear Recipe List
-xact.key.reveal=Hold to Reveal Chip's Recipe
-xact.key.opengrid=Open Craft Pad
+xact.key.opengrid=Quick access Craft Pad
+
+#Configuration Gui
+xact.cfg.miscellaneous.tooltip=Change alternate textures and the alternate crafting table
+xact.cfg.plug-ins.tooltip=Enable/Disable Plug-ins which add Mod support to X.A.C.T.

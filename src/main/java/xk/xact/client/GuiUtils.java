@@ -21,6 +21,7 @@ import org.lwjgl.opengl.GL12;
 
 import xk.xact.XActMod;
 import xk.xact.gui.ContainerCrafter;
+import xk.xact.gui.ContainerPad;
 import xk.xact.network.PacketHandler;
 import xk.xact.network.message.MessageSyncIngredients;
 import xk.xact.network.message.MessageSyncRecipeChip;
@@ -42,7 +43,8 @@ public class GuiUtils {
 
 	public static final RenderItem itemRender = new RenderItem();
 
-	public static void paintSlotOverlay(Slot slot, int size, int color, int xOffset, int yOffset) {
+	public static void paintSlotOverlay(Slot slot, int size, int color,
+			int xOffset, int yOffset) {
 		if (slot == null)
 			return;
 
@@ -62,14 +64,15 @@ public class GuiUtils {
 	public static void paintOverlay(int x, int y, int size, int color) {
 		RenderHelper.enableGUIStandardItemLighting();
 		RenderHelper.disableStandardItemLighting();
-		GL11.glDisable( GL11.GL_LIGHTING );
-		GL11.glDisable( GL11.GL_DEPTH_TEST );
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		Gui.drawRect(x, y, x + size, y + size, color);
 		RenderHelper.disableStandardItemLighting();
-		GL11.glEnable( GL11.GL_DEPTH_TEST );
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
 	}
 
-	public static void paintItem(ItemStack itemStack, int x, int y, Minecraft mc, RenderItem itemRenderer, float zLevel) {
+	public static void paintItem(ItemStack itemStack, int x, int y,
+			Minecraft mc, RenderItem itemRenderer, float zLevel) {
 		if (itemStack == null)
 			return; // I might want to have a "null" image, like background
 					// image.
@@ -78,13 +81,15 @@ public class GuiUtils {
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		RenderHelper.enableStandardItemLighting();
-		RenderHelper.enableGUIStandardItemLighting(); //Fixes funny lightinge
-		
-		itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.renderEngine, itemStack, x, y);
-		itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine, itemStack, x, y);
-//		RenderHelper.disableStandardItemLighting();
-//		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-//		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		RenderHelper.enableGUIStandardItemLighting(); // Fixes funny lightinge
+
+		itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer,
+				mc.renderEngine, itemStack, x, y);
+		itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine,
+				itemStack, x, y);
+		// RenderHelper.disableStandardItemLighting();
+		// GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+		// GL11.glDisable(GL11.GL_DEPTH_TEST);
 		itemRenderer.zLevel = 0.0F;
 		GL11.glPopMatrix();
 	}
@@ -92,7 +97,9 @@ public class GuiUtils {
 	private static final ResourceLocation GLINT = new ResourceLocation(
 			"textures/misc/enchanted_item_glint.png");
 
-	public static void paintEffectOverlay(int x, int y, RenderItem itemRenderer, float red, float green, float blue, float alpha, float zLevel) {
+	public static void paintEffectOverlay(int x, int y,
+			RenderItem itemRenderer, float red, float green, float blue,
+			float alpha, float zLevel) {
 		GL11.glPushMatrix();
 		GL11.glDepthFunc(GL11.GL_GREATER);
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -104,7 +111,7 @@ public class GuiUtils {
 		GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_DST_COLOR);
 		GL11.glColor4f(red, green, blue, alpha);
 		effect(itemRenderer.zLevel, x - 21, y - 21, 18, 18);
-		
+
 		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glDepthMask(true);
 		itemRenderer.zLevel += 50.0F;
@@ -158,22 +165,26 @@ public class GuiUtils {
 
 	@SideOnly(Side.CLIENT)
 	public static boolean isRevealKeyPressed() {
-		return Keyboard.isKeyDown(FMLClientHandler.instance().getClient().gameSettings.keyBindSneak.getKeyCode());
+		return Keyboard
+				.isKeyDown(FMLClientHandler.instance().getClient().gameSettings.keyBindSneak
+						.getKeyCode());
 	}
 
 	@SideOnly(Side.CLIENT)
 	// item = the chip, slotID
 	public static void sendItemToServer(byte slotID, ItemStack item) {
-		PacketHandler.INSTANCE.sendToServer(new MessageSyncRecipeChip(item, slotID));
+		PacketHandler.INSTANCE.sendToServer(new MessageSyncRecipeChip(item,
+				slotID));
 	}
 
 	@SideOnly(Side.CLIENT)
 	public static void sendItemsToServer(ItemStack[] items, int chipSlot) {
 		if (items == null) {
-			sendItemToServer((byte) -1, null );
+			sendItemToServer((byte) -1, null);
 			return;
 		}
-		PacketHandler.INSTANCE.sendToServer(new MessageSyncIngredients(items, chipSlot));
+		PacketHandler.INSTANCE.sendToServer(new MessageSyncIngredients(items,
+				chipSlot));
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -207,8 +218,9 @@ public class GuiUtils {
 		return getHoveredSlot(container, mouseX, mouseY, guiLeft, guiTop);
 	}
 
-	public static Slot getHoveredSlot(Container container, int mouseX, int mouseY, int guiLeft, int guiTop) {
-//		Utils.debug("Getting slot at: (%s, %s)", mouseX, mouseY);
+	public static Slot getHoveredSlot(Container container, int mouseX,
+			int mouseY, int guiLeft, int guiTop) {
+		// Utils.debug("Getting slot at: (%s, %s)", mouseX, mouseY);
 		for (int i = 0; i < container.inventorySlots.size(); i++) {
 			Slot slot = container.getSlot(i);
 			if (slot != null) {
@@ -241,33 +253,44 @@ public class GuiUtils {
 	public static void bindTexture(ResourceLocation resource) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(resource);
 	}
-	
+
 	/**
 	 * Draws the green status lights (Only on alternate textures)
 	 */
-	public static void drawLights(ContainerCrafter container, ResourceLocation guiTexture, GuiContainer gui, int guiLeft, int guiTop) {
+	public static void drawLights(Container container,
+			ResourceLocation guiTexture, GuiContainer gui, int guiLeft,
+			int guiTop) {
 		bindTexture(guiTexture);
-		for (int i = 0; i < 4; i++) {
-			Slot chipSlot = container.getSlot(4 + i); // 8 Offset
-			
-			if (chipSlot.getHasStack() && CraftManager.decodeRecipe(chipSlot.getStack()) != null) {
-				gui.drawTexturedModalRect(guiLeft + chipSlot.xDisplayPosition, guiTop + chipSlot.yDisplayPosition + 9, 176, 0, 3, 3);
+		if (container instanceof ContainerCrafter) {
+			for (int i = 0; i < 4; i++) {
+				Slot chipSlot = container.getSlot(4 + i); // 8 Offset
+
+				if (chipSlot.getHasStack()
+						&& CraftManager.decodeRecipe(chipSlot.getStack()) != null)
+					gui.drawTexturedModalRect(guiLeft
+							+ chipSlot.xDisplayPosition, guiTop
+							+ chipSlot.yDisplayPosition + 9, 176, 0, 3, 3);
 			}
+		} else if (container instanceof ContainerPad) {
+			Slot chipSlot = container.getSlot(10);
+			if (chipSlot.getHasStack()
+					&& CraftManager.decodeRecipe(chipSlot.getStack()) != null)
+				gui.drawTexturedModalRect(guiLeft + chipSlot.xDisplayPosition,
+						guiTop + chipSlot.yDisplayPosition + 9, 190, 0, 3, 3);
 		}
+
 	}
+
 	/**
 	 * Sends a packet to the server to open the specified GUI.
 	 *
 	 * @param guiID
-	 *            the ID of the GUI. Truncated to byte.
-	 * @param meta
-	 *            the additional information that the GUI Handler might need.
-	 *            Truncated to short.
+	 *            the gui id
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void openGui(int guiID) {
-		Minecraft.getMinecraft().thePlayer.openGui(XActMod.instance, guiID, Minecraft.getMinecraft().thePlayer.worldObj, 0, 0, 0);
+		Minecraft.getMinecraft().thePlayer.openGui(XActMod.instance, guiID,
+				Minecraft.getMinecraft().thePlayer.worldObj, 0, 0, 0);
 	}
-	
 
 }

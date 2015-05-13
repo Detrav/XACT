@@ -1,6 +1,5 @@
 package xk.xact.core;
 
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -13,24 +12,23 @@ import xk.xact.util.Textures;
 
 public enum Machines {
 
-	CRAFTER( "crafter", "XACT Crafter" ) {
+	CRAFTER("crafter", "XACT Crafter") {
 		@Override
 		ItemStack[] ingredients() {
-			return RecipeUtils.ingredients(
-					XActMod.itemRecipeBlank,    Blocks.glass,        XActMod.itemRecipeBlank,
-					XActMod.itemRecipeBlank,    Blocks.crafting_table,    XActMod.itemRecipeBlank,
-					Items.iron_ingot,             Blocks.chest,        Items.iron_ingot
-			);
+			return RecipeUtils.ingredients(XActMod.itemRecipeBlank,
+					Blocks.glass, XActMod.itemRecipeBlank,
+					XActMod.itemRecipeBlank, Blocks.crafting_table,
+					XActMod.itemRecipeBlank, Items.iron_ingot, Blocks.chest,
+					Items.iron_ingot);
 		}
 
 		@Override
 		public String[] getTextureFiles() {
-			return new String[] {
-					Textures.CRAFTER_BOTTOM, Textures.CRAFTER_TOP, Textures.CRAFTER_FRONT, Textures.CRAFTER_SIDE
-			};
+			return new String[] { Textures.CRAFTER_BOTTOM,
+					Textures.CRAFTER_TOP, Textures.CRAFTER_FRONT,
+					Textures.CRAFTER_SIDE };
 		}
 	};
-
 
 	private final String machineName;
 	private final String localizedName;
@@ -40,45 +38,46 @@ public enum Machines {
 		this.localizedName = localizedName;
 	}
 
-	///////////////
-	///// Names
+	// /////////////
+	// /// Names
 
 	public String getLocalizedName() {
 		return localizedName; // temp - until i set up localizations.
 	}
 
 	public static String getMachineName(ItemStack itemStack) {
-		if( itemStack != null && itemStack.getItem() instanceof ItemMachine ) {
+		if (itemStack != null && itemStack.getItem() instanceof ItemMachine) {
 			return Machines.values()[itemStack.getItemDamage()].machineName;
 		}
 		return null;
 	}
 
-	///////////////
-	///// Recipes
+	// /////////////
+	// /// Recipes
 
 	public IRecipe getMachineRecipe() {
-		return new ShapedRecipes( 3, 3, ingredients(), new ItemStack( XActMod.blockMachine, 1, this.ordinal() ) );
+		return new ShapedRecipes(3, 3, ingredients(), new ItemStack(
+				XActMod.blockMachine, 1, this.ordinal()));
 	}
 
 	abstract ItemStack[] ingredients();
 
-	///////////////
-	///// Misc
+	// /////////////
+	// /// Misc
 
 	public static int getMachineFromMetadata(int metadata) {
 		metadata = (metadata & 0xE) >> 1;
-		if( metadata >= 0 && metadata < Machines.values().length ) {
+		if (metadata >= 0 && metadata < Machines.values().length) {
 			return Machines.values()[metadata].ordinal();
 		}
 		return 0; // to maintain backwards compatibility
 	}
 
-	///////////////
-	///// Textures
+	// /////////////
+	// /// Textures
 
 	public static String[] getTextureFiles(int machine) {
-		if( machine >= 0 && machine < Machines.values().length )
+		if (machine >= 0 && machine < Machines.values().length)
 			return Machines.values()[machine].getTextureFiles();
 		return new String[0];
 	}

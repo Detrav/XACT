@@ -1,9 +1,9 @@
 package xk.xact.api;
 
+import java.util.List;
+
 import net.minecraft.world.World;
 import xk.xact.recipes.CraftRecipe;
-
-import java.util.List;
 
 /**
  * Used by the CraftingHandler.
@@ -11,15 +11,16 @@ import java.util.List;
 public interface ICraftingDevice { // todo: javadoc.
 
 	/**
-	 * Provide all the inventories to be included for taking resources from, and for placing remaining items once crafted.
+	 * Provide all the inventories to be included for taking resources from, and
+	 * for placing remaining items once crafted.
 	 * <p/>
-	 * You might want (or not) to include the player's inventory at the end of this list.
+	 * You might want (or not) to include the player's inventory at the end of
+	 * this list.
 	 *
 	 * @return a list of inventories.
 	 * @see CraftingHandler#createCraftingHandler(ICraftingDevice)
 	 */
 	public abstract List getAvailableInventories();
-
 
 	public abstract int getRecipeCount();
 
@@ -32,7 +33,8 @@ public interface ICraftingDevice { // todo: javadoc.
 	public abstract World getWorld();
 
 	/**
-	 * This is called after crafting anything, so the device can update it's state.
+	 * This is called after crafting anything, so the device can update it's
+	 * state.
 	 */
 	public abstract void updateState();
 

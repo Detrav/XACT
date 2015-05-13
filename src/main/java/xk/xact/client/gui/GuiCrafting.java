@@ -22,7 +22,7 @@ public abstract class GuiCrafting extends GuiXACT implements
 	public void setRecipe(CraftRecipe recipe) {
 		ItemStack[] ingredients = (recipe == null || !recipe.isValid()) ? null
 				: recipe.getIngredients();
-		sendGridIngredients(ingredients, 0);
+		sendGridIngredients(ingredients, -1);
 	}
 
 	// /////////////
@@ -35,15 +35,15 @@ public abstract class GuiCrafting extends GuiXACT implements
 	public void handleKeyBinding(Container container) {
 		KeyBinding keybind = KeyBindingHandler.getPressedKeybinding();
 		CraftRecipe recipe;
-		
+
 		if (keybind != null) {
 			System.out.println(keybind.getKeyDescription());
 			if (keybind.getKeyDescription().equals("xact.key.clear")) {
 				setRecipe(null);
 
 			} else if (keybind.getKeyDescription().equals("xact.key.load")) {
-				
-				Slot hoveredSlot = GuiUtils.getHoveredSlot(container, mouseX, mouseY, guiLeft, guiTop);
+				Slot hoveredSlot = GuiUtils.getHoveredSlot(container, mouseX,
+						mouseY, guiLeft, guiTop);
 
 				if (hoveredSlot != null && hoveredSlot.getHasStack()) {
 					ItemStack stackInSlot = hoveredSlot.getStack();

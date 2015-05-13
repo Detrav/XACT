@@ -1,7 +1,6 @@
 package xk.xact.util;
 
 import xk.xact.config.ConfigurationManager;
-import xk.xact.gui.ContainerCrafter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

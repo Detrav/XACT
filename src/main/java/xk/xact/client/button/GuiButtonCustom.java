@@ -20,7 +20,7 @@ public abstract class GuiButtonCustom extends GuiButton {
 	}
 
 	/**
-	 * Whether if this buttons should be drawn or not.
+	 * Whether if this but	tons should be drawn or not.
 	 */
 	public boolean isVisible() {
 		return true;//this.drawButton;
@@ -104,6 +104,5 @@ public abstract class GuiButtonCustom extends GuiButton {
 
 	protected void onModeSet(ICustomButtonMode mode) {
 	}
-
 
 }

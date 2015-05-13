@@ -1,7 +1,5 @@
 package xk.xact.client;
 
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.settings.KeyBinding;
@@ -9,12 +7,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import org.lwjgl.input.Keyboard;
+
 import xk.xact.XActMod;
-import xk.xact.api.InteractiveCraftingGui;
 import xk.xact.inventory.InventoryUtils;
 import xk.xact.network.PacketHandler;
 import xk.xact.network.message.MessageSwitchItems;
-import xk.xact.network.message.MessageUpdateMissingItems;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
@@ -23,15 +22,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class KeyBindingHandler {// extends KeyBindingRegistry.KeyHandler {
-
-	// public KeyBindingHandler() {
-	// super( keyBindings(), repeatings() );
-	// }
-
-	// @Override
-	// public String getLabel() {
-	// return "xact test bindings";
-	// }
 
 	public static KeyBinding getPressedKeybinding() {
 		if (Keyboard.isKeyDown(Keybinds.clear.getKeyCode())) {
@@ -68,11 +58,10 @@ public class KeyBindingHandler {// extends KeyBindingRegistry.KeyHandler {
 								// Save the slot the pad was in, so it can be put back there
 								if (craftPad.stackTagCompound == null)
 									craftPad.stackTagCompound = new NBTTagCompound();
-								
-								craftPad.stackTagCompound.setByte("originalSlot", (byte) slot);
+
+								craftPad.stackTagCompound.setByte("originalSlot", (byte) (slot + 1));
 								//Now switch them
 								PacketHandler.INSTANCE.sendToServer(new MessageSwitchItems(heldItem, slot, craftPad, entityPlayer.inventory.currentItem));
-//								Minecraft.getMinecraft().playerController.sendUseItem(entityPlayer, entityPlayer.worldObj, entityPlayer.inventory.getCurrentItem());
 							}	
 						}
 						return;
@@ -80,15 +69,6 @@ public class KeyBindingHandler {// extends KeyBindingRegistry.KeyHandler {
 				}
 			}
 		}
-	}
-
-	private static KeyBinding[] keyBindings() {
-		return new KeyBinding[] { Keybinds.clear, Keybinds.load, Keybinds.prev,
-				Keybinds.next, Keybinds.delete, Keybinds.openGrid };
-	}
-
-	private static boolean[] repeatings() {
-		return new boolean[] { false, false, false, false, false, false };
 	}
 
 	private int getCraftPadIndex() {

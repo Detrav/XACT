@@ -2,9 +2,6 @@ package xk.xact.network;
 
 import java.util.UUID;
 
-import org.lwjgl.input.Keyboard;
-
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -18,11 +15,9 @@ import xk.xact.gui.ContainerCase;
 import xk.xact.gui.ContainerPad;
 import xk.xact.gui.ContainerRecipe;
 import xk.xact.gui.ContainerVanillaWorkbench;
-import xk.xact.util.References;
 
 import com.mojang.authlib.GameProfile;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 public class CommonProxy implements IGuiHandler {
@@ -30,7 +25,8 @@ public class CommonProxy implements IGuiHandler {
 	/**
 	 * Register client-side rendering stuff.
 	 */
-	public void registerRenderInformation() { }
+	public void registerRenderInformation() {
+	}
 
 	/**
 	 * Register keybinds, duh
@@ -38,12 +34,14 @@ public class CommonProxy implements IGuiHandler {
 	public void registerKeybindings() {
 		// Only on client side
 	}
-	
+
 	public void registerHandlers() {
-		//nothin
+		// nothin
 	}
+
 	@Override
-	public Object getServerGuiElement(int GuiID, EntityPlayer player, World world, int x, int y, int z) {
+	public Object getServerGuiElement(int GuiID, EntityPlayer player,
+			World world, int x, int y, int z) {
 		int ID = (GuiID & 0xFF);
 		int meta = (GuiID >> 8) & 0xFFFF;
 
@@ -55,54 +53,56 @@ public class CommonProxy implements IGuiHandler {
 		// 4: <none> (client only)
 		// 5: recipe
 
-		if( ID == 0 ) { // Machines
-			TileMachine machine = (TileMachine) world.getTileEntity( x, y, z );
-			if( machine == null )
+		if (ID == 0) { // Machines
+			TileMachine machine = (TileMachine) world.getTileEntity(x, y, z);
+			if (machine == null)
 				return null;
 
-			return machine.getContainerFor( player );
+			return machine.getContainerFor(player);
 		}
 
-		if( ID == 2 ) {
-			TileWorkbench workbench = (TileWorkbench) world.getTileEntity( x, y, z );
-			if( workbench == null )
+		if (ID == 2) {
+			TileWorkbench workbench = (TileWorkbench) world.getTileEntity(x, y,
+					z);
+			if (workbench == null)
 				return null;
 
-			return new ContainerVanillaWorkbench( workbench, player );
+			return new ContainerVanillaWorkbench(workbench, player);
 		}
 
-		if( ID == 1 ) { // Chip Case
-			ChipCase chipCase = new ChipCase( player.inventory.getCurrentItem() );
-			return new ContainerCase( chipCase, player );
+		if (ID == 1) { // Chip Case
+			ChipCase chipCase = new ChipCase(player.inventory.getCurrentItem());
+			return new ContainerCase(chipCase, player);
 		}
 
-		if( ID == 3 ) { // Craft Pad
+		if (ID == 3) { // Craft Pad
 			int invSlot = meta == 0 ? player.inventory.currentItem : meta - 1;
 			ItemStack item = player.inventory.mainInventory[invSlot];
-			item.setItemDamage( 1 );
-			CraftPad craftPad = new CraftPad( item, player );
-			return new ContainerPad( craftPad, player, invSlot );
+			item.setItemDamage(1);
+			CraftPad craftPad = new CraftPad(item, player);
+			return new ContainerPad(craftPad, player, invSlot);
 		}
 
 		// no ID == 4. GuiPlan, client-side only.
 
-		if( ID == 5 ) { // Set a recipe
-			return new ContainerRecipe( player );
+		if (ID == 5) { // Set a recipe
+			return new ContainerRecipe(player);
 		}
 
 		return null;
 	}
 
 	@Override
-	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+	public Object getClientGuiElement(int ID, EntityPlayer player, World world,
+			int x, int y, int z) {
 		return null;
 	}
 
 	private EntityPlayer fakePlayer;
 
 	public EntityPlayer getFakePlayer(WorldServer world, int x, int y, int z) {
-		if( fakePlayer == null ) {
-			fakePlayer = createFakePlayer( world );
+		if (fakePlayer == null) {
+			fakePlayer = createFakePlayer(world);
 		}
 		fakePlayer.worldObj = world;
 		fakePlayer.posX = x;
@@ -112,12 +112,12 @@ public class CommonProxy implements IGuiHandler {
 	}
 
 	public static boolean isFakePlayer(EntityPlayer player) {
-		return player.getDisplayName().equals( "[XACT]" );
+		return player.getDisplayName().equals("[XACT]");
 	}
 
 	private EntityPlayer createFakePlayer(WorldServer world) {
 		GameProfile profile = new GameProfile(UUID.randomUUID(), "[XACT]");
-		return new FakePlayer( world, profile );
+		return new FakePlayer(world, profile);
 	}
 
 }
