@@ -77,15 +77,12 @@ public abstract class CraftingHandler {
 		return true;
 	}
 
-	public void doCraft(CraftRecipe recipe, EntityPlayer player,
-			ItemStack craftedItem) {
-		InventoryCrafting craftMatrix = generateTemporaryCraftingGridFor(
-				recipe, player, true);
+	public void doCraft(CraftRecipe recipe, EntityPlayer player, ItemStack craftedItem) {
+		InventoryCrafting craftMatrix = generateTemporaryCraftingGridFor(recipe, player, true);
 		if (craftMatrix == null)
 			return;
 
-		craftedItem
-				.onCrafting(device.getWorld(), player, craftedItem.stackSize);
+		craftedItem.onCrafting(device.getWorld(), player, craftedItem.stackSize);
 		// TODO: ItemCraftedEvent replaces this
 		// GameRegistry.onItemCrafted( player, craftedItem, craftMatrix );
 
@@ -124,8 +121,7 @@ public abstract class CraftingHandler {
 		return craftedItem;
 	}
 
-	public void consumeIngredients(InventoryCrafting craftMatrix,
-			EntityPlayer player) {
+	public void consumeIngredients(InventoryCrafting craftMatrix, EntityPlayer player) {
 		// consume the items
 
 		ArrayList<ItemStack> remainingList = new ArrayList<ItemStack>();
@@ -141,23 +137,16 @@ public abstract class CraftingHandler {
 				ItemStack containerStack = stackInSlot.getItem()
 						.getContainerItem(stackInSlot);
 
-				if (containerStack.isItemStackDamageable()
-						&& containerStack.getItemDamage() > containerStack
-								.getMaxDamage()) {
-					MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(
-							player, containerStack));
-					device.getWorld().playSoundAtEntity(player, "random.break",
-							0.8F,
-							0.8F + player.worldObj.rand.nextFloat() * 0.4F);
+				if (containerStack.isItemStackDamageable() && containerStack.getItemDamage() > containerStack.getMaxDamage()) {
+					MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, containerStack));
+					device.getWorld().playSoundAtEntity(player, "random.break", 0.8F, 0.8F + player.worldObj.rand.nextFloat() * 0.4F);
 					containerStack = null;
 				}
 
 				if (containerStack != null) {
-					if (stackInSlot.getItem()
-							.doesContainerItemLeaveCraftingGrid(stackInSlot)) {
+					if (stackInSlot.getItem().doesContainerItemLeaveCraftingGrid(stackInSlot)) {
 						for (Object inventory : getAvailableInventories()) {
-							IInventoryAdapter adapter = InventoryUtils
-									.getInventoryAdapter(inventory);
+							IInventoryAdapter adapter = InventoryUtils.getInventoryAdapter(inventory);
 							if (adapter != null) {
 								containerStack = adapter
 										.placeItem(containerStack);
@@ -178,6 +167,7 @@ public abstract class CraftingHandler {
 			if (!addToInventories(stack))
 				player.dropPlayerItemWithRandomChoice(stack, false);
 		}
+		
 		ItemStack[] remainingItems = InventoryUtils.getContents(craftMatrix);
 		for (ItemStack stack : remainingItems) {
 			if (!addToInventories(stack))
@@ -204,8 +194,7 @@ public abstract class CraftingHandler {
 			return true; // technically, counts as a success.
 
 		for (Object inventory : getAvailableInventories()) {
-			IInventoryAdapter adapter = InventoryUtils
-					.getInventoryAdapter(inventory);
+			IInventoryAdapter adapter = InventoryUtils.getInventoryAdapter(inventory);
 			ItemStack result = adapter.placeItem(stack);
 			if (result == null) {
 				stack.stackSize = 0;
@@ -248,8 +237,7 @@ public abstract class CraftingHandler {
 		if (ingredientIndex == -1)
 			return 0; // not an ingredient! do something!
 		for (Object inventory : getAvailableInventories()) {
-			IInventoryAdapter adapter = InventoryUtils
-					.getInventoryAdapter(inventory);
+			IInventoryAdapter adapter = InventoryUtils.getInventoryAdapter(inventory);
 			for (ItemStack item : adapter) {
 				if (!countAll && found >= stack.stackSize) {
 					return found;
@@ -395,8 +383,7 @@ public abstract class CraftingHandler {
 		return missingArray;
 	}
 
-	protected ItemStack[] findAndGetRecipeIngredients(CraftRecipe recipe,
-			boolean doRemove) {
+	protected ItemStack[] findAndGetRecipeIngredients(CraftRecipe recipe, boolean doRemove) {
 		Map<Integer, int[]> gridIndexes = recipe.getGridIndexes();
 		ItemStack[] simplifiedIngredients = recipe.getSimplifiedIngredients();
 		ItemStack[] contents = new ItemStack[9];
@@ -406,8 +393,7 @@ public abstract class CraftingHandler {
 			int required = simplifiedIngredients[i].stackSize;
 
 			for (Object inventory : getAvailableInventories()) {
-				IInventoryAdapter adapter = InventoryUtils
-						.getInventoryAdapter(inventory);
+				IInventoryAdapter adapter = InventoryUtils.getInventoryAdapter(inventory);
 				for (ItemStack item : adapter) {
 					if (required <= 0) {
 						continue ingredient; // next ingredient

@@ -24,7 +24,6 @@ public class GuiConfiguration extends GuiConfig {
 	protected void actionPerformed(GuiButton button) {
 		if (button != null && button.id == 2000) { // 2000 = done button
 			ConfigurationManager.loadValues();
-			;
 		}
 		super.actionPerformed(button);
 	}
@@ -33,16 +32,15 @@ public class GuiConfiguration extends GuiConfig {
 	private static List<IConfigElement> getConfigElements() {
 		List<IConfigElement> list = new ArrayList<IConfigElement>();
 
-		List<GuiConfiguration> misc = new ConfigElement(
-				ConfigurationManager.config
-						.getCategory(ConfigurationManager.CATEGORY_MISC))
+		List<GuiConfiguration> misc = new ConfigElement(ConfigurationManager.config.getCategory(ConfigurationManager.CATEGORY_MISC))
 				.getChildElements();
 
-		List<GuiConfiguration> plugins = new ConfigElement(
-				ConfigurationManager.config
-						.getCategory(ConfigurationManager.CATEGORY_PLUGINS))
+		List<GuiConfiguration> plugins = new ConfigElement(ConfigurationManager.config.getCategory(ConfigurationManager.CATEGORY_PLUGINS))
 				.getChildElements();
-
+		
+		List<GuiConfiguration> customization = new ConfigElement(ConfigurationManager.config.getCategory(ConfigurationManager.CATEGORY_CUSTOMIZATION))
+				.getChildElements();
+		
 		list.add(new DummyConfigElement.DummyCategoryElement(
 				ConfigurationManager.CATEGORY_MISC, References.MOD_ID + ".cfg."
 						+ ConfigurationManager.CATEGORY_MISC, misc));
@@ -50,7 +48,10 @@ public class GuiConfiguration extends GuiConfig {
 				ConfigurationManager.CATEGORY_PLUGINS, References.MOD_ID
 						+ ".cfg." + ConfigurationManager.CATEGORY_PLUGINS,
 				plugins));
-
+		list.add(new DummyConfigElement.DummyCategoryElement(
+				ConfigurationManager.CATEGORY_CUSTOMIZATION, References.MOD_ID
+						+ ".cfg." + ConfigurationManager.CATEGORY_CUSTOMIZATION,
+				plugins));
 		return list;
 	}
 

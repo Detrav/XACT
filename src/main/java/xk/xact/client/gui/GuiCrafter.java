@@ -65,7 +65,7 @@ public class GuiCrafter extends GuiCrafting {
 	@Override
 	public void updateScreen() {
 		super.updateScreen();
-
+		
 		if (invalidated || crafter.recentlyUpdated) {
 
 			for (int i = 0; i < 4; i++) {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -143,8 +144,12 @@ public class Utils {
 			int _x = x + dir.offsetX;
 			int _y = y + dir.offsetY;
 			int _z = z + dir.offsetZ;
+			
 			TileEntity te = world.getTileEntity( _x, _y, _z );
-			if( te != null )
+			Block block = world.getBlock(_x, _y, _z);
+			int blockMeta = world.getBlockMetadata(_x, _y, _z);
+			
+			if( te != null && !InventoryUtils.isBlockDisabled(block, blockMeta))
 				tileEntities.add( te );
 		}
 		return tileEntities;
@@ -157,7 +162,9 @@ public class Utils {
 			int _y = y + dir.offsetY;
 			int _z = z + dir.offsetZ;
 			TileEntity te = world.getTileEntity( _x, _y, _z );
-			if( te != null && InventoryUtils.isValidInventory( te ) ) {
+			Block block = world.getBlock(_x, _y, _z);
+			int blockMeta = world.getBlockMetadata(_x, _y, _z);
+			if( te != null && InventoryUtils.isValidInventory( te ) && !InventoryUtils.isBlockDisabled(block, blockMeta)) {
 				IInventory inv = InventoryUtils.getInventoryFrom( te, dir.getOpposite() );
 				if( inv != null )
 					list.add( inv );
@@ -200,42 +207,6 @@ public class Utils {
 	public static EntityPlayer getFakePlayerFor(TileEntity tile) {
 		return XActMod.proxy.getFakePlayer( MinecraftServer.getServer().worldServerForDimension(tile.getWorldObj().provider.dimensionId), tile.xCoord, tile.yCoord, tile.zCoord );
 	}
-
-
-	public static void appendFieldToNBTList(NBTTagList list, String name, Object field) {
-//		NBTBase element = null;
-//		if( field instanceof Boolean ) {
-//			element = new NBTTagByte( "_BOOL_" + name, (byte) ((Boolean) field ? 1 : 0) );
-//		} else if( field instanceof Byte ) {
-//			element = new NBTTagByte( name, (Byte) field );
-//		} else if( field instanceof byte[] ) {
-//			element = new NBTTagByteArray( name, (byte[]) field );
-//		} else if( field instanceof Integer ) {
-//			element = new NBTTagInt( name, (Integer) field );
-//		} else if( field instanceof int[] ) {
-//			element = new NBTTagIntArray( name, (int[]) field );
-//		} else if( field instanceof Short ) {
-//			element = new NBTTagShort( name, (Short) field );
-//		} else if( field instanceof Long ) {
-//			element = new NBTTagLong( name, (Long) field );
-//		} else if( field instanceof Float ) {
-//			element = new NBTTagFloat( name, (Float) field );
-//		} else if( field instanceof Double ) {
-//			element = new NBTTagDouble( name, (Double) field );
-//		} else if( field instanceof String ) {
-//			element = new NBTTagString( name, (String) field );
-//		} else if( field instanceof NBTBase ) {
-//			element = ((NBTBase) field).setName( name );
-//		}
-//
-//		if( element != null ) {
-//			list.appendTag( element );
-//		} else {
-//			String extra = field == null ? " (NULL)" : "Class: " + field.getClass();
-//			Utils.logError( "Unable to save field \"%s\" to NBT. Value: %s %s", name, field, extra );
-//		}
-	}
-
 	
 	public static void removeAnyRecipe(Item resultItem){
 		List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
@@ -249,43 +220,4 @@ public class Utils {
 			}
 		}
 	}
-
-	public static Object readFieldFromNBT(NBTBase tag) {
-		return tag;
-//		if( tag instanceof NBTTagByte ) {
-//			String name = tag.getName();
-//			byte b = ((NBTTagByte) tag).data;
-//			if( name.indexOf( "_BOOL_" ) == 0 ) {
-//				tag.setName( tag.getName().substring( "_BOOL_".length() ) );
-//				return b == 10;
-//			}
-//			return b;
-//		}
-//		if( tag instanceof NBTTagShort ) {
-//			return ((NBTTagShort) tag).data;
-//		}
-//		if( tag instanceof NBTTagInt ) {
-//			return ((NBTTagInt) tag).data;
-//		}
-//		if( tag instanceof NBTTagLong ) {
-//			return ((NBTTagLong) tag).data;
-//		}
-//		if( tag instanceof NBTTagFloat ) {
-//			return ((NBTTagFloat) tag).data;
-//		}
-//		if( tag instanceof NBTTagDouble ) {
-//			return ((NBTTagDouble) tag).data;
-//		}
-//		if( tag instanceof NBTTagByteArray ) {
-//			return ((NBTTagByteArray) tag).byteArray;
-//		}
-//		if( tag instanceof NBTTagString ) {
-//			return ((NBTTagString) tag).data;
-//		}
-//		if( tag instanceof NBTTagIntArray ) {
-//			return ((NBTTagIntArray) tag).intArray;
-//		}
-//		return tag;
-	}
-
 }

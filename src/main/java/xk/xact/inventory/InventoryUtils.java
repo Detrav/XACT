@@ -1,5 +1,9 @@
 package xk.xact.inventory;
 
+import ic2.api.IEnergyStorage;
+import ic2.api.IWrenchable;
+import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -9,8 +13,10 @@ import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import xk.xact.api.IInventoryAdapter;
+import xk.xact.config.ConfigurationManager;
 import xk.xact.inventory.adapter.LinearInventory;
 import xk.xact.plugin.PluginManager;
 import xk.xact.util.InvalidInventoryAdapterException;
@@ -174,7 +180,7 @@ public class InventoryUtils {
 
 		for (int i = 0; i < size; i++)
 			contents[i] = inventory.getStackInSlot(i);
-
+		
 		return contents;
 	}
 
@@ -299,17 +305,19 @@ public class InventoryUtils {
 
 	@SuppressWarnings("unchecked")
 	public static boolean isValidInventory(Object inventory) {
+		
 		if (inventory != null) {
 			if (inventory instanceof TileEntityChest) {
 				return true;
 			}
 			if (inventory instanceof IInventory) { // ISidedInventory is
 													// included here.
-				// Special case IC2 Safe/carpeters safe
-				if (((IInventory) inventory).getInventoryName() == "tile.blockCarpentersSafe.name"
-						|| ((IInventory) inventory).getInventoryName() == "Personal Safe")
+				// Special case carpeters safe
+				if (((IInventory) inventory).getInventoryName() == "tile.blockCarpentersSafe.name")
 					return false;
-
+				if (inventory instanceof IWrenchable || inventory instanceof IEnergyStorage)
+					return false; // IC2 Inventories cause dupe bugs, and since their no real storage blocks they'll be ignored
+				
 				return true;
 			}
 
@@ -321,5 +329,30 @@ public class InventoryUtils {
 		}
 		return false;
 	}
-
+	
+	/**
+	 * Checks whether a block is disabled for the crafter by the config
+	 * @param block
+	 * @param blockMeta the metadata of the block
+	 */
+	public static boolean isBlockDisabled(Block block, int blockMeta) {
+		for (String string : ConfigurationManager.IGNORED_BLOCKS) {
+			String[] split = string.split(":"); // 0 = modid, 1 = block name, 2 = metadata
+			if (string != "" && split.length == 3) {
+				Block blockFromConfig = GameRegistry.findBlock(split[0], split[1]);
+				
+				if (blockFromConfig != null && block != null) {
+					if (Integer.parseInt(split[2]) == -1)
+						return block.equals(blockFromConfig);
+					else {
+						return block.equals(blockFromConfig) && Integer.parseInt(split[2]) == blockMeta;
+					}
+				} else
+					return true;
+			} else {
+				return false; // If theres no values set the block will be valid
+			}
+		}
+		return true;
+	}
 }

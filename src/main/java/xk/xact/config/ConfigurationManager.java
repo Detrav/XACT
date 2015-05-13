@@ -1,6 +1,9 @@
 package xk.xact.config;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import net.minecraftforge.common.config.Configuration;
 import xk.xact.XActMod;
@@ -22,7 +25,8 @@ public class ConfigurationManager extends Configuration {
 
 	public static String CATEGORY_MISC = "miscellaneous";
 	public static String CATEGORY_PLUGINS = "plug-ins";
-
+	public static String CATEGORY_CUSTOMIZATION = "customization";
+	
 	public static void loadConfiguration(File configFile) {
 		if (config == null) {
 			config = new Configuration(configFile);
@@ -36,7 +40,10 @@ public class ConfigurationManager extends Configuration {
 				"Change alternate textures and the alternate crafting table");
 		config.getCategory(CATEGORY_PLUGINS).setComment(
 				"Enable/Disable Plug-ins which add Mod support to X.A.C.T.");
-
+		
+		config.getCategory(CATEGORY_CUSTOMIZATION).setComment(
+				"Set Blocks that should be ignored by the crafter (e.g minecraft:chest:meta (Normally 0 or -1 to ignore))");
+		
 		// Plugins
 		{
 			ENABLE_MPS_PLUGIN = config
@@ -82,6 +89,11 @@ public class ConfigurationManager extends Configuration {
 							"If true XACT will use atlernate textures for Items/Guis. They're not really any better.")
 					.getBoolean(true);
 		}
+		
+		// Customization
+		{
+			IGNORED_BLOCKS = Arrays.asList(config.getStringList("ignoredBlocks", CATEGORY_CUSTOMIZATION, DEFAULT_BLOCKS, "Make the crafter ignore blocks"));
+		}
 		if (config.hasChanged()) {
 			config.save();
 		}
@@ -110,6 +122,9 @@ public class ConfigurationManager extends Configuration {
 	public static boolean ENABLE_AE_PLUGIN;
 
 	public static boolean ENABLE_ALT_TEXTURES;
+	
+	public static List<String> IGNORED_BLOCKS;
+	private static String[] DEFAULT_BLOCKS = { "" };
 	// debugging information.
 	public static boolean DEBUG_MODE = false;
 
