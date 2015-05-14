@@ -3,6 +3,8 @@ package xk.xact.inventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 
 /**
  * Used to access multiple inventories as if they were one.
@@ -124,12 +126,12 @@ public class JointInventory implements IInventory {
 	}
 
 	@Override
-	public String getInventoryName() {
+	public String getName() {
 		return name;
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() {
+	public boolean hasCustomName() {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -161,15 +163,35 @@ public class JointInventory implements IInventory {
 	}
 
 	@Override
-	public void openInventory() {
-		// TODO Auto-generated method stub
+	public void openInventory(EntityPlayer player) {
+	}
+
+	@Override
+	public void closeInventory(EntityPlayer player) {
+	}
+
+	@Override
+	public IChatComponent getDisplayName() {
+		return new ChatComponentText(getName());
+	}
+
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
 
 	}
 
 	@Override
-	public void closeInventory() {
-		// TODO Auto-generated method stub
+	public int getFieldCount() {
+		return 0;
+	}
 
+	@Override
+	public void clear() {
 	}
 
 }

@@ -46,7 +46,7 @@ public class LinearInventory implements IInventoryAdapter {
 				continue;
 
 			// Again, make sure only my implementation of ISidedInventory reaches this point.
-			if( isSided && !((ISidedInventory)inventory).canExtractItem( slot.slotIndex, slot.stack, -1 ))
+			if( isSided && !((ISidedInventory)inventory).canExtractItem( slot.slotIndex, slot.stack, null ))
 				continue;
 
 			if( InventoryUtils.similarStacks( slot.stack, item, true ) ) {

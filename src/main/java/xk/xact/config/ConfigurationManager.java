@@ -1,11 +1,12 @@
 package xk.xact.config;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import xk.xact.XActMod;
 import xk.xact.core.blocks.BlockMachine;
 import xk.xact.core.blocks.BlockVanillaWorkbench;
@@ -13,8 +14,6 @@ import xk.xact.core.items.ItemCase;
 import xk.xact.core.items.ItemChip;
 import xk.xact.core.items.ItemPad;
 import xk.xact.util.References;
-import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * @author Xhamolk_

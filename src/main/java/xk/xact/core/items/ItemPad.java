@@ -2,23 +2,21 @@ package xk.xact.core.items;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import xk.xact.XActMod;
 import xk.xact.util.References;
 import xk.xact.util.Textures;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemPad extends Item {
-
-	@SideOnly(Side.CLIENT)
-	private IIcon inUseIcon;
+//
+//	@SideOnly(Side.CLIENT)
+//	private IIcon inUseIcon;
 
 	public ItemPad() {
 		super();
@@ -31,11 +29,11 @@ public class ItemPad extends Item {
 	public void addInformation(ItemStack itemStack, EntityPlayer player,
 			List list, boolean par4) {
 
-		if (itemStack == null || itemStack.stackTagCompound == null)
+		if (itemStack == null || itemStack.getTagCompound() == null)
 			return;
 
 		// Tell which is recipe is loaded on the grid.
-		int id = itemStack.stackTagCompound.getInteger("currentRecipe");
+		int id = itemStack.getTagCompound().getInteger("currentRecipe");
 		if (id != -1) {
 			String resultName = new ItemStack(Item.getItemById(id))
 					.getDisplayName();
@@ -57,18 +55,18 @@ public class ItemPad extends Item {
 		return itemStack;
 	}
 
-	@Override
-	public IIcon getIconFromDamage(int itemDamage) {
-		if (itemDamage == 1)
-			return inUseIcon;
-		return itemIcon;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	// Item Texture
-	public void registerIcons(IIconRegister iconRegister) {
-		this.itemIcon = iconRegister.registerIcon(Textures.ITEM_PAD_OFF);
-		this.inUseIcon = iconRegister.registerIcon(Textures.ITEM_PAD_ON);
-	}
+//	@Override
+//	public IIcon getIconFromDamage(int itemDamage) {
+//		if (itemDamage == 1)
+//			return inUseIcon;
+//		return itemIcon;
+//	}
+//
+//	@Override
+//	@SideOnly(Side.CLIENT)
+//	// Item Texture
+//	public void registerIcons(IIconRegister iconRegister) {
+//		this.itemIcon = iconRegister.registerIcon(Textures.ITEM_PAD_OFF);
+//		this.inUseIcon = iconRegister.registerIcon(Textures.ITEM_PAD_ON);
+//	}
 }

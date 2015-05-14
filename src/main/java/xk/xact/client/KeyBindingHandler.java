@@ -7,6 +7,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.input.Keyboard;
 
@@ -14,11 +19,6 @@ import xk.xact.XActMod;
 import xk.xact.inventory.InventoryUtils;
 import xk.xact.network.PacketHandler;
 import xk.xact.network.message.MessageSwitchItems;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.InputEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class KeyBindingHandler {// extends KeyBindingRegistry.KeyHandler {
@@ -56,10 +56,10 @@ public class KeyBindingHandler {// extends KeyBindingRegistry.KeyHandler {
 								ItemStack heldItem = entityPlayer.getHeldItem();
 								ItemStack craftPad = entityPlayer.inventory.getStackInSlot(slot);
 								// Save the slot the pad was in, so it can be put back there
-								if (craftPad.stackTagCompound == null)
-									craftPad.stackTagCompound = new NBTTagCompound();
+								if (craftPad.getTagCompound() == null)
+									craftPad.setTagCompound(new NBTTagCompound());
 
-								craftPad.stackTagCompound.setByte("originalSlot", (byte) (slot + 1));
+								craftPad.getTagCompound().setByte("originalSlot", (byte) (slot + 1));
 								//Now switch them
 								PacketHandler.INSTANCE.sendToServer(new MessageSwitchItems(heldItem, slot, craftPad, entityPlayer.inventory.currentItem));
 							}	

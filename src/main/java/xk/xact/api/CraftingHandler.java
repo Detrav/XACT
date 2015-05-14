@@ -144,7 +144,7 @@ public abstract class CraftingHandler {
 				}
 
 				if (containerStack != null) {
-					if (stackInSlot.getItem().doesContainerItemLeaveCraftingGrid(stackInSlot)) {
+					if (stackInSlot.getItem().getContainerItem(stackInSlot) != null) {
 						for (Object inventory : getAvailableInventories()) {
 							IInventoryAdapter adapter = InventoryUtils.getInventoryAdapter(inventory);
 							if (adapter != null) {
@@ -440,12 +440,14 @@ public abstract class CraftingHandler {
 
 		// Ore dictionary?
 		if (recipe.isOreRecipe()) {
-			int oreID = OreDictionary.getOreID(ingredient);
-
-			if (oreID != -1) {
-				ArrayList<ItemStack> equivalencies = OreDictionary
-						.getOres(oreID);
-
+			int[] oreID = OreDictionary.getOreIDs(ingredient);
+			
+			if (oreID.length > 0) {
+				List<ItemStack> equivalencies = null;
+				for (int id : oreID) {
+					equivalencies = OreDictionary.getOres(OreDictionary.getOreName(id));
+				}
+				
 				for (ItemStack current : equivalencies) {
 					if (InventoryUtils.similarStacks(item, current, true)) // do
 																			// I

@@ -6,13 +6,17 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -26,9 +30,6 @@ import xk.xact.network.PacketHandler;
 import xk.xact.network.message.MessageSyncIngredients;
 import xk.xact.network.message.MessageSyncRecipeChip;
 import xk.xact.recipes.CraftManager;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiUtils {
@@ -41,7 +42,7 @@ public class GuiUtils {
 	public static final int COLOR_GRAY = (grayTone << 16) | (grayTone << 8)
 			| grayTone;
 
-	public static final RenderItem itemRender = new RenderItem();
+	public static final RenderItem itemRender = new RenderItem(null, null);
 
 	public static void paintSlotOverlay(Slot slot, int size, int color,
 			int xOffset, int yOffset) {
@@ -55,9 +56,9 @@ public class GuiUtils {
 		paintOverlay(minX, minY, size, color);
 	}
 
-	public static void paintIcon(Gui gui, IIcon icon, int x, int y) {
+	public static void paintIcon(Gui gui, TextureAtlasSprite icon, int x, int y) {
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0F);
-		gui.drawTexturedModelRectFromIcon(x, y, icon, 16, 16);
+		gui.drawTexturedModalRect(x, y, icon, 16, 16);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -83,10 +84,9 @@ public class GuiUtils {
 		RenderHelper.enableStandardItemLighting();
 		RenderHelper.enableGUIStandardItemLighting(); // Fixes funny lightinge
 
-		itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer,
-				mc.renderEngine, itemStack, x, y);
-		itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine,
-				itemStack, x, y);
+		itemRenderer.renderItemAndEffectIntoGUI(itemStack, x, y);
+		itemRenderer.renderItemOverlayIntoGUI(mc.fontRendererObj,
+				itemStack, x, y, "huh?");
 		// RenderHelper.disableStandardItemLighting();
 		// GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		// GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -130,13 +130,14 @@ public class GuiUtils {
 			float var9 = (float) (Minecraft.getSystemTime() % (long) (3000 + i * 1873))
 					/ (3000.0F + (float) (i * 1873)) * 256.0F;
 			float var10 = 0.0F;
-			Tessellator var11 = Tessellator.instance;
+			Tessellator tess = Tessellator.getInstance();
+			WorldRenderer var11 = tess.getWorldRenderer();
 			float var12 = 4.0F;
 
 			if (i == 1)
 				var12 = -1.0F;
 
-			var11.startDrawingQuads();
+
 			var11.addVertexWithUV((double) x, (double) (y + height),
 					(double) zLevel,
 					(double) ((var9 + (float) height * var12) * var7),
@@ -153,7 +154,7 @@ public class GuiUtils {
 			var11.addVertexWithUV((double) x, (double) y, (double) zLevel,
 					(double) ((var9 + 0.0F) * var7),
 					(double) ((var10 + 0.0F) * var8));
-			var11.draw();
+			tess.draw();
 		}
 	}
 

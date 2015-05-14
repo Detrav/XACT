@@ -4,9 +4,11 @@ import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fml.common.network.IGuiHandler;
 import xk.xact.core.ChipCase;
 import xk.xact.core.CraftPad;
 import xk.xact.core.tileentities.TileMachine;
@@ -17,8 +19,6 @@ import xk.xact.gui.ContainerRecipe;
 import xk.xact.gui.ContainerVanillaWorkbench;
 
 import com.mojang.authlib.GameProfile;
-
-import cpw.mods.fml.common.network.IGuiHandler;
 
 public class CommonProxy implements IGuiHandler {
 
@@ -40,8 +40,7 @@ public class CommonProxy implements IGuiHandler {
 	}
 
 	@Override
-	public Object getServerGuiElement(int GuiID, EntityPlayer player,
-			World world, int x, int y, int z) {
+	public Object getServerGuiElement(int GuiID, EntityPlayer player, World world, int x, int y, int z) {
 		int ID = (GuiID & 0xFF);
 		int meta = (GuiID >> 8) & 0xFFFF;
 
@@ -54,7 +53,7 @@ public class CommonProxy implements IGuiHandler {
 		// 5: recipe
 
 		if (ID == 0) { // Machines
-			TileMachine machine = (TileMachine) world.getTileEntity(x, y, z);
+			TileMachine machine = (TileMachine) world.getTileEntity(new BlockPos(x, y, z));
 			if (machine == null)
 				return null;
 
@@ -62,8 +61,7 @@ public class CommonProxy implements IGuiHandler {
 		}
 
 		if (ID == 2) {
-			TileWorkbench workbench = (TileWorkbench) world.getTileEntity(x, y,
-					z);
+			TileWorkbench workbench = (TileWorkbench) world.getTileEntity(new BlockPos(x, y, z));
 			if (workbench == null)
 				return null;
 
@@ -100,14 +98,14 @@ public class CommonProxy implements IGuiHandler {
 
 	private EntityPlayer fakePlayer;
 
-	public EntityPlayer getFakePlayer(WorldServer world, int x, int y, int z) {
+	public EntityPlayer getFakePlayer(WorldServer world, BlockPos pos){
 		if (fakePlayer == null) {
 			fakePlayer = createFakePlayer(world);
 		}
 		fakePlayer.worldObj = world;
-		fakePlayer.posX = x;
-		fakePlayer.posY = y;
-		fakePlayer.posZ = z;
+		fakePlayer.posX = pos.getX();
+		fakePlayer.posY = pos.getY();
+		fakePlayer.posZ = pos.getZ();
 		return fakePlayer;
 	}
 

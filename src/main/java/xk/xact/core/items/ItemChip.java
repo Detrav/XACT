@@ -2,19 +2,17 @@ package xk.xact.core.items;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import xk.xact.XActMod;
 import xk.xact.recipes.CraftManager;
 import xk.xact.util.References;
 import xk.xact.util.Textures;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * The item used for the encoding of recipes.
@@ -74,31 +72,31 @@ public class ItemChip extends Item {
 		}
 	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	// Item Texture
-	public void registerIcons(IIconRegister iconRegister) {
-		if (encoded)
-			this.itemIcon = iconRegister
-					.registerIcon(Textures.ITEM_CHIP_ENCODED);
-		else
-			this.itemIcon = iconRegister.registerIcon(Textures.ITEM_CHIP_BLANK);
-
-		if (invalidChipIcon == null)
-			invalidChipIcon = iconRegister
-					.registerIcon(Textures.ITEM_CHIP_INVALID);
-	}
-
-	@SideOnly(Side.CLIENT)
-	private static IIcon invalidChipIcon;
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public IIcon getIconFromDamage(int damage) {
-		if (damage == 1)
-			return invalidChipIcon;
-		return super.getIconFromDamage(damage);
-	}
+//	@Override
+//	@SideOnly(Side.CLIENT)
+//	// Item Texture
+//	public void registerIcons(IIconRegister iconRegister) {
+//		if (encoded)
+//			this.itemIcon = iconRegister
+//					.registerIcon(Textures.ITEM_CHIP_ENCODED);
+//		else
+//			this.itemIcon = iconRegister.registerIcon(Textures.ITEM_CHIP_BLANK);
+//
+//		if (invalidChipIcon == null)
+//			invalidChipIcon = iconRegister
+//					.registerIcon(Textures.ITEM_CHIP_INVALID);
+//	}
+//
+//	@SideOnly(Side.CLIENT)
+//	private static IIcon invalidChipIcon;
+//
+//	@Override
+//	@SideOnly(Side.CLIENT)
+//	public IIcon getIconFromDamage(int damage) {
+//		if (damage == 1)
+//			return invalidChipIcon;
+//		return super.getIconFromDamage(damage);
+//	}
 
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {

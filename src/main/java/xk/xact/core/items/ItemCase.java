@@ -2,16 +2,15 @@ package xk.xact.core.items;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import xk.xact.XActMod;
 import xk.xact.util.References;
 import xk.xact.util.Textures;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemCase extends Item {
 
@@ -27,7 +26,7 @@ public class ItemCase extends Item {
 	public void addInformation(ItemStack itemStack, EntityPlayer player,
 			List list, boolean par4) {
 		// Show how many chips are stored.
-		if (itemStack == null || itemStack.stackTagCompound == null)
+		if (itemStack == null || itemStack.getTagCompound() == null)
 			return;
 
 		Integer count = itemStack.getTagCompound().getInteger("chipCount");
@@ -44,11 +43,11 @@ public class ItemCase extends Item {
 		return itemStack;
 	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	// Item Texture
-	public void registerIcons(IIconRegister iconRegister) {
-		this.itemIcon = iconRegister.registerIcon(Textures.ITEM_CASE);
-	}
+//	@Override
+//	@SideOnly(Side.CLIENT)
+//	// Item Texture
+//	public void registerIcons(IIconRegister iconRegister) {
+//		this.itemIcon = iconRegister.registerIcon(Textures.ITEM_CASE);
+//	}
 
 }

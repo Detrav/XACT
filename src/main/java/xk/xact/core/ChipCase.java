@@ -25,9 +25,9 @@ public class ChipCase {
 
 		// Load contents from NBT
 		if (!itemStack.hasTagCompound())
-			itemStack.stackTagCompound = new NBTTagCompound();
+			itemStack.setTagCompound(new NBTTagCompound()); 
 
-		NBTTagList chips = itemStack.stackTagCompound.getTagList("Chips", 10); // Load
+		NBTTagList chips = itemStack.getTagCompound().getTagList("Chips", 10); // Load
 																				// Chips...
 																				// om
 																				// nom

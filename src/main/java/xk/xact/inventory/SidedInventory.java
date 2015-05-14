@@ -4,7 +4,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 
 /**
  * Adapter used to hide all the inaccessible slots from the original
@@ -16,12 +18,12 @@ public class SidedInventory implements IInventory, ISidedInventory {
 
 	private ISidedInventory inv;
 	private int[] slots;
-	private int side; // as expected by vanilla ISided.
+	private EnumFacing side; // as expected by vanilla ISided.
 
-	public SidedInventory(ISidedInventory inventory, ForgeDirection side) {
+	public SidedInventory(ISidedInventory inventory, EnumFacing side) {
 		this.inv = inventory;
-		this.side = side.ordinal();
-		this.slots = inventory.getAccessibleSlotsFromSide(side.ordinal());
+		this.side = side;
+		this.slots = inventory.getSlotsForFace(side);
 	}
 
 	// ----- IInventory -----
@@ -76,9 +78,10 @@ public class SidedInventory implements IInventory, ISidedInventory {
 	// The "available" slots for this inventory.
 	// Should be an array of integers from 0 to slots.length-1
 	private int[] availableSlots = null;
+	
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int var1) {
+	public int[] getSlotsForFace(EnumFacing side) {
 		if (availableSlots == null) {
 			availableSlots = new int[slots.length];
 			for (int i = 0; i < slots.length; i++) {
@@ -87,34 +90,62 @@ public class SidedInventory implements IInventory, ISidedInventory {
 		}
 		return availableSlots;
 	}
+	
 
 	@Override
-	public boolean canInsertItem(int i, ItemStack itemstack, int j) {
-		return inv.canInsertItem(slots[i], itemstack, side);
+	public boolean canInsertItem(int index, ItemStack itemStackIn,
+			EnumFacing direction) {
+		return inv.canInsertItem(slots[index], itemStackIn, side);
 	}
 
 	@Override
-	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
-		return inv.canExtractItem(slots[i], itemstack, side);
+	public boolean canExtractItem(int index, ItemStack stack,
+			EnumFacing direction) {
+		return inv.canExtractItem(slots[index], stack, side);
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() {
-		return inv.hasCustomInventoryName();
+	public boolean hasCustomName() {
+		return inv.hasCustomName();
 	}
 
 	@Override
-	public void openInventory() {
+	public void openInventory(EntityPlayer player) {
 
 	}
 
 	@Override
-	public void closeInventory() {
+	public void closeInventory(EntityPlayer player) {
 	}
 
 	@Override
-	public String getInventoryName() {
-		return inv.getInventoryName();
+	public String getName() {
+		return inv.getName();
+	}
+
+	@Override
+	public IChatComponent getDisplayName() {
+		// TODO Auto-generated method stub
+		return new ChatComponentText(getName());
+	}
+
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+
+	}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
+
+	@Override
+	public void clear() {
 	}
 
 }

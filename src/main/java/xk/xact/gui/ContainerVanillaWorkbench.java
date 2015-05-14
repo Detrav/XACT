@@ -65,7 +65,7 @@ public class ContainerVanillaWorkbench extends Container {
 	@Override
 	public void onCraftMatrixChanged(IInventory inv) {
 		ItemStack result = CraftingManager.getInstance().findMatchingRecipe(
-				grid, workbench.getWorldObj());
+				grid, workbench.getWorld());
 		workbench.outputInv.setInventorySlotContents(0, result);
 	}
 

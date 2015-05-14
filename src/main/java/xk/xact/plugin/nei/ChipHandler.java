@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import xk.xact.client.gui.GuiCrafter;
 import xk.xact.recipes.CraftManager;
 import xk.xact.recipes.CraftRecipe;
@@ -12,7 +13,6 @@ import xk.xact.recipes.RecipeUtils;
 import xk.xact.util.Textures;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import cpw.mods.fml.client.FMLClientHandler;
 
 public class ChipHandler extends TemplateRecipeHandler {
 

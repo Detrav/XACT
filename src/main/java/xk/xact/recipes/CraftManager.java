@@ -30,10 +30,10 @@ public class CraftManager {
 	public static ItemStack encodeRecipe(CraftRecipe recipe) {
 		ItemStack stack = new ItemStack(XActMod.itemRecipeEncoded, 1);
 
-		if (stack.stackTagCompound == null)
-			stack.stackTagCompound = new NBTTagCompound();
+		if (stack.getTagCompound() == null)
+			stack.setTagCompound( new NBTTagCompound());
 
-		recipe.writeToNBT(stack.stackTagCompound);
+		recipe.writeToNBT(stack.getTagCompound());
 		return stack;
 	}
 
@@ -75,9 +75,9 @@ public class CraftManager {
 			return null;
 
 		// Read recipe.
-		if (stack.stackTagCompound == null)
+		if (stack.getTagCompound() == null)
 			return null;
-		return CraftRecipe.readFromNBT(stack.stackTagCompound);
+		return CraftRecipe.readFromNBT(stack.getTagCompound());
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class CraftManager {
 	// /// NBT Structure
 
 	/*
-	 * stackTagCompound: encodedRecipe: recipeResult -> ItemStack
+	 * getTagCompound(): encodedRecipe: recipeResult -> ItemStack
 	 * recipeIngredients: (1-9) -> ItemStack[9] [ int index, ItemStack
 	 * ingredient ]
 	 */

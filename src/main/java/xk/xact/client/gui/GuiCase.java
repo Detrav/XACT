@@ -1,5 +1,7 @@
 package xk.xact.client.gui;
 
+import java.io.IOException;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -33,7 +35,7 @@ public class GuiCase extends GuiXACT {
 	}
 
 	@Override
-	protected void keyTyped(char chartyped, int keyCode) {
+	protected void keyTyped(char chartyped, int keyCode) throws IOException {
 		InventoryPlayer invPlayer = Minecraft.getMinecraft().thePlayer.inventory;
 		Slot hoverdSlot = GuiUtils.getHoveredSlot(container, mouseX, mouseY,
 				guiLeft, guiTop);

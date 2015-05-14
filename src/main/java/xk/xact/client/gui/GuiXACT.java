@@ -1,5 +1,7 @@
 package xk.xact.client.gui;
 
+import java.io.IOException;
+
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
@@ -24,12 +26,12 @@ public abstract class GuiXACT extends GuiContainer {
 	}
 
 	@Override
-	public void handleMouseInput() {
+	public void handleMouseInput() throws IOException {
 		super.handleMouseInput();
 	}
 
 	@Override
-	protected void mouseClicked(int x, int y, int mouseButton) {
+	protected void mouseClicked(int x, int y, int mouseButton) throws IOException {
 		super.mouseClicked(x, y, mouseButton);
 	}
 

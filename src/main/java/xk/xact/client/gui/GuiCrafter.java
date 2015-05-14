@@ -1,5 +1,7 @@
 package xk.xact.client.gui;
 
+import java.io.IOException;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
@@ -262,7 +264,7 @@ public class GuiCrafter extends GuiCrafting {
 	}
 
 	@Override
-	public void handleKeyboardInput() {
+	public void handleKeyboardInput() throws IOException {
 		handleKeyBinding(container);
 		super.handleKeyboardInput();
 	}

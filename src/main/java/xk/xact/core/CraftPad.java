@@ -72,7 +72,7 @@ public class CraftPad implements ICraftingDevice {
 
 		this.handler = CraftingHandler.createCraftingHandler(this);
 
-		readFromNBT(stack.stackTagCompound);
+		readFromNBT(stack.getTagCompound());
 	}
 
 	// //////////
@@ -188,10 +188,10 @@ public class CraftPad implements ICraftingDevice {
 		// Also save the current recipe to the list
 		NBTTagCompound recipeTag = new NBTTagCompound();
 		if (lastRecipe != null)
-			pad.stackTagCompound.setInteger("currentRecipe",
+			pad.getTagCompound().setInteger("currentRecipe",
 					Item.getIdFromItem(lastRecipe.getResult().getItem()));
 		else
-			pad.stackTagCompound.setInteger("currentRecipe", -1);
+			pad.getTagCompound().setInteger("currentRecipe", -1);
 
 		pad.setTagInfo("Contents", ingredients);
 		pad.setTagCompound(oldCompounds);

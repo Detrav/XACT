@@ -6,10 +6,10 @@ import java.util.List;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
+import net.minecraftforge.fml.client.config.DummyConfigElement;
+import net.minecraftforge.fml.client.config.GuiConfig;
+import net.minecraftforge.fml.client.config.IConfigElement;
 import xk.xact.util.References;
-import cpw.mods.fml.client.config.DummyConfigElement;
-import cpw.mods.fml.client.config.GuiConfig;
-import cpw.mods.fml.client.config.IConfigElement;
 
 public class GuiConfiguration extends GuiConfig {
 
@@ -32,13 +32,13 @@ public class GuiConfiguration extends GuiConfig {
 	private static List<IConfigElement> getConfigElements() {
 		List<IConfigElement> list = new ArrayList<IConfigElement>();
 
-		List<GuiConfiguration> misc = new ConfigElement(ConfigurationManager.config.getCategory(ConfigurationManager.CATEGORY_MISC))
+		List<IConfigElement> misc = new ConfigElement(ConfigurationManager.config.getCategory(ConfigurationManager.CATEGORY_MISC))
 				.getChildElements();
 
-		List<GuiConfiguration> plugins = new ConfigElement(ConfigurationManager.config.getCategory(ConfigurationManager.CATEGORY_PLUGINS))
+		List<IConfigElement> plugins = new ConfigElement(ConfigurationManager.config.getCategory(ConfigurationManager.CATEGORY_PLUGINS))
 				.getChildElements();
 		
-		List<GuiConfiguration> customization = new ConfigElement(ConfigurationManager.config.getCategory(ConfigurationManager.CATEGORY_CUSTOMIZATION))
+		List<IConfigElement> customization = new ConfigElement(ConfigurationManager.config.getCategory(ConfigurationManager.CATEGORY_CUSTOMIZATION))
 				.getChildElements();
 		
 		list.add(new DummyConfigElement.DummyCategoryElement(

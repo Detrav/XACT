@@ -1,5 +1,6 @@
 package xk.xact.core;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -65,11 +66,12 @@ public enum Machines {
 	// /////////////
 	// /// Misc
 
-	public static int getMachineFromMetadata(int metadata) {
-		metadata = (metadata & 0xE) >> 1;
-		if (metadata >= 0 && metadata < Machines.values().length) {
-			return Machines.values()[metadata].ordinal();
-		}
+	public static int getMachineFromMetadata(IBlockState state) {
+//		metadata = (metadata & 0xE) >> 1;
+//		if (metadata >= 0 && metadata < Machines.values().length) {
+//			return Machines.values()[metadata].ordinal();
+//		}
+		
 		return 0; // to maintain backwards compatibility
 	}
 

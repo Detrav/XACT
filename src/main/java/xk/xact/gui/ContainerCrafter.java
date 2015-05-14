@@ -17,14 +17,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Optional;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import xk.xact.api.InteractiveCraftingContainer;
 import xk.xact.core.items.ItemChip;
 import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.recipes.CraftManager;
 import xk.xact.util.Utils;
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * The container used for the Crafter's GUI.
@@ -50,7 +50,7 @@ public class ContainerCrafter extends ContainerXACT implements
 	public ContainerCrafter(TileCrafter crafter, EntityPlayer player) {
 		this.crafter = crafter;
 		this.player = player;
-		this.clientSide = crafter.getWorldObj().isRemote;
+		this.clientSide = crafter.getWorld().isRemote;
 		this.recipeStates = new boolean[crafter.getRecipeCount()][9];
 		buildContainer();
 	}
@@ -201,7 +201,7 @@ public class ContainerCrafter extends ContainerXACT implements
 
 	// Whether if the slot's contents can be taken on double click.
 	@Override
-	public boolean func_94530_a(ItemStack itemStack, Slot slot) {
+	public boolean canMergeSlot(ItemStack itemStack, Slot slot) {
 		return !isCraftingGridSlot(slot.slotNumber)
 				&& slot.inventory != crafter.results;
 	}

@@ -1,5 +1,7 @@
 package xk.xact.client.gui;
 
+import java.io.IOException;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.RenderHelper;
@@ -121,7 +123,7 @@ public class GuiPad extends GuiCrafting {
 	// button texture: (14*i +0, 176)
 
 	@Override
-	protected void keyTyped(char chartyped, int keyCode) {
+	protected void keyTyped(char chartyped, int keyCode) throws IOException {
 		InventoryPlayer invPlayer = Minecraft.getMinecraft().thePlayer.inventory;
 		Slot hoverdSlot = GuiUtils.getHoveredSlot(container, mouseX, mouseY,
 				guiLeft, guiTop);
@@ -224,13 +226,13 @@ public class GuiPad extends GuiCrafting {
 		ItemStack pad = craftPad.getPlayerOwner().getHeldItem();
 		byte slotIdPad = (byte) craftPad.getPlayerOwner().inventory.currentItem;
 		pad.setItemDamage(0);
-		if (pad.stackTagCompound != null) {
-			byte slotToSwitch = (byte) (pad.stackTagCompound
+		if (pad.getTagCompound() != null) {
+			byte slotToSwitch = (byte) (pad.getTagCompound()
 					.getByte("originalSlot"));
 			if (slotToSwitch != 0) {
 				ItemStack stack = craftPad.getPlayerOwner().inventory
 						.getStackInSlot(slotToSwitch - 1);
-				pad.stackTagCompound.setByte("originalSlot", (byte) 0);
+				pad.getTagCompound().setByte("originalSlot", (byte) 0);
 				PacketHandler.INSTANCE.sendToServer(new MessageSwitchItems(pad,
 						slotToSwitch - 1, stack, slotIdPad));
 

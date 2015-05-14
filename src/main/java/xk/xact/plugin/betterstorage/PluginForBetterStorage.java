@@ -1,11 +1,10 @@
 package xk.xact.plugin.betterstorage;
 
-import net.mcft.copy.betterstorage.api.crate.ICrateStorage;
+import net.minecraftforge.fml.common.Loader;
 import xk.xact.api.plugin.XACTPlugin;
 import xk.xact.plugin.PluginManager;
 import xk.xact.plugin.betterstorage.inventory.CrateInventory;
 import xk.xact.util.Utils;
-import cpw.mods.fml.common.Loader;
 
 /**
  * Plug-in for Better Storage.
@@ -19,9 +18,9 @@ public class PluginForBetterStorage implements XACTPlugin {
 	@Override
 	public void initialize() {
 		if (Loader.isModLoaded("betterstorage")) {
-			Utils.log("Better Storage mod detected. Initializing plug-in...");
-			PluginManager.registerInventoryAdapter(ICrateStorage.class,
-					new CrateInventory.Provider());
+			Utils.log("Better Storage mod detected. Initializing plug-in... Not heh");
+//			PluginManager.registerInventoryAdapter(ICrateStorage.class,
+//					new CrateInventory.Provider());
 		} else {
 			Utils.log("Better Storage mod not detected. Plug-in not initialized.");
 		}

@@ -318,7 +318,7 @@ public class ContainerPad extends ContainerItem implements
 
 	// Whether if the slot's contents can be taken on double click.
 	@Override
-	public boolean func_94530_a(ItemStack itemStack, Slot slot) {
+	public boolean canMergeSlot(ItemStack itemStack, Slot slot) {
 		return !isCraftingGridSlot(slot.slotNumber)
 				&& slot.inventory != craftPad.outputInv;
 	}

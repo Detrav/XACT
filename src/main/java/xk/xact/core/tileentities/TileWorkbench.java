@@ -11,6 +11,9 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import xk.xact.api.OverriddenBlock;
@@ -147,7 +150,7 @@ public class TileWorkbench extends TileEntity implements ISidedInventory,
 			if (stack != null) {
 				subGrid.decrStackSize(i, 1);
 
-				if (stack.getItem().hasContainerItem()) {
+				if (stack.getItem().getContainerItem() != null) {
 					ItemStack itemContainer = stack.getItem().getContainerItem(
 							stack);
 
@@ -161,13 +164,13 @@ public class TileWorkbench extends TileEntity implements ISidedInventory,
 					}
 
 					if (itemContainer != null
-							&& (!stack.getItem()
-									.doesContainerItemLeaveCraftingGrid(stack))) {
+							&& (!(stack.getItem()
+									.getContainerItem(stack) != null))) {
 						if (subGrid.getStackInSlot(i) == null) {
 							subGrid.setInventorySlotContents(i, itemContainer);
 						} else {
-							Utils.dropItemAsEntity(worldObj, xCoord, yCoord,
-									zCoord, itemContainer);
+							Utils.dropItemAsEntity(worldObj, pos.getX(), pos.getY(),
+									pos.getZ(), itemContainer);
 						}
 					}
 				}
@@ -180,10 +183,10 @@ public class TileWorkbench extends TileEntity implements ISidedInventory,
 	private static final int[][] slots = { new int[] { 0 }, // result slot
 			new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 } // grid slots.
 	};
-
+	
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
-		if (side == 0) { // bottom
+	public int[] getSlotsForFace(EnumFacing side) {
+		if (side.getIndex() == 0) { // bottom
 			if (hasRecipe())
 				return slots[outputSide];
 		}
@@ -192,33 +195,35 @@ public class TileWorkbench extends TileEntity implements ISidedInventory,
 		// if there is recipe set, bottom side is only the output slot; else,
 		// the input slots.
 	}
+	
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack item, int side) {
-		if (side == 0)
+	public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
+		if (direction.getIndex() == 0)
 			return false; // Bottom side is NOT for inserting.
-		if (slot < 0 || slot > 9)
+		if (direction.getIndex() < 0 || direction.getIndex() > 9)
 			return false; // out of bounds.
-		if (slot == 0 || !hasRecipe())
+		if (direction.getIndex() == 0 || !hasRecipe())
 			return false; // only insert on grid slots when the recipe is set.
 
 		// Logic reminder: at this point, the recipe is set and its a grid slot.
-		ItemStack gridStack = craftingGrid.getStackInSlot(slot - 1);
+		ItemStack gridStack = craftingGrid.getStackInSlot( - 1);
 		if (gridStack == null)
 			return false;
 
 		// Must check for NBT: the vanilla workbench must be the most reliable
 		// (strict) device.
-		return InventoryUtils.similarStacks(gridStack, item, true);
+		return InventoryUtils.similarStacks(gridStack, itemStackIn, true);
 	}
+	
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack item, int side) {
-		if (side != 0)
+	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+		if (direction.getIndex() != 0)
 			return false; // May only extract from the bottom.
-		if (slot < 0 || slot > 9)
+		if (direction.getIndex() < 0 || direction.getIndex() > 9)
 			return false; // out of bounds.
-		if (slot == 0) { // output slot.
+		if (direction.getIndex() == 0) { // output slot.
 			return canCraft();
 		}
 		return !hasRecipe(); // can only extract from input slots if there is no
@@ -317,24 +322,44 @@ public class TileWorkbench extends TileEntity implements ISidedInventory,
 	}
 
 	@Override
-	public String getInventoryName() {
+	public String getName() {
 		return "workbench";
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() {
-		// TODO Auto-generated method stub
+	public boolean hasCustomName() {
 		return true;
 	}
 
 	@Override
-	public void openInventory() {
+	public void openInventory(EntityPlayer player) {}
 
+	@Override
+	public void closeInventory(EntityPlayer player) {}
+
+	@Override
+	public int getField(int id) {
+		return 0;
 	}
 
 	@Override
-	public void closeInventory() {
-
+	public void setField(int id, int value) {
 	}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+	}
+
+	@Override
+	public IChatComponent getDisplayName() {
+		// TODO Auto-generated method stub
+		return new ChatComponentText(getName());
+	}
+
 
 }

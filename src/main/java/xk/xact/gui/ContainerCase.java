@@ -133,7 +133,7 @@ public class ContainerCase extends ContainerItem {
 				chips.appendTag(tag);
 			}
 		}
-		itemStack.stackTagCompound.setInteger("chipCount",
+		itemStack.getTagCompound().setInteger("chipCount",
 				chipCase.getChipsCount());
 		itemStack.setTagInfo("Chips", chips);
 		// chipCase.writeToNBT( itemStack.getTagCompound() );

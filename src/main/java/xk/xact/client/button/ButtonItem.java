@@ -23,7 +23,7 @@ public class ButtonItem extends GuiButtonCustom {
 		super.xPosition += xDiff;
 		super.yPosition += yDiff;
 
-		super.field_146123_n = (xPosition > 0 && xPosition < boundX)
+		super.hovered = (xPosition > 0 && xPosition < boundX) //TODO: unsure
 				&& (yPosition > 0 && yPosition < boundY);
 	}
 
@@ -37,7 +37,7 @@ public class ButtonItem extends GuiButtonCustom {
 	protected void drawBackgroundLayer(Minecraft mc, int mouseX, int mouseY) {
 		GuiUtils.bindTexture(TEXTURE_BUTTONS);
 		int textureX = isSpecial ? 0 : 52;
-		if ( /* ?? */field_146123_n)
+		if ( /* ?? */hovered)
 			textureX += 22;
 
 		// Draw button.
@@ -66,8 +66,7 @@ public class ButtonItem extends GuiButtonCustom {
 
 		itemRenderer.zLevel = 100.0F;
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer,
-				mc.renderEngine, item, x, y);
+		itemRenderer.renderItemAndEffectIntoGUI(item, x, y);
 
 		// don't paint the item's overlay (stack size and effect)
 		// itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer,
@@ -77,6 +76,6 @@ public class ButtonItem extends GuiButtonCustom {
 		this.zLevel = 0.0F;
 	}
 
-	private static RenderItem itemRenderer = new RenderItem();
+	private static RenderItem itemRenderer = new RenderItem(null, null);
 
 }

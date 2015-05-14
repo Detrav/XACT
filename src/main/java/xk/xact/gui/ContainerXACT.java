@@ -34,7 +34,7 @@ public abstract class ContainerXACT extends Container {
 		}
 
 		if (dragState != 0)
-			this.func_94533_d();
+			this.resetDrag();
 
 		if (isCraftingGridSlot(slotID)) { // crafting grid slots
 			if (flag == 0 || flag == 1) {
@@ -78,29 +78,29 @@ public abstract class ContainerXACT extends Container {
 
 		if ((lastAction != 1 || this.dragState != 2)
 				&& lastAction != this.dragState) {
-			this.func_94533_d(); // clear everything.
+			this.resetDrag(); // clear everything.
 		} else if (playerInventory.getItemStack() == null) {
-			this.func_94533_d();
+			this.resetDrag();
 
 		} else if (this.dragState == 0) { // prepare everything.
 			this.dragButton = (data >> 2) & 3;
-			if (func_94528_d(this.dragButton)) { // checks if dragButton is 0 or
+			if (func_180610_a(this.dragButton, playerInventory.player)) { // checks if dragButton is 0 or
 													// 1
 				this.dragState = 1;
 				this.draggedSlots.clear();
 			} else {
-				this.func_94533_d();
+				this.resetDrag();
 			}
-
+		
 		} else if (this.dragState == 1) { // add slot to the list.
 			Slot slot = (Slot) this.inventorySlots.get(slotID);
 			if (slot == null)
 				return;
-
-			if (func_94527_a(slot, playerInventory.getItemStack(), true)
-					&& slot.isItemValid(playerInventory.getItemStack())
-					&& playerInventory.getItemStack().stackSize > this.draggedSlots
-							.size() && this.canDragIntoSlot(slot)) {
+			
+			if (true) {//func_94527_a(slot, playerInventory.getItemStack(), true)
+//					&& slot.isItemValid(playerInventory.getItemStack())
+//					&& playerInventory.getItemStack().stackSize > this.draggedSlots
+//							.size() && this.canDragIntoSlot(slot)) {
 
 				this.draggedSlots.add(slot);
 			}
@@ -115,10 +115,10 @@ public abstract class ContainerXACT extends Container {
 					if (slot == null)
 						continue;
 
-					if (func_94527_a(slot, playerInventory.getItemStack(), true)
-							&& slot.isItemValid(playerStack)
-							&& playerStack.stackSize >= this.draggedSlots
-									.size() && this.canDragIntoSlot(slot)) {
+					if (true) {//func_94527_a(slot, playerInventory.getItemStack(), true)
+//							&& slot.isItemValid(playerStack)
+//							&& playerStack.stackSize >= this.draggedSlots
+//									.size() && this.canDragIntoSlot(slot)) {
 
 						ItemStack itemStack = playerStack.copy();
 						if (isGhostSlot(slot)) {
@@ -151,9 +151,9 @@ public abstract class ContainerXACT extends Container {
 				playerInventory.setItemStack(playerStack);
 			}
 
-			this.func_94533_d();
+			this.resetDrag();
 		} else {
-			this.func_94533_d();
+			this.resetDrag();
 		}
 	}
 
@@ -337,12 +337,12 @@ public abstract class ContainerXACT extends Container {
 	}
 
 	@Override
-	protected void func_94533_d() {
-		super.func_94533_d();
+	protected void resetDrag() {
+		super.resetDrag();
 		dragState = 0;
 		draggedSlots.clear();
 	}
-
+	
 	protected void onContentsChanged() {
 	}
 

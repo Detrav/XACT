@@ -1,5 +1,7 @@
 package xk.xact.client.gui;
 
+import java.io.IOException;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
@@ -56,7 +58,7 @@ public class GuiRecipe extends GuiCrafting {
 	}
 
 	@Override
-	protected void mouseClicked(int x, int y, int mouseButton) {
+	protected void mouseClicked(int x, int y, int mouseButton) throws IOException {
 		if (matching && guiLeft + 117 <= x && x < guiTop + 117 + 14) {
 			if (guiLeft + 63 <= y && y < guiTop + 63 + 14) {
 				// todo: either 1 or 2.
@@ -68,7 +70,7 @@ public class GuiRecipe extends GuiCrafting {
 	}
 
 	@Override
-	protected void keyTyped(char par1, int key) {
+	protected void keyTyped(char par1, int key) throws IOException {
 		if (key == 1) {
 			buttonClicked(0);
 		}
@@ -96,10 +98,8 @@ public class GuiRecipe extends GuiCrafting {
 			this.zLevel = 100.0F;
 			itemRender.zLevel = 100.0F;
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
-			itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj,
-					this.mc.renderEngine, target, x, y);
-			itemRender.renderItemOverlayIntoGUI(this.fontRendererObj,
-					this.mc.renderEngine, target, x, y);
+			itemRender.renderItemAndEffectIntoGUI(target, x, y);
+
 			itemRender.zLevel = 0.0F;
 			this.zLevel = 0.0F;
 		}

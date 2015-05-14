@@ -9,8 +9,9 @@ package xk.xact.core.tileentities;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.mcft.copy.betterstorage.api.crate.ICrateStorage;
-import net.mcft.copy.betterstorage.api.crate.ICrateWatcher;
+
+
+
 //import net.mcft.copy.betterstorage.api.ICrateStorage;
 //import net.mcft.copy.betterstorage.api.ICrateWatcher;
 import net.minecraft.client.Minecraft;
@@ -22,9 +23,13 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import xk.xact.api.CraftingHandler;
 import xk.xact.api.ICraftingDevice;
 import xk.xact.client.gui.GuiCrafter;
@@ -37,14 +42,11 @@ import xk.xact.plugin.PluginManager;
 import xk.xact.recipes.CraftRecipe;
 import xk.xact.recipes.RecipeUtils;
 import xk.xact.util.Utils;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author Xhamolk_
  */
-public class TileCrafter extends TileMachine implements IInventory,
-		ICraftingDevice, ICrateWatcher {// , IStorageAware, INonSignalBlock,
+public class TileCrafter extends TileMachine implements IInventory, ICraftingDevice, IUpdatePlayerListBox{// , IStorageAware, INonSignalBlock,
 										// IGridTileEntity {
 
 	/*
@@ -186,9 +188,9 @@ public class TileCrafter extends TileMachine implements IInventory,
 	 * The current state of the recipes loaded into this machine.
 	 */
 	public boolean[][] recipeStates = new boolean[getRecipeCount()][9];
-
+	
 	@Override
-	public void updateEntity() { // It was 5!
+	public void update() { // It was 5!
 		if (worldObj.getWorldTime() % 40 != 0) { // 4 checks per second might be
 													// enough.
 			return;
@@ -247,7 +249,7 @@ public class TileCrafter extends TileMachine implements IInventory,
 	// Used to trigger updates if changes have been detected.
 	private void updateIfChangesDetected() {
 		if (neighborsUpdatePending && !worldObj.isRemote) {
-			checkForAdjacentCrates();
+//			checkForAdjacentCrates();
 			neighborsUpdatePending = false;
 		}
 
@@ -264,8 +266,8 @@ public class TileCrafter extends TileMachine implements IInventory,
 	@SuppressWarnings("unchecked")
 	public List getAvailableInventories() {
 		// Pulling from adjacent inventories
-		List list = Utils.getAdjacentInventories(this.worldObj, this.xCoord,
-				this.yCoord, this.zCoord);
+		List list = Utils.getAdjacentInventories(this.worldObj, this.pos.getX(),
+				 this.pos.getY(),  this.pos.getZ());
 		// The internal inventory is always the top priority.
 		list.add(0, resources);
 		return list;
@@ -337,11 +339,6 @@ public class TileCrafter extends TileMachine implements IInventory,
 	@Override
 	public void setInventorySlotContents(int var1, ItemStack var2) {
 		resources.setInventorySlotContents(var1, var2);
-	}
-
-	@Override
-	public String getInventoryName() {
-		return resources.getInventoryName();
 	}
 
 	@Override
@@ -466,8 +463,8 @@ public class TileCrafter extends TileMachine implements IInventory,
 	@SuppressWarnings("unchecked")
 	public static List getAdjacentInventories(TileCrafter machine) {
 		List<TileEntity> tiles = Utils.getAdjacentTileEntities(
-				machine.worldObj, machine.xCoord, machine.yCoord,
-				machine.zCoord);
+				machine.worldObj, machine.pos.getX(), machine.pos.getY(),
+				machine.pos.getY());
 		List<Object> adjacentInventories = new ArrayList<Object>();
 		for (TileEntity tile : tiles) {
 			if (tile != null && InventoryUtils.isValidInventory(tile))
@@ -478,39 +475,39 @@ public class TileCrafter extends TileMachine implements IInventory,
 
 	// ---------- Better Storage integration ---------- //
 
-	private ICrateStorage[] adjacentCrates = new ICrateStorage[6];
-
-	@Override
-	public void onCrateItemsModified(ItemStack stack) {
-		stateUpdatePending = true;
-	}
-
-	private void checkForAdjacentCrates() {
-		if (!ConfigurationManager.ENABLE_BETTER_STORAGE_PLUGIN)
-			return;
-
-		boolean foundChanges = false;
-
-		for (int i = 0; i < 6; i++) {
-			int x = xCoord + ForgeDirection.VALID_DIRECTIONS[i].offsetX;
-			int y = yCoord + ForgeDirection.VALID_DIRECTIONS[i].offsetY;
-			int z = zCoord + ForgeDirection.VALID_DIRECTIONS[i].offsetZ;
-
-			TileEntity tile = worldObj.getTileEntity(x, y, z);
-			if (tile != null && tile instanceof ICrateStorage) {
-				if (adjacentCrates[i] == null) {
-					adjacentCrates[i] = (ICrateStorage) tile;
-					adjacentCrates[i].registerCrateWatcher(this);
-					foundChanges = true;
-				}
-			} else if (adjacentCrates[i] != null) {
-				adjacentCrates[i] = null;
-				foundChanges = true;
-			}
-		}
-		if (foundChanges)
-			stateUpdatePending = true;
-	}
+//	private ICrateStorage[] adjacentCrates = new ICrateStorage[6];
+//
+//	@Override
+//	public void onCrateItemsModified(ItemStack stack) {
+//		stateUpdatePending = true;
+//	}
+//
+//	private void checkForAdjacentCrates() {
+//		if (!ConfigurationManager.ENABLE_BETTER_STORAGE_PLUGIN)
+//			return;
+//
+//		boolean foundChanges = false;
+//
+//		for (int i = 0; i < 6; i++) {
+//			int x = xCoord + ForgeDirection.VALID_DIRECTIONS[i].offsetX;
+//			int y = yCoord + ForgeDirection.VALID_DIRECTIONS[i].offsetY;
+//			int z = zCoord + ForgeDirection.VALID_DIRECTIONS[i].offsetZ;
+//
+//			TileEntity tile = worldObj.getTileEntity(x, y, z);
+//			if (tile != null && tile instanceof ICrateStorage) {
+//				if (adjacentCrates[i] == null) {
+//					adjacentCrates[i] = (ICrateStorage) tile;
+//					adjacentCrates[i].registerCrateWatcher(this);
+//					foundChanges = true;
+//				}
+//			} else if (adjacentCrates[i] != null) {
+//				adjacentCrates[i] = null;
+//				foundChanges = true;
+//			}
+//		}
+//		if (foundChanges)
+//			stateUpdatePending = true;
+//	}
 
 	// ---------- Applied Energistics integration ---------- //
 
@@ -560,18 +557,48 @@ public class TileCrafter extends TileMachine implements IInventory,
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() {
+	public String getName() {
+		return resources.getName();
+	}
+
+	@Override
+	public boolean hasCustomName() {
 		return true;
 	}
 
 	@Override
-	public void openInventory() {
-
+	public IChatComponent getDisplayName() {
+		return new ChatComponentText(resources.getName());
 	}
 
 	@Override
-	public void closeInventory() {
+	public void openInventory(EntityPlayer player) {}
+
+	@Override
+	public void closeInventory(EntityPlayer player) {}
+
+	@Override
+	public int getField(int id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getFieldCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void clear() {
 
 	}
+
 
 }

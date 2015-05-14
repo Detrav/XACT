@@ -2,7 +2,6 @@ package xk.xact.inventory;
 
 import ic2.api.IEnergyStorage;
 import ic2.api.IWrenchable;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -13,8 +12,8 @@ import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import xk.xact.api.IInventoryAdapter;
 import xk.xact.config.ConfigurationManager;
 import xk.xact.inventory.adapter.LinearInventory;
@@ -134,7 +133,7 @@ public class InventoryUtils {
 			// reaches here.
 			if (isSided
 					&& !((ISidedInventory) inv).canInsertItem(slot.slotIndex,
-							stack, -1))
+							stack, null)) // null is ForgeDirection.UNKNOWN
 				continue;
 
 			if (slot.isEmpty()) {
@@ -200,7 +199,7 @@ public class InventoryUtils {
 	 *         on the TileEntity.
 	 */
 	public static IInventory getInventoryFrom(TileEntity tileEntity,
-			ForgeDirection side) {
+			EnumFacing side) {
 		IInventory inventory = null;
 		if (tileEntity instanceof TileEntityChest) {
 			TileEntityChest chest = (TileEntityChest) tileEntity;
@@ -313,7 +312,7 @@ public class InventoryUtils {
 			if (inventory instanceof IInventory) { // ISidedInventory is
 													// included here.
 				// Special case carpeters safe
-				if (((IInventory) inventory).getInventoryName() == "tile.blockCarpentersSafe.name")
+				if (((IInventory) inventory).getName() == "tile.blockCarpentersSafe.name")
 					return false;
 				if (inventory instanceof IWrenchable || inventory instanceof IEnergyStorage)
 					return false; // IC2 Inventories cause dupe bugs, and since their no real storage blocks they'll be ignored

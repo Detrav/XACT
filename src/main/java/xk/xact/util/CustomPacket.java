@@ -88,9 +88,9 @@ public class CustomPacket {
 		dataStream.writeShort( (short) stack.getItemDamage() );
 
 		if( stack.hasTagCompound() ) {
-			byte[] compressedNBT = CompressedStreamTools.compress( stack.getTagCompound() );
-			dataStream.writeShort( (short) compressedNBT.length );
-			dataStream.write( compressedNBT );
+//			byte[] compressedNBT = CompressedStreamTools.compress( stack.getTagCompound() );
+//			dataStream.writeShort( (short) compressedNBT.length );
+//			dataStream.write( compressedNBT );
 		} else {
 			dataStream.writeShort( -1 );
 		}
