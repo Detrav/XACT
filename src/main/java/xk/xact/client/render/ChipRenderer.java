@@ -40,19 +40,19 @@ public class ChipRenderer implements IItemRenderer {
 		GL11.glEnable(GL11.GL_BLEND);
 		CraftRecipe recipe = RecipeUtils.getRecipe(itemStack,
 				Minecraft.getMinecraft().theWorld);
-		if (recipe != null) {
-
-			GuiUtils.paintItem(recipe.getResult(), 0, 0,
-					Minecraft.getMinecraft(), GuiUtils.itemRender, 120.0F);
-
-			// Green overlay
-			GuiUtils.paintEffectOverlay(20, 20, GuiUtils.itemRender, 0.25f,
-					0.55f, 0.3f, 0.85f, 120F);
-		} else {
-			// paint invalid chip icon
-			GuiUtils.paintItem(ItemChip.invalidChip, 0, 0,
-					Minecraft.getMinecraft(), GuiUtils.itemRender, 120.0F);
-		}
+//		if (recipe != null) {
+//
+//			GuiUtils.paintItem(recipe.getResult(), 0, 0,
+//					Minecraft.getMinecraft(), GuiUtils.itemRender, 120.0F);
+//
+//			// Green overlay
+//			GuiUtils.paintEffectOverlay(20, 20, GuiUtils.itemRender, 0.25f,
+//					0.55f, 0.3f, 0.85f, 120F);
+//		} else {
+//			// paint invalid chip icon
+//			GuiUtils.paintItem(ItemChip.invalidChip, 0, 0,
+//					Minecraft.getMinecraft(), GuiUtils.itemRender, 120.0F);
+//		}
 
 		RenderHelper.enableGUIStandardItemLighting();
 		drawing = false;

@@ -1,0 +1,8 @@
+{
+    "variants": {
+    	"facing=north": { "model": "xact:fluxfurnace" },
+        "facing=south": { "model": "xact:fluxfurnace", "y": 180 },
+        "facing=west":  { "model": "xact:fluxfurnace", "y": 270 },
+        "facing=east":  { "model": "xact:fluxfurnace", "y": 90 }
+    }
+}

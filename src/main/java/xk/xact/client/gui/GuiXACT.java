@@ -94,8 +94,7 @@ public abstract class GuiXACT extends GuiContainer {
 	public boolean isMouseOverSlot(Slot slot, int mouseX, int mouseY) {
 		int dim = getSlotDimensions(slot);
 		return this.isPointInRegion(slot.xDisplayPosition,
-				slot.yDisplayPosition, dim, dim, mouseX - guiLeft, mouseY
-						- guiTop);
+				slot.yDisplayPosition, dim, dim, mouseX, mouseY);
 	}
 
 	public Slot getSlotAt(int x, int y) {

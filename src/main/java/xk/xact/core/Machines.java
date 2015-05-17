@@ -6,7 +6,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.core.items.ItemMachine;
 import xk.xact.recipes.RecipeUtils;
 import xk.xact.util.Textures;
@@ -16,10 +16,10 @@ public enum Machines {
 	CRAFTER("crafter", "XACT Crafter") {
 		@Override
 		ItemStack[] ingredients() {
-			return RecipeUtils.ingredients(XActMod.itemRecipeBlank,
-					Blocks.glass, XActMod.itemRecipeBlank,
-					XActMod.itemRecipeBlank, Blocks.crafting_table,
-					XActMod.itemRecipeBlank, Items.iron_ingot, Blocks.chest,
+			return RecipeUtils.ingredients(XactMod.itemRecipeBlank,
+					Blocks.glass, XactMod.itemRecipeBlank,
+					XactMod.itemRecipeBlank, Blocks.crafting_table,
+					XactMod.itemRecipeBlank, Items.iron_ingot, Blocks.chest,
 					Items.iron_ingot);
 		}
 
@@ -58,7 +58,7 @@ public enum Machines {
 
 	public IRecipe getMachineRecipe() {
 		return new ShapedRecipes(3, 3, ingredients(), new ItemStack(
-				XActMod.blockMachine, 1, this.ordinal()));
+				XactMod.blockMachine, 1, this.ordinal()));
 	}
 
 	abstract ItemStack[] ingredients();

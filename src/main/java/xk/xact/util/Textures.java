@@ -7,7 +7,7 @@ import xk.xact.config.ConfigurationManager;
 @SideOnly(Side.CLIENT)
 public final class Textures {
 
-	public static final String TEXTURES_ROOT = References.MOD_ID + ":textures/";
+	public static final String TEXTURES_ROOT = "textures/";
 
 	// GUI Textures
 	public static final String GUI_CRAFTER = TEXTURES_ROOT + "gui/GuiCrafter" + (ConfigurationManager.ENABLE_ALT_TEXTURES ? "_alt.png" : ".png");

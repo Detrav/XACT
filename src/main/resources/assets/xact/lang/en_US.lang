@@ -1,14 +1,14 @@
 # Lang file for XACT
 
 # Items
-item.xact:recipeChip.blank.name=Recipe Chip
-item.xact:craftPad.name=Craft Pad
-item.xact:recipeChip.encoded.name=Encoded Recipe Chip
-item.xact:chipCase.name=Chip Case
+item.xact:recipeblank.name=Recipe Chip
+item.xact:craftpad.name=Craft Pad
+item.xact:recipeencoded.name=Encoded Recipe Chip
+item.xact:chipcase.name=Chip Case
 
-item.xact:recipeChip.blank.desc=blank
-item.xact:recipeChip.invalid.desc=invalid
-item.xact:recipeChip.recipe=Recipe
+item.xact:recipechip.blank.desc=blank
+item.xact:recipechip.invalid.desc=invalid
+item.xact:recipechip.recipe=Recipe
 # Blocks
 xact:tile.machine.crafter.name=X.A.C.T. Crafter
 

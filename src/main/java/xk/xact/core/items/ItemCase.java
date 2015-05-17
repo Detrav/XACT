@@ -8,17 +8,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.util.References;
 import xk.xact.util.Textures;
 
-public class ItemCase extends Item {
-
+public class ItemCase extends XactBaseItem {
+	private String itemName;
 	public ItemCase() {
-		super();
-		this.setUnlocalizedName(References.Unlocalized.ITEMCHIPCASE);
+		super(References.Unlocalized.ITEMCHIPCASE);
 		this.setMaxStackSize(1);
-		this.setCreativeTab(XActMod.xactTab);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -39,15 +37,8 @@ public class ItemCase extends Item {
 			EntityPlayer player) {
 		itemStack.setItemDamage(1);
 		if (!world.isRemote)
-			player.openGui(XActMod.instance, 1, world, 0, 0, 0);
+			player.openGui(XactMod.instance, 1, world, 0, 0, 0);
 		return itemStack;
 	}
-
-//	@Override
-//	@SideOnly(Side.CLIENT)
-//	// Item Texture
-//	public void registerIcons(IIconRegister iconRegister) {
-//		this.itemIcon = iconRegister.registerIcon(Textures.ITEM_CASE);
-//	}
 
 }

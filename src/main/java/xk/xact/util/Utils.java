@@ -26,7 +26,7 @@ import net.minecraftforge.fml.common.FMLLog;
 
 import org.apache.logging.log4j.Level;
 
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.config.ConfigurationManager;
 import xk.xact.inventory.InventoryUtils;
 
@@ -38,7 +38,7 @@ public class Utils {
 
 	public static void debug(String message, Object... data) {
 		if (ConfigurationManager.DEBUG_MODE)
-			XActMod.logger.fine(String.format(message, data));
+			XactMod.logger.fine(String.format(message, data));
 
 	}
 
@@ -232,7 +232,7 @@ public class Utils {
 	}
 
 	public static EntityPlayer getFakePlayerFor(TileEntity tile) {
-		return XActMod.proxy.getFakePlayer(
+		return XactMod.proxy.getFakePlayer(
 				MinecraftServer.getServer().worldServerForDimension(
 						tile.getWorld().provider.getDimensionId()), tile.getPos());
 	}

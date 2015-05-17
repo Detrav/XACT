@@ -11,15 +11,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.core.tileentities.TileWorkbench;
 import xk.xact.util.Utils;
 
 // the block that replaces the vanilla crafting table
-public class BlockVanillaWorkbench extends BlockContainer {
+public class BlockVanillaWorkbench extends BlockMachine {
 
-	public BlockVanillaWorkbench() {
-		super(Material.wood);
+	public BlockVanillaWorkbench(String guiName) {
+		super(Material.wood, "xact.workbench", guiName);
 		this.setHardness(2.5F);
 		this.setStepSound(soundTypeWood);
 		this.setUnlocalizedName("xact.workbench");
@@ -48,7 +48,7 @@ public class BlockVanillaWorkbench extends BlockContainer {
 			IBlockState state, EntityPlayer playerIn, EnumFacing side,
 			float hitX, float hitY, float hitZ) {
 		if (!worldIn.isRemote) {
-			playerIn.openGui(XActMod.instance, 2, worldIn, pos.getX(), pos.getY(), pos.getZ());
+			playerIn.openGui(XactMod.instance, 2, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		}
 
 		return true;

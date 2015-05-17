@@ -8,11 +8,12 @@ import org.lwjgl.opengl.GL11;
 
 import xk.xact.client.GuiUtils;
 import xk.xact.gui.ContainerVanillaWorkbench;
+import xk.xact.util.References;
 import xk.xact.util.Textures;
 
 public class GuiVanillaWorkbench extends GuiContainer {
 
-	private static final ResourceLocation guiTexture = new ResourceLocation(
+	private static final ResourceLocation guiTexture = new ResourceLocation(References.MOD_ID,
 			Textures.GUI_WORKBENCH);
 
 	public GuiVanillaWorkbench(ContainerVanillaWorkbench container) {

@@ -7,6 +7,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,7 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.core.Machines;
 import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.core.tileentities.TileMachine;
@@ -30,13 +32,14 @@ import xk.xact.util.Utils;
  * @author Xhamolk_
  */
 public class BlockMachine extends BlockContainer {
-
-	public BlockMachine() {
-		super(Material.iron);
-		this.setStepSound(soundTypeMetal);
-		this.setHardness(2.0f);
-		this.setResistance(1.5f);
-		this.setCreativeTab(XActMod.xactTab);
+	String blockName;
+	public int guiID = -1;
+	public BlockMachine(Material materialIn, String unlocalizedName, String guiName) {
+		super(materialIn);
+		setCreativeTab(XactMod.xactTab);
+		blockName = unlocalizedName;
+		setUnlocalizedName(unlocalizedName);
+		guiID = 0; // Only one machine
 	}
 	
 
@@ -60,7 +63,7 @@ public class BlockMachine extends BlockContainer {
 		}
 		if (!worldIn.isRemote)
 			// player.openGui( XActMod.instance, 0, world, x, y, z );
-			FMLNetworkHandler.openGui(playerIn, XActMod.instance, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
+			FMLNetworkHandler.openGui(playerIn, XactMod.instance, guiID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}
 
@@ -132,6 +135,19 @@ public class BlockMachine extends BlockContainer {
 
 	// /////////////
 	// /// Textures
+	
+	public void addRender() {
+		if (XactMod.proxy.isClient()) {
+			Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(this), 0, new ModelResourceLocation(blockName, "inventory"));
+		}
+	}
+	
+	public void postInit() {
+		if (XactMod.proxy.isClient()) {
+			Minecraft.getMinecraft().getRenderItem().getItemModelMesher()
+				.register(Item.getItemFromBlock(this), 0, new ModelResourceLocation(blockName, "inventory"));	
+		}
+	}
 //	@SideOnly(Side.CLIENT)
 //	private static IIcon[][] textures;
 //

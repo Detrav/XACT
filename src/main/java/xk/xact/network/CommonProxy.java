@@ -117,5 +117,12 @@ public class CommonProxy implements IGuiHandler {
 		GameProfile profile = new GameProfile(UUID.randomUUID(), "[XACT]");
 		return new FakePlayer(world, profile);
 	}
-
+	
+	public boolean isClient() {
+		return false;
+	}
+	
+	public boolean isServer() {
+		return true;
+	}
 }

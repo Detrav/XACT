@@ -4,10 +4,11 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.block.material.Material;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.core.blocks.BlockMachine;
 import xk.xact.core.blocks.BlockVanillaWorkbench;
 import xk.xact.core.items.ItemCase;
@@ -99,16 +100,16 @@ public class ConfigurationManager extends Configuration {
 	}
 
 	public static void initItems() {
-		XActMod.itemRecipeBlank = new ItemChip(false);
-		XActMod.itemRecipeEncoded = new ItemChip(true);
-		XActMod.itemChipCase = new ItemCase();
-		XActMod.itemCraftPad = new ItemPad();
+		XactMod.itemRecipeBlank = new ItemChip(false);
+		XactMod.itemRecipeEncoded = new ItemChip(true);
+		XactMod.itemChipCase = new ItemCase();
+		XactMod.itemCraftPad = new ItemPad();
 	}
 
 	public static void initBlocks() {
-		XActMod.blockMachine = new BlockMachine();
+		XactMod.blockMachine = new BlockMachine(Material.iron, References.Unlocalized.BLOCKMACHINE, "möp");
 		if (REPLACE_WORKBENCH) {
-			XActMod.blockWorkbench = new BlockVanillaWorkbench();
+			XactMod.blockWorkbench = new BlockVanillaWorkbench("none");
 		}
 	}
 

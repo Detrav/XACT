@@ -12,12 +12,13 @@ import org.lwjgl.opengl.GL11;
 
 import xk.xact.client.GuiUtils;
 import xk.xact.inventory.InventoryUtils;
+import xk.xact.util.References;
 import xk.xact.util.Textures;
 
 // GUI used to set the recipe of a node.
 public class GuiRecipe extends GuiCrafting {
 
-	private static final ResourceLocation guiTexture = new ResourceLocation(
+	private static final ResourceLocation guiTexture = new ResourceLocation(References.MOD_ID,
 			Textures.GUI_RECIPE);
 
 	private EntityPlayer player;

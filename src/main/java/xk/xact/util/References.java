@@ -5,11 +5,14 @@ public class References {
 	public static final String MOD_NAME = "XACT Mod";
 	public static final String VERSION = "0.5.2";
 	public static final String GUI_FACTORY_CLASS = "xk.xact.config.GuiFactory";
+	
 	public static class Registry {
-		public static final String ITEMCHIPCASE = "chipCase";
-		public static final String ITEMCRAFTPAD = "craftPad";
-		public static final String ITEMRECIPEENCODED = "recipeEncoded";
-		public static final String ITEMRECIPEBLANK = "recipeBlank";
+		public static final String ITEMCHIPCASE = "chipcase";
+		public static final String ITEMCRAFTPAD = "craftpad";
+		public static final String ITEMRECIPEENCODED = "recipeencoded";
+		public static final String ITEMRECIPEBLANK = "recipeblank";
+		public static final String BLOCKMACHINE = "XACTMachine";
+		public static final String BLOCKCRAFTINGTABLE = "XACTWorkbench";
 	}
 
 	public static class Unlocalized	 {
@@ -18,6 +21,9 @@ public class References {
 		public static final String ITEMCRAFTPAD = PREFIX + Registry.ITEMCRAFTPAD;
 		public static final String ITEMRECIPEENCODED = PREFIX + Registry.ITEMRECIPEENCODED;
 		public static final String ITEMRECIPEBLANK = PREFIX +  Registry.ITEMRECIPEBLANK;
+		public static final String BLOCKMACHINE = PREFIX + Registry.BLOCKMACHINE;
+		public static final String BLOCKCRAFTINGTABLE = PREFIX + Registry.BLOCKCRAFTINGTABLE;
+		
 	}
 	
 	public static class Keys {
@@ -30,13 +36,14 @@ public class References {
 		public static final String KEY_REVEAL = MOD_ID + ".key.reveal";
 		public static final String KEY_OPENGRID = MOD_ID + ".key.opengrid";
 	}
+	
 	public static class Localization {
 		public static final String CRAFTPAD_GUITITLE = "gui.xact:craftpad.name";
 		public static final String CRAFTPAD_CHIPTITLE = "gui.xact:craftpad.chip.name";
 		public static final String CRAFTER_TITLE = "gui.xact:crafter.name";
 		public static final String CRAFTER_INVENTORY = "gui.xact:crafter.inventory.name";
-		public static final String CHIP_BLANK = "item.xact:recipeChip.blank.desc";
-		public static final String CHIP_INVALID = "item.xact:recipeChip.invalid.desc";
-		public static final String CHIP_RECIPE = "item.xact:recipeChip.recipe";
+		public static final String CHIP_BLANK = "item.xact:recipechip.blank.desc";
+		public static final String CHIP_INVALID = "item.xact:recipechip.invalid.desc";
+		public static final String CHIP_RECIPE = "item.xact:recipechip.recipe";
 	}
 }

@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.input.Keyboard;
 
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.inventory.InventoryUtils;
 import xk.xact.network.PacketHandler;
 import xk.xact.network.message.MessageSwitchItems;
@@ -73,13 +73,13 @@ public class KeyBindingHandler {// extends KeyBindingRegistry.KeyHandler {
 
 	private int getCraftPadIndex() {
 		return InventoryUtils.checkHotbar(Minecraft.getMinecraft().thePlayer,
-				new ItemStack(XActMod.itemCraftPad));
+				new ItemStack(XactMod.itemCraftPad));
 	}
 	
 	private int getFirstCraftPad(EntityPlayer player)  {
 		InventoryPlayer playerinv = player.inventory;
 		for (int i = 0; i < playerinv.getSizeInventory(); i++) {
-			if (playerinv.getStackInSlot(i) != null && playerinv.getStackInSlot(i).getItem().equals(XActMod.itemCraftPad))
+			if (playerinv.getStackInSlot(i) != null && playerinv.getStackInSlot(i).getItem().equals(XactMod.itemCraftPad))
 				return i;
 		}
 		return -1;

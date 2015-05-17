@@ -3,7 +3,7 @@ package xk.xact.core.items;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.core.Machines;
 import xk.xact.util.References;
 
@@ -16,7 +16,7 @@ public class ItemMachine extends ItemBlock {
 	public ItemMachine(Block block) {
 		super(block);
 		this.setHasSubtypes(true);
-		this.setCreativeTab(XActMod.xactTab);
+		this.setCreativeTab(XactMod.xactTab);
 	}
 
 	@Override

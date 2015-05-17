@@ -10,7 +10,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.client.GuiUtils;
 import xk.xact.client.button.CustomButtons;
 import xk.xact.client.button.GuiButtonCustom;
@@ -30,7 +30,7 @@ import xk.xact.util.Utils;
 
 public class GuiCrafter extends GuiCrafting {
 
-	private static final ResourceLocation guiTexture = new ResourceLocation(
+	private static final ResourceLocation guiTexture = new ResourceLocation(References.MOD_ID,
 			Textures.GUI_CRAFTER);
 
 	private TileCrafter crafter;
@@ -314,7 +314,7 @@ public class GuiCrafter extends GuiCrafting {
 			}
 			if (action == 3) { // CLEAR
 				GuiUtils.sendItemToServer((byte) (4 + button.id),
-						new ItemStack(XActMod.itemRecipeBlank));
+						new ItemStack(XactMod.itemRecipeBlank));
 			}
 		}
 	}

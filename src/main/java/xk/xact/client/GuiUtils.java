@@ -23,7 +23,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.gui.ContainerCrafter;
 import xk.xact.gui.ContainerPad;
 import xk.xact.network.PacketHandler;
@@ -42,7 +42,7 @@ public class GuiUtils {
 	public static final int COLOR_GRAY = (grayTone << 16) | (grayTone << 8)
 			| grayTone;
 
-	public static final RenderItem itemRender = new RenderItem(null, null);
+//	public static final RenderItem itemRender = new RenderItem(null, null);
 
 	public static void paintSlotOverlay(Slot slot, int size, int color,
 			int xOffset, int yOffset) {
@@ -215,17 +215,15 @@ public class GuiUtils {
 		Container container = Minecraft.getMinecraft().thePlayer.openContainer;
 		int mouseX = getMouseX(Minecraft.getMinecraft()) - guiLeft;
 		int mouseY = getMouseY(Minecraft.getMinecraft()) - guiTop;
-
+		System.out.println("sheesh");
 		return getHoveredSlot(container, mouseX, mouseY, guiLeft, guiTop);
 	}
 
-	public static Slot getHoveredSlot(Container container, int mouseX,
-			int mouseY, int guiLeft, int guiTop) {
-		// Utils.debug("Getting slot at: (%s, %s)", mouseX, mouseY);
+	public static Slot getHoveredSlot(Container container, int mouseX, int mouseY, int guiLeft, int guiTop) {
 		for (int i = 0; i < container.inventorySlots.size(); i++) {
 			Slot slot = container.getSlot(i);
 			if (slot != null) {
-				if (isMouseOverSlot(slot, mouseX - guiLeft, mouseY - guiTop)) {
+				if (isMouseOverSlot(slot, mouseX, mouseY)) {
 					return slot;
 				}
 			}
@@ -290,7 +288,7 @@ public class GuiUtils {
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void openGui(int guiID) {
-		Minecraft.getMinecraft().thePlayer.openGui(XActMod.instance, guiID,
+		Minecraft.getMinecraft().thePlayer.openGui(XactMod.instance, guiID,
 				Minecraft.getMinecraft().thePlayer.worldObj, 0, 0, 0);
 	}
 

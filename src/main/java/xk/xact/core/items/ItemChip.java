@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.recipes.CraftManager;
 import xk.xact.util.References;
 import xk.xact.util.Textures;
@@ -19,21 +19,17 @@ import xk.xact.util.Textures;
  *
  * @author Xhamolk_
  */
-public class ItemChip extends Item {
+public class ItemChip extends XactBaseItem {
 
 	/*
 	 * Note: The actual encoding happens on the stack's NBT, and is performed by
 	 * CraftManager.encodeRecipe
 	 */
-
 	public final boolean encoded;
 
 	public ItemChip(boolean encoded) {
-		super();
+		super(encoded ? References.Unlocalized.ITEMRECIPEENCODED : References.Unlocalized.ITEMRECIPEBLANK);
 		this.encoded = encoded;
-		this.setUnlocalizedName(References.MOD_ID + ":recipeChip."
-				+ (encoded ? "encoded" : "blank"));
-		this.setCreativeTab(XActMod.xactTab);
 		if (encoded)
 			invalidChip = new ItemStack(this, 1, 1);
 	}

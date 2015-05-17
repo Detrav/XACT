@@ -11,7 +11,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.client.KeyBindingHandler;
 import xk.xact.client.Keybinds;
 import xk.xact.client.gui.GuiCase;
@@ -36,7 +36,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void registerRenderInformation() {
 		// Custom IItemRenderer
-		MinecraftForgeClient.registerItemRenderer(XActMod.itemRecipeEncoded,
+		MinecraftForgeClient.registerItemRenderer(XactMod.itemRecipeEncoded,
 				new ChipRenderer());
 	}
 
@@ -98,5 +98,13 @@ public class ClientProxy extends CommonProxy {
 
 	public static NetHandlerPlayClient getNetClientHandler() {
 		return Minecraft.getMinecraft().getNetHandler();
+	}
+	
+	public boolean isClient() {
+		return true;
+	}
+	
+	public boolean isServer() {
+		return false;
 	}
 }
