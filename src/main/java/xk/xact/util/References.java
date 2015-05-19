@@ -30,6 +30,7 @@ public class References {
 		public static final String KEY_REVEAL = MOD_ID + ".key.reveal";
 		public static final String KEY_OPENGRID = MOD_ID + ".key.opengrid";
 	}
+	
 	public static class Localization {
 		public static final String CRAFTPAD_GUITITLE = "gui.xact:craftpad.name";
 		public static final String CRAFTPAD_CHIPTITLE = "gui.xact:craftpad.chip.name";
@@ -38,5 +39,11 @@ public class References {
 		public static final String CHIP_BLANK = "item.xact:recipeChip.blank.desc";
 		public static final String CHIP_INVALID = "item.xact:recipeChip.invalid.desc";
 		public static final String CHIP_RECIPE = "item.xact:recipeChip.recipe";
+		
+		public static final String TOOLTIP_CLEAR = "gui.xact:tipclear";
+		public static final String TOOLTIP_SAVE = "gui.xact:tipsave";
+		public static final String TOOLTIP_CLEARGRID = "gui.xact:tipcleargrid";
+		public static final String TOOLTIP_NEXTRECIPE = "gui.xact:tipnextrecipe";
+		public static final String TOOLTIP_LASTRECIPE = "gui.xact:tiplastrecipe";
 	}
 }

@@ -1,5 +1,7 @@
 package xk.xact.client.button;
 
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
 
 import org.lwjgl.opengl.GL11;
@@ -41,7 +43,6 @@ public class ButtonDevice extends GuiButtonCustom {
 
 	@Override
 	protected void drawTooltip(Minecraft mc, int mouseX, int mouseY) {
-		// todo: paint the tool tip with the instructions
 	}
 
 	@Override

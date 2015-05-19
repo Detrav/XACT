@@ -1,5 +1,8 @@
 package xk.xact.client.gui;
 
+import java.util.Arrays;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
@@ -10,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import xk.xact.XActMod;
 import xk.xact.client.GuiUtils;
+import xk.xact.client.button.ButtonAction;
 import xk.xact.client.button.CustomButtons;
 import xk.xact.client.button.GuiButtonCustom;
 import xk.xact.client.button.ICustomButtonMode;
@@ -50,7 +54,8 @@ public class GuiCrafter extends GuiCrafting {
 		 * Buttons: 42, 21. 120, 21 42, 65. 120, 65
 		 */
 		buttonList.clear();
-
+		
+		// Clear chip buttons
 		for (int i = 0; i < 4; i++) {
 			int x = (i % 2 == 0 ? 42 : 120) + this.guiLeft;
 			int y = (i / 2 == 0 ? 21 : 65) + this.guiTop;
@@ -59,6 +64,18 @@ public class GuiCrafter extends GuiCrafting {
 			button.id = i;
 			buttonList.add(buttons[i] = button);
 		}
+		
+		// Clear grid
+		ButtonAction btncleargrid = new ButtonAction(4, guiLeft + 60, guiTop + 78, 3, 14);
+		buttonList.add(buttons[4] = btncleargrid);
+		
+		// Last recipe
+		ButtonAction btnloadlast = new ButtonAction(5, guiLeft + 103, guiTop + 76, 4, 9);
+		buttonList.add(buttons[5] = btnloadlast);
+		// Next recipe
+		ButtonAction btnloadnext = new ButtonAction(6, guiLeft + 103, guiTop + 86, 5, 9);
+		buttonList.add(buttons[6] = btnloadnext);
+		
 		invalidated = true;
 	}
 
@@ -295,7 +312,7 @@ public class GuiCrafter extends GuiCrafting {
 
 	// -------------------- Buttons --------------------
 
-	private GuiButtonCustom[] buttons = new GuiButtonCustom[4];
+	private GuiButtonCustom[] buttons = new GuiButtonCustom[7];
 
 	private boolean invalidated = true;
 
@@ -303,17 +320,29 @@ public class GuiCrafter extends GuiCrafting {
 	protected void actionPerformed(GuiButton button) {
 		if (button instanceof GuiButtonCustom) {
 			int action = ((GuiButtonCustom) button).getAction();
-			if (action == 1) { // SAVE
+			switch (action) {
+			case 1: // SAVE
 				ItemStack stack = CraftManager.encodeRecipe(crafter
 						.getRecipe(4));
 				sendGridIngredients(crafter.craftGrid.getContents(), button.id);
-				container.setStack(-1, null); // clears the grid
+				sendGridIngredients(null, 0); // clears the grid
 				return;
-			}
-			if (action == 3) { // CLEAR
+			case 3: // CLEAR
 				GuiUtils.sendItemToServer((byte) (4 + button.id),
 						new ItemStack(XActMod.itemRecipeBlank));
-			}
+				return;
+			case 4: // CLEAR GRID
+				sendGridIngredients(null, 0);
+				return;
+			case 5: // Last Recipe
+				setRecipe(getPreviousRecipe());
+				return;
+			case 6: // Next Recipe
+				setRecipe(getNextRecipe());
+				return;
+			default:
+				break;
+			}	
 		}
 	}
 

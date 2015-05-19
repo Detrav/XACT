@@ -1,5 +1,7 @@
 package xk.xact.inventory;
 
+import java.util.List;
+
 import ic2.api.IEnergyStorage;
 import ic2.api.IWrenchable;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -283,11 +285,14 @@ public class InventoryUtils {
 
 	@SuppressWarnings("unchecked")
 	public static IInventoryAdapter getInventoryAdapter(Object inventory) {
+		
 		if (inventory != null) {
 			for (Class adapterClass : PluginManager.getInventoryAdapters()
 					.keySet()) {
+//				System.out.println(adapterClass.isAssignableFrom(inventory.getClass()));
 				if (adapterClass != null
 						&& adapterClass.isAssignableFrom(inventory.getClass()))
+					
 					return PluginManager.getInventoryAdapters()
 							.get(adapterClass)
 							.createInventoryAdapter(inventory);
@@ -355,4 +360,5 @@ public class InventoryUtils {
 		}
 		return true;
 	}
+	
 }
