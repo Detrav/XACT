@@ -1,0 +1,18 @@
+v0.5.2b
+-------
+[+] Clear grid and load previous/next recipe button for crafter
+[+] Tooltips for gui buttons
+
+
+v0.5.2
+------
+[+] NEI support for Crafter and CraftPad
+[+] Ingame configuration gui (Unfinished)
+[+] Config option to let the crafter ignor certain blocks
+[+] Added keybinds back
+[*] IC2 machines are ignored by crafter
+[*] Fixed gui offset while TCon is installed
+
+v0.5.1/0.5
+----------
+Too lazy to list them here, mostly updating the code from 1.6
