@@ -81,7 +81,7 @@ public abstract class CraftingHandler {
 		InventoryCrafting craftMatrix = generateTemporaryCraftingGridFor(recipe, player, true);
 		if (craftMatrix == null)
 			return;
-
+		System.out.println("heeyooo");
 		craftedItem.onCrafting(device.getWorld(), player, craftedItem.stackSize);
 		// TODO: ItemCraftedEvent replaces this
 		// GameRegistry.onItemCrafted( player, craftedItem, craftMatrix );
@@ -132,8 +132,8 @@ public abstract class CraftingHandler {
 				continue;
 
 			craftMatrix.decrStackSize(i, 1);
-
-			if (stackInSlot.getItem().getContainerItem() != null) {
+			
+			if (stackInSlot.getItem().getContainerItem(stackInSlot) != null) {
 				ItemStack containerStack = stackInSlot.getItem()
 						.getContainerItem(stackInSlot);
 

@@ -24,7 +24,9 @@ public class NEIXACTConfig implements IConfigureNEI {
 		API.registerGuiOverlayHandler(GuiPad.class, handler, "crafting");
 		API.registerGuiOverlayHandler(GuiRecipe.class, handler, "crafting");
 		API.registerGuiOverlayHandler(GuiCrafter.class, handler, "crafting");
-
+		API.registerRecipeHandler(new WorkbenchRecipeHandler());
+		API.registerRecipeHandler(new WorkbenchShapelessRecipeHandler());
+		
 		API.registerUsageHandler(new ChipHandler());
 	}
 

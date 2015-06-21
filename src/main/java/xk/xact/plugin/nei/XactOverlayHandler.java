@@ -12,8 +12,7 @@ import codechicken.nei.recipe.IRecipeHandler;
 public class XactOverlayHandler implements IOverlayHandler {
 
 	@Override
-	public void overlayRecipe(GuiContainer firstGui, IRecipeHandler recipe,
-			int recipeIndex, boolean shift) {
+	public void overlayRecipe(GuiContainer firstGui, IRecipeHandler recipe, int recipeIndex, boolean shift) {
 		List<PositionedStack> ingredients = recipe
 				.getIngredientStacks(recipeIndex);
 
@@ -29,8 +28,7 @@ public class XactOverlayHandler implements IOverlayHandler {
 
 	}
 
-	public static ItemStack[] getAlignedIngredients(
-			List<PositionedStack> ingredients) {
+	public static ItemStack[] getAlignedIngredients(List<PositionedStack> ingredients) {
 		ItemStack[] alignedIngredients = new ItemStack[9];
 
 		for (PositionedStack current : ingredients) {

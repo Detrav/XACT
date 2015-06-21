@@ -1,16 +1,19 @@
 package xk.xact.client.gui;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
+import xk.xact.api.InteractiveCraftingGui;
 import xk.xact.client.GuiUtils;
 import xk.xact.gui.ContainerVanillaWorkbench;
 import xk.xact.util.Textures;
 
-public class GuiVanillaWorkbench extends GuiContainer {
+public class GuiVanillaWorkbench extends GuiContainer implements InteractiveCraftingGui {
 
 	private static final ResourceLocation guiTexture = new ResourceLocation(
 			Textures.GUI_WORKBENCH);
@@ -38,4 +41,12 @@ public class GuiVanillaWorkbench extends GuiContainer {
 				this.ySize);
 	}
 
+	@Override
+	public void sendGridIngredients(ItemStack[] ingredients, int buttonID) {
+		GuiUtils.sendItemsToServer(ingredients, buttonID);
+	}
+
+	@Override
+	public void handleKeyBinding(Container container) {
+	}
 }

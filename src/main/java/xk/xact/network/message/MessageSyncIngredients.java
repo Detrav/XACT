@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import xk.xact.api.InteractiveCraftingContainer;
 import xk.xact.gui.ContainerCrafter;
 import xk.xact.gui.ContainerPad;
+import xk.xact.gui.ContainerVanillaWorkbench;
 import xk.xact.recipes.CraftManager;
 import xk.xact.recipes.CraftRecipe;
 import cpw.mods.fml.common.network.ByteBufUtils;
@@ -43,16 +44,15 @@ public class MessageSyncIngredients implements IMessage,
 
 		if (message.chipSlot == -1) { // If this is the case the player imports
 										// a recipe from NEI
-			if (container != null && container instanceof ContainerCrafter) { // Player
-																				// tries
-																				// to
-																				// import
-																				// into
-																				// crafter
+			if (container != null && container instanceof ContainerCrafter) { // Player tries  to import into crafter
 				for (int i = 0; i < 9; i++) {
 					container.setStack(8 + i, message.ingredients[i]);
 				}
-			} else if (container != null && container instanceof ContainerPad) {
+			} else if (container != null && container instanceof ContainerPad) { // Player tries to import into pad
+				for (int i = 0; i < 9; i++) {
+					container.setStack(1 + i, message.ingredients[i]);
+				}
+			} else if(container != null && container instanceof ContainerVanillaWorkbench) {
 				for (int i = 0; i < 9; i++) {
 					container.setStack(1 + i, message.ingredients[i]);
 				}
