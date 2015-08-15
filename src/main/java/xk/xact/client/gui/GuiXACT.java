@@ -79,15 +79,6 @@ public abstract class GuiXACT extends GuiContainer {
 		return 16; // Friggin usefull
 	}
 
-	protected boolean isPointInRegion(int minx, int miny, int xDim, int yDim,
-			int mouseX, int mouseY) {
-		if (mouseX >= minx && mouseX <= minx + xDim && (mouseY) >= miny
-				&& (mouseY) <= miny + yDim) {
-
-			return true;
-		}
-		return false;
-	}
 
 	// ---------------------------- Util ----------------------------
 

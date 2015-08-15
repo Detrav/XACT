@@ -1,70 +1,78 @@
 package xk.xact.client.button;
 
+import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
+import xk.xact.util.References;
 import xk.xact.util.Textures;
 
 // Used by GuiCrafter for the buttons that save/load/delete recipes.
 public abstract class GuiButtonCustom extends GuiButton {
 
-	protected static final ResourceLocation TEXTURE_BUTTONS = new ResourceLocation( Textures.MISC_BUTTONS );
+	protected static final ResourceLocation TEXTURE_BUTTONS = new ResourceLocation(References.MOD_ID,
+			Textures.MISC_BUTTONS);
 
 	protected GuiButtonCustom(int posX, int posY) {
-		this( -1, posX, posY, 0, 0 );
+		this(-1, posX, posY, 0, 0);
 	}
 
-	protected GuiButtonCustom(int buttonID, int posX, int posY, int width, int height) {
-		super( buttonID, posX, posY, width, height, "" );
+	protected GuiButtonCustom(int buttonID, int posX, int posY, int width,
+			int height) {
+		super(buttonID, posX, posY, width, height, "");
 	}
 
 	/**
-	 * Whether if this but	tons should be drawn or not.
+	 * Whether if this but tons should be drawn or not.
 	 */
 	public boolean isVisible() {
-		return true;//this.drawButton;
+		return true;// this.drawButton;
 	}
 
 	/**
 	 * Whether if the mouse is hovering this button.
 	 *
-	 * @param mouseX the mouse x-coordinate
-	 * @param mouseY the mouse y-coordinate
-	 * @return true if the mouse's coordinates are withing
-	 *         the area determined by xPosition, yPosition, width and height.
+	 * @param mouseX
+	 *            the mouse x-coordinate
+	 * @param mouseY
+	 *            the mouse y-coordinate
+	 * @return true if the mouse's coordinates are withing the area determined
+	 *         by xPosition, yPosition, width and height.
 	 */
 	public boolean isMouseHovering(int mouseX, int mouseY) {
 		return mouseX >= this.xPosition && mouseY >= this.yPosition
-				&& mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
+				&& mouseX < this.xPosition + this.width
+				&& mouseY < this.yPosition + this.height;
 	}
 
 	@Override
 	public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
-		return isVisible() && super.mousePressed( mc, mouseX, mouseY );
+		return isVisible() && super.mousePressed(mc, mouseX, mouseY);
 	}
 
 	@Override
 	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
-		if( !isVisible() )
+		if (!isVisible())
 			return;
 
 		// is hovering?
-		this.visible = isMouseHovering( mouseX, mouseY );
+		this.visible = isMouseHovering(mouseX, mouseY);
 
 		// The button's background
-		drawBackgroundLayer( mc, mouseX, mouseY );
+		drawBackgroundLayer(mc, mouseX, mouseY);
 
 		// The button's contents
-		drawForegroundLayer( mc, mouseX, mouseY );
+		drawForegroundLayer(mc, mouseX, mouseY);
 
 		// tooltip?
-		if( visible ) {
-			drawTooltip( mc, mouseX, mouseY );
-		}
+		// if( visible ) {
+		// drawTooltip( mc, mouseX, mouseY );
+		// }
 	}
 
-	protected abstract void drawBackgroundLayer(Minecraft mc, int mouseX, int mouseY);
+	protected abstract void drawBackgroundLayer(Minecraft mc, int mouseX,
+			int mouseY);
 
 	protected void drawForegroundLayer(Minecraft mc, int mouseX, int mouseY) {
 	}
@@ -72,8 +80,8 @@ public abstract class GuiButtonCustom extends GuiButton {
 	protected void drawTooltip(Minecraft mc, int mouseX, int mouseY) {
 	}
 
-	///////////////
-	///// Action
+	// /////////////
+	// /// Action
 
 	public int action = 0;
 
@@ -82,8 +90,8 @@ public abstract class GuiButtonCustom extends GuiButton {
 		return action;
 	}
 
-	///////////////
-	///// MODES
+	// /////////////
+	// /// MODES
 
 	protected ICustomButtonMode mode = ICustomButtonMode.NULL;
 
@@ -92,11 +100,11 @@ public abstract class GuiButtonCustom extends GuiButton {
 	}
 
 	public GuiButtonCustom setMode(ICustomButtonMode mode) {
-		if( !isModeValid( mode ) ) {
-			throw new IllegalArgumentException( "Invalid mode: " + mode );
+		if (!isModeValid(mode)) {
+			throw new IllegalArgumentException("Invalid mode: " + mode);
 		}
 		this.mode = mode;
-		onModeSet( mode );
+		onModeSet(mode);
 		return this;
 	}
 

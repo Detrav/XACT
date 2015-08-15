@@ -53,7 +53,6 @@ public class ChipRenderer implements IItemRenderer {
 //			GuiUtils.paintItem(ItemChip.invalidChip, 0, 0,
 //					Minecraft.getMinecraft(), GuiUtils.itemRender, 120.0F);
 //		}
-
 		RenderHelper.enableGUIStandardItemLighting();
 		drawing = false;
 		GL11.glEnable(GL11.GL_CULL_FACE);

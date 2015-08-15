@@ -8,14 +8,18 @@ import xk.xact.client.GuiUtils;
 
 public class ButtonDevice extends GuiButtonCustom {
 
-	private static final int SIZE = 14;
+	private static int SIZE = 14;
 
 	private int textureIndex = 0;
 
 	ButtonDevice(int posX, int posY) {
 		super(-1, posX, posY, SIZE, SIZE);
 	}
-
+	
+	ButtonDevice(int posX, int posY, int size) {
+		super(-1, posX, posY, size, size);
+	}
+	
 	@Override
 	public boolean isVisible() {
 		if (!super.isVisible())
@@ -41,7 +45,6 @@ public class ButtonDevice extends GuiButtonCustom {
 
 	@Override
 	protected void drawTooltip(Minecraft mc, int mouseX, int mouseY) {
-		// todo: paint the tool tip with the instructions
 	}
 
 	@Override

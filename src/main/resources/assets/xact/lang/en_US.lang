@@ -15,6 +15,13 @@ xact:tile.machine.crafter.name=X.A.C.T. Crafter
 # Tab
 itemGroup.xact=X.A.C.T.
 
+# Tooltips
+gui.xact:tipclear=Clear Chip
+gui.xact:tipsave=Save To Chip
+gui.xact:tipcleargrid=Clear Crafting Grid
+gui.xact:tipnextrecipe=Load Next Recipe
+gui.xact:tiplastrecipe=Load Previous Recipe
+
 # Gui
 gui.xact:crafter.name=X.A.C.T. Crafter
 gui.xact:crafter.inventory.name=Player's Inventory

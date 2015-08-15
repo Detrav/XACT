@@ -1,11 +1,14 @@
 package xk.xact.util;
 
+import net.minecraft.block.properties.PropertyDirection;
+
 public class References {
 	public static final String MOD_ID = "xact";
 	public static final String MOD_NAME = "XACT Mod";
 	public static final String VERSION = "0.5.2";
 	public static final String GUI_FACTORY_CLASS = "xk.xact.config.GuiFactory";
 	
+	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 	public static class Registry {
 		public static final String ITEMCHIPCASE = "chipcase";
 		public static final String ITEMCRAFTPAD = "craftpad";
@@ -23,7 +26,6 @@ public class References {
 		public static final String ITEMRECIPEBLANK = PREFIX +  Registry.ITEMRECIPEBLANK;
 		public static final String BLOCKMACHINE = PREFIX + Registry.BLOCKMACHINE;
 		public static final String BLOCKCRAFTINGTABLE = PREFIX + Registry.BLOCKCRAFTINGTABLE;
-		
 	}
 	
 	public static class Keys {
@@ -45,5 +47,11 @@ public class References {
 		public static final String CHIP_BLANK = "item.xact:recipechip.blank.desc";
 		public static final String CHIP_INVALID = "item.xact:recipechip.invalid.desc";
 		public static final String CHIP_RECIPE = "item.xact:recipechip.recipe";
+		
+		public static final String TOOLTIP_CLEAR = "gui.xact:tipclear";
+		public static final String TOOLTIP_SAVE = "gui.xact:tipsave";
+		public static final String TOOLTIP_CLEARGRID = "gui.xact:tipcleargrid";
+		public static final String TOOLTIP_NEXTRECIPE = "gui.xact:tipnextrecipe";
+		public static final String TOOLTIP_LASTRECIPE = "gui.xact:tiplastrecipe";
 	}
 }

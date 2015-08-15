@@ -1,5 +1,8 @@
 package xk.xact.client.gui;
 
+import java.util.Arrays;
+
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
@@ -7,10 +10,13 @@ import net.minecraft.item.ItemStack;
 import xk.xact.api.InteractiveCraftingGui;
 import xk.xact.client.GuiUtils;
 import xk.xact.client.KeyBindingHandler;
+import xk.xact.client.button.GuiButtonCustom;
+import xk.xact.client.button.ICustomButtonMode;
 import xk.xact.recipes.CraftManager;
 import xk.xact.recipes.CraftRecipe;
 import xk.xact.recipes.RecipeUtils;
 import xk.xact.util.RecipeDeque;
+import xk.xact.util.References;
 
 public abstract class GuiCrafting extends GuiXACT implements
 		InteractiveCraftingGui {
@@ -70,6 +76,57 @@ public abstract class GuiCrafting extends GuiXACT implements
 
 			} else if (keybind.getKeyDescription().equals("xact.key.delete")) {
 				clearRecipeDeque();
+			}
+		}
+	}
+
+	@Override
+	public void drawScreen(int mousex, int mousey, float partialtick) {
+		// Draws the button tooltips
+		super.drawScreen(mousex, mousey, partialtick);
+		for (Object object : buttonList) {
+			if (object != null && object instanceof GuiButtonCustom) {
+				if (((GuiButtonCustom) object).isMouseHovering(mousex, mousey)) {
+
+					GuiButtonCustom btn = (GuiButtonCustom) object;
+					if (btn.id < 4 && btn.isVisible()) { // The clear/save
+															// buttons
+						if (btn.getMode().equals(
+								ICustomButtonMode.DeviceModes.CLEAR)) {
+							drawHoveringText(
+									Arrays.asList(I18n
+											.format(References.Localization.TOOLTIP_CLEAR)),
+									mousex, mousey, fontRendererObj);
+						} else if (btn.getMode().equals(
+								ICustomButtonMode.DeviceModes.SAVE)) {
+							drawHoveringText(
+									Arrays.asList(I18n
+											.format(References.Localization.TOOLTIP_SAVE)),
+									mousex, mousey, fontRendererObj);
+						}
+					} else {
+						switch (btn.id) {
+						case 4: // Clear grid
+							drawHoveringText(
+									Arrays.asList(I18n
+											.format(References.Localization.TOOLTIP_CLEARGRID)),
+									mousex, mousey, fontRendererObj);
+							break;
+						case 5: // Load Next
+							drawHoveringText(
+									Arrays.asList(I18n
+											.format(References.Localization.TOOLTIP_NEXTRECIPE)),
+									mousex, mousey, fontRendererObj);
+							break;
+						case 6: // Load Last
+							drawHoveringText(
+									Arrays.asList(I18n
+											.format(References.Localization.TOOLTIP_LASTRECIPE)),
+									mousex, mousey, fontRendererObj);
+							break;
+						}
+					}
+				}
 			}
 		}
 	}

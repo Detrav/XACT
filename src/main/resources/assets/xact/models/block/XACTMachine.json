@@ -4,6 +4,6 @@
         "top": "xact:blocks/crafter_top",
         "front": "xact:blocks/crafter_front",
         "side": "xact:blocks/crafter_side",
-	"bottom": "xact:blocks/crafter_bottom"    
+	    "bottom": "xact:blocks/crafter_bottom"    
     }
 }

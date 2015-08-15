@@ -30,8 +30,8 @@ public class ConfigurationManager extends Configuration {
 	public static void loadConfiguration(File configFile) {
 		if (config == null) {
 			config = new Configuration(configFile);
-			loadValues();
 		}
+		loadValues();
 	}
 
 	public static void loadValues() {

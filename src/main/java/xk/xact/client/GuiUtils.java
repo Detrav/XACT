@@ -86,7 +86,7 @@ public class GuiUtils {
 
 		itemRenderer.renderItemAndEffectIntoGUI(itemStack, x, y);
 		itemRenderer.renderItemOverlayIntoGUI(mc.fontRendererObj,
-				itemStack, x, y, "huh?");
+				itemStack, x, y, "");
 		// RenderHelper.disableStandardItemLighting();
 		// GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		// GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -215,7 +215,6 @@ public class GuiUtils {
 		Container container = Minecraft.getMinecraft().thePlayer.openContainer;
 		int mouseX = getMouseX(Minecraft.getMinecraft()) - guiLeft;
 		int mouseY = getMouseY(Minecraft.getMinecraft()) - guiTop;
-		System.out.println("sheesh");
 		return getHoveredSlot(container, mouseX, mouseY, guiLeft, guiTop);
 	}
 
@@ -223,7 +222,7 @@ public class GuiUtils {
 		for (int i = 0; i < container.inventorySlots.size(); i++) {
 			Slot slot = container.getSlot(i);
 			if (slot != null) {
-				if (isMouseOverSlot(slot, mouseX, mouseY)) {
+				if (isMouseOverSlot(slot, mouseX - guiLeft, mouseY - guiTop)) {
 					return slot;
 				}
 			}
@@ -232,6 +231,7 @@ public class GuiUtils {
 	}
 
 	public static boolean isMouseOverSlot(Slot slot, int mouseX, int mouseY) {
+
 		if (slot == null)
 			return false;
 		int xMin = slot.xDisplayPosition;

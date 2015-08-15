@@ -28,6 +28,8 @@ import org.apache.logging.log4j.Level;
 
 import xk.xact.XactMod;
 import xk.xact.config.ConfigurationManager;
+import xk.xact.core.tileentities.TileCrafter;
+import xk.xact.gui.ContainerCrafter;
 import xk.xact.inventory.InventoryUtils;
 
 public class Utils {
@@ -246,5 +248,29 @@ public class Utils {
 				recipes.remove(i--);
 			}
 		}
+	}
+	
+	/**
+	 * Gets adjacent Crafters
+	 * Maximum is 3 Crafters
+	 */
+	public static List<ContainerCrafter> getAdjacentCrafters(BlockPos crafterPos, World world, EntityPlayer player) {
+		List<ContainerCrafter> crafters = new ArrayList<ContainerCrafter>();
+		for (EnumFacing face : EnumFacing.VALUES) { // Will search through all directions
+			for (int range = 1; range <= 3; range++) { // Will search 3 blocks into current direction
+				BlockPos currentPos = new BlockPos(crafterPos.getX() + face.getFrontOffsetX() * range,
+						crafterPos.getY() + face.getFrontOffsetY() * range,
+						crafterPos.getZ() + face.getFrontOffsetZ() * range); // since all offsets exept one will be 0, multiplying won't do anything
+				
+				TileEntity te = world.getTileEntity(currentPos);
+				if (te != null)
+					if (te instanceof TileCrafter) {
+						crafters.add((ContainerCrafter) ((TileCrafter) te).getContainerFor(player));
+					}
+				if (crafters.size() == 3)
+					return crafters;
+			}	
+		}
+		return crafters;
 	}
 }

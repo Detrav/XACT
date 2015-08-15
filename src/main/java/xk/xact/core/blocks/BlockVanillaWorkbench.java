@@ -31,18 +31,6 @@ public class BlockVanillaWorkbench extends BlockMachine {
 		return new TileWorkbench();
 	}
 
-//	@Override
-//	public IIcon getIcon(int side, int metadata) {
-//		if (side == 0)
-//			return TEXTURE_BOTTOM;
-//		else if (side == 1)
-//			return TEXTURE_TOP;
-//		if (side == 2 || side == 4)
-//			return TEXTURE_FRONT;
-//		else
-//			return TEXTURE_SIDE;
-//	}
-
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos,
 			IBlockState state, EntityPlayer playerIn, EnumFacing side,
@@ -50,7 +38,6 @@ public class BlockVanillaWorkbench extends BlockMachine {
 		if (!worldIn.isRemote) {
 			playerIn.openGui(XactMod.instance, 2, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		}
-
 		return true;
 	}
 
@@ -77,29 +64,6 @@ public class BlockVanillaWorkbench extends BlockMachine {
 			}
 		}
 	}
-	
-//	
-//	@Override
-//	public void registerBlockIcons(IIconRegister iconRegister) {
-//		this.TEXTURE_TOP = iconRegister.registerIcon(Textures.WORKBENCH_TOP);
-//		this.TEXTURE_FRONT = iconRegister
-//				.registerIcon(Textures.WORKBENCH_FRONT);
-//		this.TEXTURE_SIDE = iconRegister.registerIcon(Textures.WORKBENCH_SIDE);
-//		this.TEXTURE_BOTTOM = iconRegister
-//				.registerIcon(Textures.WORKBENCH_BOTTOM);
-//	}
-//
-//	@SideOnly(Side.CLIENT)
-//	private IIcon TEXTURE_TOP;
-//
-//	@SideOnly(Side.CLIENT)
-//	private IIcon TEXTURE_FRONT;
-//
-//	@SideOnly(Side.CLIENT)
-//	private IIcon TEXTURE_SIDE;
-//
-//	@SideOnly(Side.CLIENT)
-//	private IIcon TEXTURE_BOTTOM;
 
 	@Override
 	public String getUnlocalizedName() {

@@ -13,7 +13,7 @@ import xk.xact.util.Textures;
 
 public class GuiVanillaWorkbench extends GuiContainer {
 
-	private static final ResourceLocation guiTexture = new ResourceLocation(References.MOD_ID,
+	private static final ResourceLocation guiTexture = new ResourceLocation("minecraft",
 			Textures.GUI_WORKBENCH);
 
 	public GuiVanillaWorkbench(ContainerVanillaWorkbench container) {

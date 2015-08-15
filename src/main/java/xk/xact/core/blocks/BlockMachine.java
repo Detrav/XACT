@@ -5,7 +5,9 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -26,6 +28,7 @@ import xk.xact.XactMod;
 import xk.xact.core.Machines;
 import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.core.tileentities.TileMachine;
+import xk.xact.util.References;
 import xk.xact.util.Utils;
 
 /**
@@ -34,9 +37,11 @@ import xk.xact.util.Utils;
 public class BlockMachine extends BlockContainer {
 	String blockName;
 	public int guiID = -1;
+	
 	public BlockMachine(Material materialIn, String unlocalizedName, String guiName) {
 		super(materialIn);
 		setCreativeTab(XactMod.xactTab);
+		setHardness(0.5F);
 		blockName = unlocalizedName;
 		setUnlocalizedName(unlocalizedName);
 		guiID = 0; // Only one machine
@@ -46,27 +51,31 @@ public class BlockMachine extends BlockContainer {
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		EntityPlayer player = (EntityPlayer) placer;
-		int side = sideByAngles(player, pos.getX(), pos.getZ());
-		int frontSide = side / 2 - 1;
-		int metadata = ((stack.getItemDamage() & 0x7) << 1)
-				| (frontSide & 1);
-		//worldIn.setBlockMetadataWithNotify(x, y, z, metadata, 3);
+		int side = sideByAngles(player, pos.getX(), pos.getZ()); /*
+																	2 = south
+																	5 = west
+																	3 = north
+																	4 = east
+		 														 */
+		switch(side) {
+			case 2:
+				worldIn.setBlockState(pos, getDefaultState().withProperty(References.FACING, EnumFacing.NORTH), 2);
+				break;
+		}
+		System.out.println(side);
 		//TODO: blockstates
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos,
-			IBlockState state, EntityPlayer playerIn, EnumFacing side,
-			float hitX, float hitY, float hitZ) {
-		if (playerIn.isSneaking()) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if (playerIn.isSneaking())
 			return false;
-		}
+		
 		if (!worldIn.isRemote)
-			// player.openGui( XActMod.instance, 0, world, x, y, z );
 			FMLNetworkHandler.openGui(playerIn, XactMod.instance, guiID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}
-
+	
 	@Override
 	public void onBlockHarvested(World worldIn, BlockPos pos,
 			IBlockState state, EntityPlayer player) {
@@ -133,6 +142,11 @@ public class BlockMachine extends BlockContainer {
 			return 3;
 	}
 
+	@Override
+	public int getRenderType() {
+		return 3;
+	}
+	
 	// /////////////
 	// /// Textures
 	
@@ -148,34 +162,5 @@ public class BlockMachine extends BlockContainer {
 				.register(Item.getItemFromBlock(this), 0, new ModelResourceLocation(blockName, "inventory"));	
 		}
 	}
-//	@SideOnly(Side.CLIENT)
-//	private static IIcon[][] textures;
-//
-//	@Override
-//	public IIcon getIcon(int side, int metadata) {
-//		int machine = Machines.getMachineFromMetadata(metadata);
-//		if (side >= 2) {
-//			side = isFrontSide(side, metadata) ? 2 : 3;
-//		}
-//		return textures[machine][side];
-//	}
-//
-//	private boolean isFrontSide(int side, int metadata) {
-//		return side / 2 - 1 == (metadata & 1);
-//	}
-//
-//	@Override
-//	public void registerBlockIcons(IIconRegister iconRegister) {
-//		textures = new IIcon[Machines.values().length][4];
-//
-//		// For each machine: bottom, top, front side, other side.
-//		for (int machine = 0; machine < Machines.values().length; machine++) {
-//			String[] textureFiles = Machines.getTextureFiles(machine);
-//			for (int side = 0; side < 4; side++) {
-//				textures[machine][side] = iconRegister
-//						.registerIcon(textureFiles[side]);
-//			}
-//		}
-//	}
 
 }

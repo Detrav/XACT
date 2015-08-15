@@ -1,8 +1,9 @@
 {
     "variants": {
-    	"facing=north": { "model": "xact:fluxfurnace" },
-        "facing=south": { "model": "xact:fluxfurnace", "y": 180 },
-        "facing=west":  { "model": "xact:fluxfurnace", "y": 270 },
-        "facing=east":  { "model": "xact:fluxfurnace", "y": 90 }
+	    "normal": { "model": "xact:XACTMachine" },
+    	"facing=north": { "model": "xact:XACTMachine" },
+        "facing=south": { "model": "xact:XACTMachine", "y": 180 },
+        "facing=west":  { "model": "xact:XACTMachine", "y": 270 },
+        "facing=east":  { "model": "xact:XACTMachine", "y": 90 }
     }
 }

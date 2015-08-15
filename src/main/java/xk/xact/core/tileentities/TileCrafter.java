@@ -92,7 +92,13 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 	// Used by GuiCrafter to update it's internal state.
 	// Should only be accessed client-side for rendering purposes.
 	public boolean recentlyUpdated = false;
-
+	
+	/**
+	 * Stores the name of the crafter so you can identify it
+	 * in the tab gui
+	 */
+	private String name;
+	
 	public TileCrafter() {
 		this.results = new Inventory(getRecipeCount(), "Results");
 		this.circuits = new Inventory(4, "Encoded Recipes") {

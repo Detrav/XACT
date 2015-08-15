@@ -2,16 +2,26 @@ package xk.xact.client.gui;
 
 import java.io.IOException;
 
+import net.java.games.input.Keyboard;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import xk.xact.XactMod;
 import xk.xact.client.GuiUtils;
+import xk.xact.client.button.ButtonAction;
+import xk.xact.client.button.ButtonTab;
 import xk.xact.client.button.CustomButtons;
 import xk.xact.client.button.GuiButtonCustom;
 import xk.xact.client.button.ICustomButtonMode;
@@ -61,13 +71,37 @@ public class GuiCrafter extends GuiCrafting {
 			button.id = i;
 			buttonList.add(buttons[i] = button);
 		}
+		
+		// Clear grid
+		ButtonAction btncleargrid = new ButtonAction(4, guiLeft + 60, guiTop + 78, 3, 14);
+		buttonList.add(buttons[4] = btncleargrid);
+		
+		// Last recipe
+		ButtonAction btnloadlast = new ButtonAction(5, guiLeft + 103, guiTop + 76, 4, 9);
+		buttonList.add(buttons[5] = btnloadlast);
+		// Next recipe
+		ButtonAction btnloadnext = new ButtonAction(6, guiLeft + 103, guiTop + 86, 5, 9);
+		buttonList.add(buttons[6] = btnloadnext);
+		
+		// 3 Quick-Access-Crafter-button-tabs, man thats one heck of a word NYI
+//		ButtonTab btnTab1 = new ButtonTab(7, guiLeft - 22, guiTop + 5,  0, 22, container);
+//		btnTab1.setTexturePos(0, 40);
+//		buttonList.add(buttons[7] = btnTab1);
+//		
+//		ButtonTab btnTab2 = new ButtonTab(8, guiLeft - 22, guiTop + 28, 0, 22, container);
+//		btnTab2.setTexturePos(0, 40);
+//		buttonList.add(buttons[8] = btnTab2);
+//		
+//		ButtonTab btnTab3 = new ButtonTab(9, guiLeft - 22, guiTop + 51, 0, 22, container);
+//		btnTab3.setTexturePos(0, 40);
+//		buttonList.add(buttons[9] = btnTab3);
+		
 		invalidated = true;
 	}
 
 	@Override
 	public void updateScreen() {
 		super.updateScreen();
-		
 		if (invalidated || crafter.recentlyUpdated) {
 
 			for (int i = 0; i < 4; i++) {
@@ -131,6 +165,7 @@ public class GuiCrafter extends GuiCrafting {
 		mouseX = x;
 		mouseY = y; // Used in guiCrafting
 		int gray = NumberHelper.argb(255, 139, 139, 139);
+
 		if (hoveredRecipe == -1) {
 			for (int i = 0; i < 9; i++) {
 				Slot slot = container.getSlot(8 + i);
@@ -144,27 +179,31 @@ public class GuiCrafter extends GuiCrafting {
 		} else {
 			ItemStack hoveredChip = container.crafter.circuits
 					.getStackInSlot(hoveredRecipe);
-			CraftRecipe hoveredRecipe = CraftManager.decodeRecipe(hoveredChip);
+			CraftRecipe hoveredCraftRecipe = CraftManager.decodeRecipe(hoveredChip);
 
 			for (int i = 0; i < 9; i++) {
 				Slot slot = container.getSlot(8 + i);
 				int color = getColorForGridSlot(slot);
-				if (color != -1 && hoveredRecipe != null) {
+				if (color != -1 && hoveredCraftRecipe != null) {
 					// Paint the "ghost item"
 					GuiUtils.paintOverlay(slot.xDisplayPosition,
 							slot.yDisplayPosition, 16, gray); // Paint gray over
 																// the slot so
 																// you wont see
 																// the old items
-					GuiUtils.paintItem(hoveredRecipe.getIngredients()[i],
+					GuiUtils.paintItem(hoveredCraftRecipe.getIngredients()[i],
 							slot.xDisplayPosition, slot.yDisplayPosition, mc,
 							itemRender, 200F);
+					
+					// Draw highlight around current recipe
+			
+					
 					GuiUtils.paintOverlay(slot.xDisplayPosition,
 							slot.yDisplayPosition, 16, color);
 				}
 			}
 		}
-		// Draw highlight around current recipe
+		
 		drawRecipeBorder(
 				GuiUtils.getHoveredSlot(container, x, y, guiLeft, guiTop),
 				getColorForOutputSlot(hoveredRecipe));
@@ -180,6 +219,7 @@ public class GuiCrafter extends GuiCrafting {
 		if (partialtick > 0.6) // Reduces updates by i dunno ... a bit
 			PacketHandler.INSTANCE
 					.sendToServer(new MessageUpdateMissingItems());
+		
 		super.drawScreen(mousex, mousey, partialtick);
 	}
 
@@ -219,8 +259,7 @@ public class GuiCrafter extends GuiCrafting {
 			Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i);
 
 			if (slot != null && slot.getHasStack()) {
-				if (isPointInRegion(guiLeft + slot.xDisplayPosition - 1, guiTop
-						+ slot.yDisplayPosition - 1, 17, 17, mouseX, mouseY)) {
+				if (isPointInRegion(slot.xDisplayPosition - 1, slot.yDisplayPosition - 1, 17, 17, mouseX, mouseY)) {
 					return i;
 				}
 			}
@@ -250,7 +289,7 @@ public class GuiCrafter extends GuiCrafting {
 		int slotTop = hoveredSlot.yDisplayPosition;
 		int slotBottom = slotTop + 16;
 		int slotRight = slotLeft + 16;
-
+	
 		drawGradientRect(slotLeft - 5, slotTop - 5, slotLeft - 4,
 				slotBottom + 5, color, color);
 		drawGradientRect(slotLeft - 4, slotTop - 5, slotRight + 4, slotTop - 4,
@@ -259,8 +298,7 @@ public class GuiCrafter extends GuiCrafting {
 				slotBottom + 5, color, color);
 		drawGradientRect(slotRight + 5, slotBottom + 5, slotRight + 4,
 				slotTop - 5, color, color);
-		RenderHelper.enableStandardItemLighting();
-		RenderHelper.enableGUIStandardItemLighting();
+
 	}
 
 	@Override
@@ -278,14 +316,7 @@ public class GuiCrafter extends GuiCrafting {
 			return;
 		}
 		if (buttonID != -1)
-			GuiUtils.sendItemsToServer(ingredients, 4 + buttonID); // 4 because
-																	// the first
-																	// chipslot
-																	// is 4 (and
-																	// the
-																	// corresponding
-																	// buttonid
-																	// is 0)
+			GuiUtils.sendItemsToServer(ingredients, 4 + buttonID); // 4 because the first chipslot is 4 (and the corresponding  buttonid is 0)
 		else
 			GuiUtils.sendItemsToServer(ingredients, buttonID);
 	}
@@ -297,7 +328,7 @@ public class GuiCrafter extends GuiCrafting {
 
 	// -------------------- Buttons --------------------
 
-	private GuiButtonCustom[] buttons = new GuiButtonCustom[4];
+	private GuiButtonCustom[] buttons = new GuiButtonCustom[10];
 
 	private boolean invalidated = true;
 
@@ -305,18 +336,42 @@ public class GuiCrafter extends GuiCrafting {
 	protected void actionPerformed(GuiButton button) {
 		if (button instanceof GuiButtonCustom) {
 			int action = ((GuiButtonCustom) button).getAction();
-			if (action == 1) { // SAVE
+			switch (action) {
+			case 1: // SAVE
 				ItemStack stack = CraftManager.encodeRecipe(crafter
 						.getRecipe(4));
 				sendGridIngredients(crafter.craftGrid.getContents(), button.id);
-				container.setStack(-1, null); // clears the grid
+				sendGridIngredients(null, 0); // clears the grid
 				return;
-			}
-			if (action == 3) { // CLEAR
+			case 3: // CLEAR
 				GuiUtils.sendItemToServer((byte) (4 + button.id),
 						new ItemStack(XactMod.itemRecipeBlank));
-			}
+				return;
+			case 4: // CLEAR GRID
+				sendGridIngredients(null, 0);
+				return;
+			case 5: // Last Recipe
+				setRecipe(getPreviousRecipe());
+				return;
+			case 6: // Next Recipe
+				setRecipe(getNextRecipe());
+				return;
+			case 7: // Tab 1
+//				ContainerCrafter adjCrafter = Utils.getAdjacentCrafters(crafter.getPos(), crafter.getWorld(), Minecraft.getMinecraft().thePlayer).get(0);
+				//Minecraft.getMinecraft().displayGuiScreen(null);
+//				clickBlock(adjCrafter.crafter.getWorld(), Minecraft.getMinecraft().thePlayer, adjCrafter.crafter.getPos(), EnumFacing.UP); // Side doesn't matter
+				break;
+			}	
 		}
 	}
 
-}
+	
+	private void clickBlock(World world, EntityPlayer player, BlockPos pos, EnumFacing side) {
+		IBlockState blockstate = world.getBlockState(pos);
+		Block block = blockstate.getBlock();
+		System.out.println(block);
+		if (block != Blocks.air)
+			block.onBlockActivated(world, pos, blockstate, player, side, 2F, 2F, 2F);
+		}
+	}
+

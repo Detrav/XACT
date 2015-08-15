@@ -12,12 +12,12 @@ import xk.xact.XactMod;
 import xk.xact.client.GuiUtils;
 import xk.xact.recipes.CraftManager;
 import xk.xact.recipes.CraftRecipe;
+import xk.xact.util.References;
 import xk.xact.util.Textures;
 
 public class GuiCase extends GuiXACT {
 
-	private static final ResourceLocation guiTexture = new ResourceLocation(
-			Textures.GUI_CASE);
+	private static final ResourceLocation guiTexture = new ResourceLocation(References.MOD_ID, Textures.GUI_CASE);
 	private Container container;
 
 	public GuiCase(Container container) {
@@ -39,6 +39,7 @@ public class GuiCase extends GuiXACT {
 		InventoryPlayer invPlayer = Minecraft.getMinecraft().thePlayer.inventory;
 		Slot hoverdSlot = GuiUtils.getHoveredSlot(container, mouseX, mouseY,
 				guiLeft, guiTop);
+		
 		// Please don't ask me what this mess is
 		// I just added if-statements until it stopped crashing
 		if (keyCode >= 1 && keyCode < 11) { // 1 - 9
