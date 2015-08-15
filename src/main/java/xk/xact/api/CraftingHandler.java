@@ -428,41 +428,14 @@ public abstract class CraftingHandler {
 		return contents;
 	}
 
-	protected boolean isItemMatchingIngredient(ItemStack item,
-			CraftRecipe recipe, int ingredientIndex) {
+	protected boolean isItemMatchingIngredient(ItemStack item, CraftRecipe recipe, int ingredientIndex) {
 		if (item == null)
 			return false;
 		ItemStack ingredient = recipe.getIngredients()[ingredientIndex];
-
+		
 		if (InventoryUtils.similarStacks(item, ingredient, true))
 			return true;
-
-		// Ore dictionary?
-		if (recipe.isOreRecipe()) {
-			int oreID = OreDictionary.getOreID(ingredient);
-
-			if (oreID != -1) {
-				ArrayList<ItemStack> equivalencies = OreDictionary
-						.getOres(oreID);
-
-				for (ItemStack current : equivalencies) {
-					if (InventoryUtils.similarStacks(item, current, true)) // do
-																			// I
-																			// need
-																			// this
-																			// initial
-																			// check?
-						return true;
-					if (item.getItem() == current.getItem()) {
-						if (current.getItemDamage() == -1
-								|| item.getItemDamage() == current
-										.getItemDamage())
-							return true;
-					}
-				}
-			}
-		}
-
+		
 		// regular test: if replacing the item on that spot still matches with
 		// the recipe.
 		return recipe.matchesIngredient(ingredientIndex, item,

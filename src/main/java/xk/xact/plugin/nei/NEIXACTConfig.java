@@ -4,8 +4,10 @@ import xk.xact.client.gui.GuiCrafter;
 import xk.xact.client.gui.GuiPad;
 import xk.xact.client.gui.GuiRecipe;
 import xk.xact.client.gui.GuiVanillaWorkbench;
+import xk.xact.util.DebugTooltipHandler;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
+import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.recipe.DefaultOverlayHandler;
 
 public class NEIXACTConfig implements IConfigureNEI {
@@ -26,7 +28,7 @@ public class NEIXACTConfig implements IConfigureNEI {
 		API.registerGuiOverlayHandler(GuiCrafter.class, handler, "crafting");
 		API.registerRecipeHandler(new WorkbenchRecipeHandler());
 		API.registerRecipeHandler(new WorkbenchShapelessRecipeHandler());
-		
+		//GuiContainerManager.addTooltipHandler(new DebugTooltipHandler()); // For Debugging, duh
 		API.registerUsageHandler(new ChipHandler());
 	}
 
