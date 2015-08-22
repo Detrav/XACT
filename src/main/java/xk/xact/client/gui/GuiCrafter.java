@@ -150,6 +150,7 @@ public class GuiCrafter extends GuiCrafting {
 			for (int i = 0; i < 9; i++) {
 				Slot slot = container.getSlot(8 + i);
 				int color = getColorForGridSlot(slot);
+				
 				if (slot.getHasStack()) {
 					GuiUtils.paintOverlay(slot.xDisplayPosition,
 							slot.yDisplayPosition, 16, color);
@@ -220,10 +221,12 @@ public class GuiCrafter extends GuiCrafting {
 		// if( itemInSlot != null && itemInSlot.stackSize > 0 ) {
 		// return -1; // no overlay when the slot contains "real" items.
 		// }
-
+		//System.out.println(slot.slotNumber - 8 + ": " + slot.getStack());
 		int index = slot.slotNumber - 8;
 		boolean[] missingIngredients = container.recipeStates[hoveredRecipe == -1 ? 4
 				: hoveredRecipe];
+
+		
 		int color = missingIngredients[index] ? GuiUtils.COLOR_RED
 				: GuiUtils.COLOR_GRAY;
 		return color | TRANSPARENCY;

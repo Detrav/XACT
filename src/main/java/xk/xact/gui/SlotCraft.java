@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import xk.xact.api.CraftingHandler;
 import xk.xact.api.ICraftingDevice;
@@ -15,7 +16,7 @@ import xk.xact.util.Utils;
  *
  * @author Xhamolk_
  */
-public class SlotCraft extends Slot {
+public class SlotCraft extends SlotCrafting {
 
 	private CraftingHandler handler;
 	private ICraftingDevice device;
@@ -23,7 +24,7 @@ public class SlotCraft extends Slot {
 
 	public SlotCraft(ICraftingDevice device, IInventory displayInventory,
 			EntityPlayer player, int index, int x, int y) {
-		super(displayInventory, index, x, y);
+		super(player, displayInventory, displayInventory, index, x, y);
 		this.player = player;
 		this.device = device;
 		this.handler = device.getHandler();

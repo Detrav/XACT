@@ -190,35 +190,14 @@ public class TileCrafter extends TileMachine implements IInventory,
 
 	@Override
 	public void updateEntity() { // It was 5!
+	
 		Block blockNorthFromCrafter = worldObj.getBlock(xCoord, yCoord, zCoord - 1);
-		
-//		if (blockNorthFromCrafter != null && blockNorthFromCrafter instanceof BlockInterface) {
-//			TileInterface teInterface = (TileInterface) worldObj.getTileEntity(xCoord, yCoord, zCoord - 1);
-//			AENetworkProxy proxy = teInterface.getProxy();
-//			if (proxy != null) {
-//				if (!worldObj.isRemote) { // Client doesn't now this
-//					IStorageGrid storage;
-//					try {
-//						storage = proxy.getStorage();
-//						IMEMonitor<IAEItemStack> networkinv = storage.getItemInventory();
-//						IItemList<IAEItemStack> itemsinnetwork = networkinv.getStorageList();
-//						
-//					} catch (GridAccessException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					
-//				}
-//			}
-//		} else if (blockNorthFromCrafter instanceof BlockCableBus) {
-//			TileCableBus tmpInterface = (TileCableBus) worldObj.getTileEntity(xCoord, yCoord, zCoord - 1);
-//			System.out.println(tmpInterface instanceof ITileStorageMonitorable);
-//		}
+
 		if (worldObj.getWorldTime() % 40 != 0) { // 4 checks per second might be
 													// enough.
 			return;
 		}
-		
+
 		updateIfChangesDetected();
 	}
 
@@ -230,13 +209,15 @@ public class TileCrafter extends TileMachine implements IInventory,
 
 	// updates the stored recipe results.
 	public void updateRecipes() {
+
 		for (int i = 0; i < getRecipeCount(); i++) {
 			if (i == 4) {
 				recipes[i] = RecipeUtils.getRecipe(craftGrid.getContents(),
 						this.worldObj);
+
 				if (recipes[i] != null) {
 					if (this.worldObj != null && this.worldObj.isRemote) { // client-side
-																			// only
+																		   // only
 						notifyClientOfRecipeChanged();
 					}
 				}
@@ -254,6 +235,8 @@ public class TileCrafter extends TileMachine implements IInventory,
 					.getResult();
 			results.setInventorySlotContents(i, stack);
 		}
+		
+		
 	}
 
 	// Updates the states of the recipes.
@@ -263,10 +246,9 @@ public class TileCrafter extends TileMachine implements IInventory,
 		}
 		for (int i = 0; i < getRecipeCount(); i++) {
 			// if the recipe can be crafted.
-			craftableRecipes[i] = (recipes[i] != null)
-					&& getHandler().canCraft(this.getRecipe(i), null);
-			recipeStates[i] = getHandler().getMissingIngredientsArray(
-					recipes[i]);
+			craftableRecipes[i] = (recipes[i] != null) && getHandler().canCraft(this.getRecipe(i), null);
+			recipeStates[i] = getHandler().getMissingIngredientsArray(recipes[i]);
+			
 		}
 	}
 

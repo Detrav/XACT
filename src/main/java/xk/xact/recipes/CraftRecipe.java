@@ -1,8 +1,10 @@
 package xk.xact.recipes;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import scala.runtime.IntRef;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -67,9 +69,34 @@ public class CraftRecipe {
 	/**
 	 * Gets the ingredients in a convenient form. The array is packed so that
 	 * the ItemStack.stackSize represents the quantity required of that item.
-	 * Also,
-	 *
+	 * 
+	 * Will pack together ingredients of the same item & damage or the same
+	 * ore dictionary
 	 * @return an array of ItemStack containing the ingredients.
+	 */
+	public ItemStack[] getCompressedIngredients() {
+		if (simpleIngredients != null)
+			return simpleIngredients;
+		
+		ItemsList list = new ItemsList();
+		for (ItemStack current : getIngredients()) {
+			try {
+				if (current != null) {
+					// 
+					
+					list.addStack(current.copy(), 1);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				Utils.logError("|>>>>>>>>>  getSimplifiedIngredients() ");
+			}
+		}
+		return simpleIngredients = list.toArray();
+	}
+	
+	/**
+	 * Similiar to getCompressed Ingredients but used to look for missin items
+	 * @return
 	 */
 	public ItemStack[] getSimplifiedIngredients() {
 		if (simpleIngredients != null)
@@ -89,7 +116,8 @@ public class CraftRecipe {
 
 		return simpleIngredients = list.toArray();
 	}
-
+	
+	
 	/**
 	 * Generates a map that links the simplified ingredients indexes with the
 	 * position on the grid.
@@ -101,19 +129,20 @@ public class CraftRecipe {
 			return indexMap;
 
 		ItemStack[] ingredients = getIngredients();
-		ItemStack[] simplifiedIngredients = getSimplifiedIngredients();
+		ItemStack[] simplifiedIngredients = getCompressedIngredients();
 		indexMap = new HashMap<Integer, int[]>();
 
-		for (int simplifiedIndex = 0; simplifiedIndex < simplifiedIngredients.length; simplifiedIndex++) {
+		for (int simplifiedIndex = 0; simplifiedIndex < simplifiedIngredients.length; simplifiedIndex++) { // Cylces through all compressed ingredients
 			ItemStack current = simplifiedIngredients[simplifiedIndex];
 			int count = 0;
 
 			for (int gridIndex = 0; count < current.stackSize
-					&& gridIndex < ingredients.length; gridIndex++) {
-				if (ingredients[gridIndex] != null
-						&& ingredients[gridIndex].isItemEqual(current)
-						&& ItemStack.areItemStackTagsEqual(
-								ingredients[gridIndex], current)) {
+					&& gridIndex < ingredients.length; gridIndex++) { // Cylces through the grid, stops when either the count is over the current stacksize or
+																	  // it's at the end of the grid
+				
+				if (ingredients[gridIndex] != null && ((ingredients[gridIndex].isItemEqual(current)
+					&& ItemStack.areItemStackTagsEqual(ingredients[gridIndex], current)) 
+					|| Utils.shareSameOreDictionary(ingredients[gridIndex], current, false))) {
 
 					if (!indexMap.containsKey(simplifiedIndex)) {
 						indexMap.put(simplifiedIndex,
@@ -162,8 +191,7 @@ public class CraftRecipe {
 		return RecipePointer.getRecipe(recipeID);
 	}
 
-	public boolean matchesIngredient(int ingredientIndex, ItemStack otherStack,
-			World world) {
+	public boolean matchesIngredient(int ingredientIndex, ItemStack otherStack, World world) {
 		SpecialCasedRecipe specialCase = RecipeUtils.checkSpecialCase(this,
 				otherStack, ingredientIndex, world);
 		if (specialCase != null)
@@ -205,11 +233,11 @@ public class CraftRecipe {
 	 * A string listing all the ingredients for this recipe by their amount and
 	 * name.
 	 *
-	 * @see xk.xact.recipes.CraftRecipe#getSimplifiedIngredients()
+	 * @see xk.xact.recipes.CraftRecipe#getCompressedIngredients()
 	 */
 	public String ingredientsToString() {
 		String retValue = "";
-		ItemStack[] ingredients = this.getSimplifiedIngredients();
+		ItemStack[] ingredients = this.getCompressedIngredients();
 		for (int i = 0; i < ingredients.length; i++) {
 			ItemStack stack = ingredients[i];
 			if (stack == null)

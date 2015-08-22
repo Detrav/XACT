@@ -28,7 +28,7 @@ public class CraftingProject {
 		this.targetRecipe = recipe;
 
 		// add the ingredients to the list.
-		for (ItemStack ingredient : recipe.getSimplifiedIngredients()) {
+		for (ItemStack ingredient : recipe.getCompressedIngredients()) {
 			list.addIngredient(ingredient);
 		}
 	}
@@ -90,7 +90,7 @@ public class CraftingProject {
 
 	private double count(ItemStack item, CraftRecipe recipe, double multiplier) {
 		int count = 0;
-		for (ItemStack ingredient : recipe.getSimplifiedIngredients()) {
+		for (ItemStack ingredient : recipe.getCompressedIngredients()) {
 			int amount = ingredient.stackSize;
 			if (InventoryUtils.similarStacks(ingredient, item, false)) {
 				count += amount;

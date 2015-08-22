@@ -63,13 +63,13 @@ public class IngredientsList implements Iterable<ItemStack> {
 
 		CraftRecipe mainRecipe = project.getMainRecipe();
 		if (mainRecipe != null) {
-			for (ItemStack item : mainRecipe.getSimplifiedIngredients()) {
+			for (ItemStack item : mainRecipe.getCompressedIngredients()) {
 				addIngredient(item);
 			}
 		}
 
 		for (CraftRecipe recipe : recipes.values()) {
-			for (ItemStack item : recipe.getSimplifiedIngredients()) {
+			for (ItemStack item : recipe.getCompressedIngredients()) {
 				addIngredient(item);
 			}
 		}

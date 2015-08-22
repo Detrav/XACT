@@ -14,14 +14,10 @@ public class PacketHandler {// implements IPacketHandler {
 
 	public static void init() {
 		// Register Network Messages
-		INSTANCE.registerMessage(MessageSyncRecipeChip.class,
-				MessageSyncRecipeChip.class, 0, Side.SERVER);
-		INSTANCE.registerMessage(MessageSyncIngredients.class,
-				MessageSyncIngredients.class, 1, Side.SERVER);
-		INSTANCE.registerMessage(MessageUpdateMissingItems.class,
-				MessageUpdateMissingItems.class, 2, Side.SERVER);
-		INSTANCE.registerMessage(MessageSwitchItems.class,
-				MessageSwitchItems.class, 3, Side.SERVER);
+		INSTANCE.registerMessage(MessageSyncRecipeChip.class, MessageSyncRecipeChip.class, 0, Side.SERVER);
+		INSTANCE.registerMessage(MessageSyncIngredients.class, MessageSyncIngredients.class, 1, Side.SERVER);
+		INSTANCE.registerMessage(MessageUpdateMissingItems.class, MessageUpdateMissingItems.class, 2, Side.SERVER);
+		INSTANCE.registerMessage(MessageSwitchItems.class, MessageSwitchItems.class, 3, Side.SERVER);
 	}
 
 	/*

@@ -27,6 +27,11 @@ public class ItemsReference {
 		return hash;
 	}
 
+	/**
+	 * This compares two ItemsReferences
+	 * use compare() to see if their itemstack
+	 * is equal (in terms of damage/ore dictionary)
+	 */
 	@Override
 	public boolean equals(Object o) {
 		if (o == null)
@@ -52,7 +57,27 @@ public class ItemsReference {
 			return reference.tag == null;
 		return this.tag.equals(reference.tag);
 	}
-
+	
+	
+	/**
+	 * Remade isEqual method
+	 * Compares only item, damage and ore dictionary
+	 * @return
+	 */
+	public boolean compare(ItemsReference reference) {
+		if (Utils.shareSameOreDictionary(this.stack, reference.stack, false))
+			return true; // Ore dictionary is top priority
+		
+		// Compare Item ID.
+		if (this.stack.getItem() != reference.stack.getItem())
+			return false;
+		// Compare Item's damage value.
+		if (this.itemDamage != reference.itemDamage)
+			return false;
+		
+		return false;
+	}
+	
 	public ItemStack toItemStack() {
 		ItemStack itemStack = new ItemStack(stack.getItem(), amount, itemDamage);
 		if (tag != null)

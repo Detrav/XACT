@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -69,7 +70,7 @@ public abstract class CraftingHandler {
 		for (ItemStack cur : ingredients) {
 			if (cur == null)
 				continue;
-
+			
 			int found = getCountFor(recipe, cur, false);
 			if (found < cur.stackSize)
 				return false;
@@ -81,12 +82,11 @@ public abstract class CraftingHandler {
 		InventoryCrafting craftMatrix = generateTemporaryCraftingGridFor(recipe, player, true);
 		if (craftMatrix == null)
 			return;
+
 		craftedItem.onCrafting(device.getWorld(), player, craftedItem.stackSize);
-		// TODO: ItemCraftedEvent replaces this
-		// GameRegistry.onItemCrafted( player, craftedItem, craftMatrix );
-
+		
 		consumeIngredients(craftMatrix, player);
-
+		
 		// Update the device's state.
 		device.updateState();
 	}
@@ -159,7 +159,7 @@ public abstract class CraftingHandler {
 				}
 			}
 		}
-		// craftMatrix.onInventoryChanged();
+		//craftMatrix.onInventoryChanged();
 
 		// give back the remaining items
 		for (ItemStack stack : remainingList) {
@@ -284,14 +284,14 @@ public abstract class CraftingHandler {
 	 * @param recipe
 	 *            the CraftRecipe representation of the recipe.
 	 * @return an array of int. any value of 0 represents there's no items left.
-	 * @see xk.xact.recipes.CraftRecipe#getSimplifiedIngredients()
+	 * @see xk.xact.recipes.CraftRecipe#getCompressedIngredients()
 	 */
 	public int[] getMissingIngredientsCount(CraftRecipe recipe) { // Example:
 																	// Missing 3
 																	// redstone,
 																	// 2
 																	// cobblestone.
-		ItemStack[] ingredients = recipe.getSimplifiedIngredients();
+		ItemStack[] ingredients = recipe.getCompressedIngredients();
 		int[] retValue = new int[ingredients.length];
 		for (int i = 0; i < ingredients.length; i++) {
 			ItemStack stack = ingredients[i];
@@ -321,7 +321,7 @@ public abstract class CraftingHandler {
 
 		ArrayList<ItemStack> list = new ArrayList<ItemStack>();
 		int[] missingCount = getMissingIngredientsCount(recipe);
-		ItemStack[] ingredients = copyArray(recipe.getSimplifiedIngredients());
+		ItemStack[] ingredients = copyArray(recipe.getCompressedIngredients());
 
 		for (int i = 0; i < missingCount.length; i++) {
 			int missing = missingCount[i];
@@ -330,7 +330,7 @@ public abstract class CraftingHandler {
 				list.add(ingredients[i]);
 			}
 		}
-
+		
 		return list.toArray(new ItemStack[list.size()]);
 	}
 
@@ -361,17 +361,15 @@ public abstract class CraftingHandler {
 
 		ItemStack[] ingredients = recipe.getIngredients();
 		ItemStack[] missingIngredients = getMissingIngredients(recipe);
-
+		
 		for (ItemStack currentMissed : missingIngredients) {
 			if (currentMissed == null)
 				continue;
 
 			int remaining = currentMissed.stackSize;
 			for (int i = 0; remaining > 0 && i < ingredients.length; i++) {
-				if (ingredients[i] != null
-						&& ingredients[i].isItemEqual(currentMissed)
-						&& ItemStack.areItemStackTagsEqual(ingredients[i],
-								currentMissed)) {
+				if (ingredients[i] != null && (ingredients[i].isItemEqual(currentMissed) && ItemStack.areItemStackTagsEqual(ingredients[i], currentMissed))
+					|| Utils.shareSameOreDictionary(ingredients[i], currentMissed, false)) {
 					remaining--;
 					missingArray[i] = true;
 				}
@@ -384,9 +382,9 @@ public abstract class CraftingHandler {
 
 	protected ItemStack[] findAndGetRecipeIngredients(CraftRecipe recipe, boolean doRemove) {
 		Map<Integer, int[]> gridIndexes = recipe.getGridIndexes();
-		ItemStack[] simplifiedIngredients = recipe.getSimplifiedIngredients();
+		ItemStack[] simplifiedIngredients = recipe.getCompressedIngredients();
 		ItemStack[] contents = new ItemStack[9];
-
+		
 		ingredient: for (int i = 0; i < simplifiedIngredients.length; i++) {
 			int[] indexes = gridIndexes.get(i);
 			int required = simplifiedIngredients[i].stackSize;
@@ -432,14 +430,19 @@ public abstract class CraftingHandler {
 		if (item == null)
 			return false;
 		ItemStack ingredient = recipe.getIngredients()[ingredientIndex];
-		
-		if (InventoryUtils.similarStacks(item, ingredient, true))
-			return true;
-		
-		// regular test: if replacing the item on that spot still matches with
-		// the recipe.
-		return recipe.matchesIngredient(ingredientIndex, item,
-				device.getWorld());
+
+
+		/* regular test: if replacing the item on that spot still matches with
+		   the recipe.
+		   I have no idea why there were all these other methods of checking if the given item is
+		   a valid ingredient when this one works always
+		   It will only apply that method if the item is either the same or shares the same ore dictionary entry 
+		 */
+		if (InventoryUtils.similarStacks(ingredient, item, false) || Utils.shareSameOreDictionary(item, ingredient, false))
+			return recipe.matchesIngredient(ingredientIndex, item,
+					device.getWorld());
+		else
+			return false;
 	}
 
 }

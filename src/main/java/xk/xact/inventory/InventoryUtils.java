@@ -44,11 +44,11 @@ public class InventoryUtils {
 
 		if (stack1.getItem() != stack2.getItem())
 			return false;
-
-		if (stack1.getHasSubtypes()) {
+		
+		if (stack1.getHasSubtypes())
 			if (stack1.getItemDamage() != stack2.getItemDamage())
 				return false;
-		}
+		
 		if (!compareNBT)
 			return true;
 
@@ -336,7 +336,7 @@ public class InventoryUtils {
 	}
 	
 	/**
-	 * Checks whether a block is disabled for the crafter by the config
+	 * Checks whether a inventory is disabled for the crafter by the config
 	 * @param block
 	 * @param blockMeta the metadata of the block
 	 */

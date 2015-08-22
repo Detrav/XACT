@@ -81,13 +81,13 @@ public class GuiUtils {
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		RenderHelper.enableStandardItemLighting();
-		RenderHelper.enableGUIStandardItemLighting(); // Fixes funny lightinge
+		RenderHelper.enableGUIStandardItemLighting(); // Fixes funny lighting
 
 		itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer,
 				mc.renderEngine, itemStack, x, y);
 		itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine,
 				itemStack, x, y);
-		// RenderHelper.disableStandardItemLighting();
+		//RenderHelper.disableStandardItemLighting();
 		// GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		// GL11.glDisable(GL11.GL_DEPTH_TEST);
 		itemRenderer.zLevel = 0.0F;

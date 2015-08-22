@@ -24,6 +24,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.logging.log4j.Level;
 
@@ -58,7 +59,18 @@ public class Utils {
 		if( stopGame )
 			FMLCommonHandler.instance().getSidedDelegate().haltGame( string, exception );
 	}
-
+	
+	public static String arrayToString(Object[] array) {
+		if (array == null || array.length < 1)
+			return "";
+		String result = "";
+		for (Object object : array) {
+			if (object != null)
+				result += ", " + object.toString();
+		}
+		return result;
+	}
+	
 	/**
 	 * The description of the ItemStack passed.
 	 * Includes the stack size and the 'display' name.
@@ -224,4 +236,42 @@ public class Utils {
 		}
 	}
 	
+	/**
+	 * Compares ore dictionary entries.
+	 * If both share at least one entry it returns true
+	 * Turning on strict means, that there can't be an
+	 * entry that is only on one of the items
+	 * @param stack1
+	 * @param stack2
+	 * @param strict
+	 * @return
+	 */
+	public static boolean shareSameOreDictionary(ItemStack stack1, ItemStack stack2, boolean strict) {
+		if (stack1 == null || stack2 == null)
+			return false;
+		
+		int[] ids = OreDictionary.getOreIDs(stack1);
+		int[] ids2 = OreDictionary.getOreIDs(stack2);
+		
+		if (strict && ids.length != ids2.length)
+			return false;
+		
+		int matchCount = 0;
+		
+		for (int id : ids) {
+			for (int id2 : ids2) {
+				if (id2 == id) {
+					if (!strict)
+						return true;
+					else
+						matchCount++;
+				}
+					
+			}
+		}
+		
+		if (matchCount == ids.length)
+			return true;
+		return false;
+	}
 }

@@ -10,10 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+
 //import invtweaks.api.container.ChestContainer;
 //import invtweaks.api.container.ContainerSection;
 //import invtweaks.api.container.ContainerSectionCallback;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -400,7 +403,7 @@ public class ContainerCrafter extends ContainerXACT implements
 		super.detectAndSendChanges();
 		if (clientSide)
 			return;
-
+		
 		syncClients(crafters);
 	}
 
@@ -408,27 +411,35 @@ public class ContainerCrafter extends ContainerXACT implements
 	@SideOnly(Side.CLIENT)
 	public void updateProgressBar(int var, int value) {
 		if (var < crafter.getRecipeCount()) { // Update recipe states from
-												// server info.
+											  // server info.
+
 			recipeStates[var] = Utils.decodeInt(value, 9);
+
+			
 			crafter.craftableRecipes[var] = !Utils.anyOf(recipeStates[var]);
 		}
 	}
 
+	
 	private void syncClients(List<ICrafting> clients) {
 		if (clients == null || clients.size() == 0)
 			return;
-
+		
 		int i;
 		int statesCount = crafter.getRecipeCount(); // when needed, add more
 													// here.
 
 		for (i = 0; i < statesCount; i++) { // Sync recipe states.
 			if (!Arrays.equals(recipeStates[i], crafter.recipeStates[i])) {
+				
+				
 				recipeStates[i] = crafter.recipeStates[i];
 				int encodedState = Utils.encodeInt(recipeStates[i]);
 
 				for (ICrafting client : clients) {
 					client.sendProgressBarUpdate(this, i, encodedState);
+		
+			
 				}
 			}
 		}
@@ -470,8 +481,7 @@ public class ContainerCrafter extends ContainerXACT implements
 		return false;
 	}
 
-	// -------------------- Compatibility with Inventory Tweaks
-	// --------------------
+	// -------------------- Compatibility with Inventory Tweaks // --------------------
 	@Optional.Method(modid = "inventorytweaks")
 	@ContainerSectionCallback
 	public Map<ContainerSection, List<Slot>> getSections() {
@@ -490,7 +500,17 @@ public class ContainerCrafter extends ContainerXACT implements
 
 		return map;
 	}
-
+	
+	@Override
+	public void onTickUpdate(EntityPlayer player) {
+		Container curr = player.openContainer;
+		if (curr != null && curr instanceof ContainerCrafter) {
+			((ContainerCrafter) curr).recipeStates = recipeStates;
+		}
+		System.out.println("dafuq");
+		super.onTickUpdate(player);
+	}
+	
 	private List<Slot> getSlots(int... indexes) {
 		List<Slot> slots = new ArrayList<Slot>();
 		for (int index : indexes) {

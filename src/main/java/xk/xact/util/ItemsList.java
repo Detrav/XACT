@@ -5,6 +5,7 @@ import static xk.xact.util.ItemsReference.wrap;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
 
 public class ItemsList extends ArrayList<ItemsReference> {
@@ -24,10 +25,30 @@ public class ItemsList extends ArrayList<ItemsReference> {
 	public boolean contains(ItemStack itemStack) {
 		return contains(wrap(itemStack));
 	}
-
+	
+	/**
+	 * Finds the first item in the list which either
+	 * is the same item (damage & item) or shares the
+	 * same ore dictionary entry
+	 */
+	@Override
+	public int indexOf(Object o) {
+		if (!(o instanceof ItemsReference))
+			return -1;
+		ItemsReference reference = (ItemsReference) o;
+		boolean found = false;
+		
+		for (int i = 0; i < size(); i++) {
+			if (reference.compare(get(i)))
+				return i;
+		}
+		return -1;
+	}
+	
 	public ItemsReference getOrCreateReference(ItemStack stack) {
 		ItemsReference reference = ItemsReference.wrap(stack);
 		int index = indexOf(reference);
+
 		if (index == -1) {
 			add(reference);
 		} else {
