@@ -255,6 +255,8 @@ public class Utils {
 		
 		if (strict && ids.length != ids2.length)
 			return false;
+		if (ids.length <= 0 || ids2.length <= 0) // if one of the items doesn't have an entry
+			return false;					   // return false
 		
 		int matchCount = 0;
 		
