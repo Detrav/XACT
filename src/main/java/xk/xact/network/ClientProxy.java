@@ -6,7 +6,7 @@ import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.client.KeyBindingHandler;
 import xk.xact.client.Keybinds;
 import xk.xact.client.gui.GuiCase;
@@ -35,7 +35,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void registerRenderInformation() {
 		// Custom IItemRenderer
-		MinecraftForgeClient.registerItemRenderer(XActMod.itemRecipeEncoded,
+		MinecraftForgeClient.registerItemRenderer(XactMod.itemRecipeEncoded,
 				new ChipRenderer());
 	}
 

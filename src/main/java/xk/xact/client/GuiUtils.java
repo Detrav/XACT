@@ -19,7 +19,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.gui.ContainerCrafter;
 import xk.xact.gui.ContainerPad;
 import xk.xact.network.PacketHandler;
@@ -289,7 +289,7 @@ public class GuiUtils {
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void openGui(int guiID) {
-		Minecraft.getMinecraft().thePlayer.openGui(XActMod.instance, guiID,
+		Minecraft.getMinecraft().thePlayer.openGui(XactMod.instance, guiID,
 				Minecraft.getMinecraft().thePlayer.worldObj, 0, 0, 0);
 	}
 

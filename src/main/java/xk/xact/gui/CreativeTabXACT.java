@@ -3,7 +3,7 @@ package xk.xact.gui;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 
 public class CreativeTabXACT extends CreativeTabs {
 
@@ -13,13 +13,13 @@ public class CreativeTabXACT extends CreativeTabs {
 
 	@Override
 	public ItemStack getIconItemStack() {
-		return new ItemStack(XActMod.blockMachine, 1, 1);
+		return new ItemStack(XactMod.blockMachine, 1, 1);
 	}
 
 	@Override
 	public Item getTabIconItem() {
 
-		return Item.getItemFromBlock(XActMod.blockMachine);
+		return Item.getItemFromBlock(XactMod.blockMachine);
 	}
 
 }

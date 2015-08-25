@@ -13,8 +13,7 @@ public class ItemsReference {
 	private ItemsReference(ItemStack itemStack) {
 		this.itemDamage = itemStack.getItemDamage();
 		this.stack = itemStack;
-		this.tag = itemStack.hasTagCompound() ? itemStack.getTagCompound()
-				: null;
+		this.tag = itemStack.hasTagCompound() ? itemStack.getTagCompound() : null;
 	}
 
 	@Override
@@ -71,11 +70,12 @@ public class ItemsReference {
 		// Compare Item ID.
 		if (this.stack.getItem() != reference.stack.getItem())
 			return false;
+		
 		// Compare Item's damage value.
 		if (this.itemDamage != reference.itemDamage)
 			return false;
 		
-		return false;
+		return true;
 	}
 	
 	public ItemStack toItemStack() {

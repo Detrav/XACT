@@ -9,7 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.recipes.CraftManager;
 import xk.xact.util.References;
 import xk.xact.util.Textures;
@@ -35,7 +35,7 @@ public class ItemChip extends Item {
 		this.encoded = encoded;
 		this.setUnlocalizedName(References.MOD_ID + ":recipeChip."
 				+ (encoded ? "encoded" : "blank"));
-		this.setCreativeTab(XActMod.xactTab);
+		this.setCreativeTab(XactMod.xactTab);
 		if (encoded)
 			invalidChip = new ItemStack(this, 1, 1);
 	}

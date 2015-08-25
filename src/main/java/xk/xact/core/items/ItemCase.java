@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.util.References;
 import xk.xact.util.Textures;
 import cpw.mods.fml.relauncher.Side;
@@ -19,7 +19,7 @@ public class ItemCase extends Item {
 		super();
 		this.setUnlocalizedName(References.Unlocalized.ITEMCHIPCASE);
 		this.setMaxStackSize(1);
-		this.setCreativeTab(XActMod.xactTab);
+		this.setCreativeTab(XactMod.xactTab);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -40,7 +40,7 @@ public class ItemCase extends Item {
 			EntityPlayer player) {
 		itemStack.setItemDamage(1);
 		if (!world.isRemote)
-			player.openGui(XActMod.instance, 1, world, 0, 0, 0);
+			player.openGui(XactMod.instance, 1, world, 0, 0, 0);
 		return itemStack;
 	}
 

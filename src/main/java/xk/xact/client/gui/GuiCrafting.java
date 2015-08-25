@@ -12,6 +12,7 @@ import xk.xact.client.GuiUtils;
 import xk.xact.client.KeyBindingHandler;
 import xk.xact.client.button.GuiButtonCustom;
 import xk.xact.client.button.ICustomButtonMode;
+import xk.xact.config.ConfigurationManager;
 import xk.xact.recipes.CraftManager;
 import xk.xact.recipes.CraftRecipe;
 import xk.xact.recipes.RecipeUtils;
@@ -75,7 +76,7 @@ public abstract class GuiCrafting extends GuiXACT implements
 		KeyBinding keybind = KeyBindingHandler.getPressedKeybinding();
 		CraftRecipe recipe;
 
-		if (keybind != null) {
+		if (keybind != null && ConfigurationManager.ENABLE_KEYBINDS) {
 			if (keybind.getKeyDescription().equals("xact.key.clear")) {
 				setRecipe(null);
 

@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import xk.xact.api.InteractiveCraftingContainer;
+import xk.xact.gui.ContainerCrafter;
 import xk.xact.recipes.CraftManager;
 import xk.xact.recipes.CraftRecipe;
 import cpw.mods.fml.common.network.ByteBufUtils;
@@ -33,17 +34,21 @@ public class MessageSyncRecipeChip implements IMessage,
 
 		InteractiveCraftingContainer container = (InteractiveCraftingContainer) ((EntityPlayer) ctx
 				.getServerHandler().playerEntity).openContainer;
-		if (message.SlotID == -1) {
-			container.setStack(-1, null);
-			return null;
-		}
-
-		ItemStack stack = message.chip;
-		if (stack != null)
-			if (stack.stackTagCompound != null) {
-				CraftRecipe recipe = CraftManager.decodeRecipe(stack);
+		if (container != null && container instanceof ContainerCrafter) {
+			if (message.SlotID == -1) {
+				container.setStack(-1, null);
+				return null;
 			}
-		container.setStack(message.SlotID, stack);
+
+			ItemStack stack = message.chip;
+			if (stack != null)
+				if (stack.stackTagCompound != null) {
+					CraftRecipe recipe = CraftManager.decodeRecipe(stack);
+				}
+			container.setStack(message.SlotID, stack);
+			((ContainerCrafter) container).crafter.updateState();
+		}
+		
 		return null;
 	}
 

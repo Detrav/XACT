@@ -190,14 +190,7 @@ public class TileCrafter extends TileMachine implements IInventory,
 
 	@Override
 	public void updateEntity() { // It was 5!
-	
 		Block blockNorthFromCrafter = worldObj.getBlock(xCoord, yCoord, zCoord - 1);
-
-		if (worldObj.getWorldTime() % 40 != 0) { // 4 checks per second might be
-													// enough.
-			return;
-		}
-
 		updateIfChangesDetected();
 	}
 

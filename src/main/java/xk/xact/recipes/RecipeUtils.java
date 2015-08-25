@@ -25,8 +25,7 @@ public class RecipeUtils {
 			ItemStack nominalResult = recipe.getResult();
 			ItemStack realResult = iRecipe.getCraftingResult(craftingGrid);
 
-			return InventoryUtils.similarStacks(nominalResult, realResult,
-					nominalResult.hasTagCompound());
+			return InventoryUtils.similarStacks(nominalResult, realResult, false); // checking nbt in the output isn't needed
 		} catch (NullPointerException npe) {
 			return false;
 		}

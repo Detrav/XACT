@@ -11,7 +11,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.client.GuiUtils;
 import xk.xact.client.button.CustomButtons;
 import xk.xact.client.button.GuiButtonCustom;
@@ -140,7 +140,7 @@ public class GuiPad extends GuiCrafting {
 												// if the player tries to switch
 												// the pad
 					&& hoverdSlot.getStack().getItem()
-							.equals(XActMod.itemCraftPad))
+							.equals(XactMod.itemCraftPad))
 				return;
 			if (keyCode - 2 >= 0
 					&& invPlayer.getStackInSlot(keyCode - 2) != null)
@@ -216,7 +216,7 @@ public class GuiPad extends GuiCrafting {
 			}
 			if (action == 3) { // CLEAR
 				GuiUtils.sendItemToServer((byte) (button.id + 10),
-						new ItemStack(XActMod.itemRecipeBlank));
+						new ItemStack(XactMod.itemRecipeBlank));
 			}
 		}
 	}

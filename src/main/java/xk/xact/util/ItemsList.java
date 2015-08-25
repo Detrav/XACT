@@ -18,6 +18,7 @@ public class ItemsList extends ArrayList<ItemsReference> {
 	public void addStack(ItemStack stack, int amount) {
 		if (stack != null) {
 			ItemsReference reference = getOrCreateReference(stack);
+
 			reference.amount += amount;
 		}
 	}
@@ -47,7 +48,7 @@ public class ItemsList extends ArrayList<ItemsReference> {
 	
 	public ItemsReference getOrCreateReference(ItemStack stack) {
 		ItemsReference reference = ItemsReference.wrap(stack);
-		int index = indexOf(reference);
+		int index = this.indexOf(reference);
 
 		if (index == -1) {
 			add(reference);

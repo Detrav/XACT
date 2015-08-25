@@ -6,6 +6,7 @@ import codechicken.nei.guihook.IContainerTooltipHandler;
 import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 
 /**
@@ -28,8 +29,7 @@ public class DebugTooltipHandler implements IContainerTooltipHandler {
 	}
 
 	@Override
-	public List<String> handleItemTooltip(GuiContainer gui,
-			ItemStack itemstack, int mousex, int mousey, List<String> currenttip) {
+	public List<String> handleItemTooltip(GuiContainer gui, ItemStack itemstack, int mousex, int mousey, List<String> currenttip) {
 
 		// Remove comments to show the GameData name of an item when hovering
 		// over
@@ -45,7 +45,10 @@ public class DebugTooltipHandler implements IContainerTooltipHandler {
 				for (int i : ids)
 					currenttip.add(" - " + OreDictionary.getOreName(i));
 			}
+
 		}
+		
+		
 		return currenttip;
 	}
 }

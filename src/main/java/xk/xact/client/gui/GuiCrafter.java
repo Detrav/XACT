@@ -11,7 +11,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.client.GuiUtils;
 import xk.xact.client.button.ButtonAction;
 import xk.xact.client.button.CustomButtons;
@@ -332,7 +332,7 @@ public class GuiCrafter extends GuiCrafting {
 				return;
 			case 3: // CLEAR
 				GuiUtils.sendItemToServer((byte) (4 + button.id),
-						new ItemStack(XActMod.itemRecipeBlank));
+						new ItemStack(XactMod.itemRecipeBlank));
 				return;
 			case 4: // CLEAR GRID
 				sendGridIngredients(null, 0);

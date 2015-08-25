@@ -35,10 +35,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 @Mod(modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION, useMetadata = true, guiFactory = References.GUI_FACTORY_CLASS)
 // @NetworkMod(clientSideRequired = true, serverSideRequired = true,
 // channels = { "xact_channel" }, packetHandler = PacketHandler.class)
-public class XActMod {
+public class XactMod {
 
 	@Mod.Instance("xact")
-	public static XActMod instance;
+	public static XactMod instance;
 
 	@SidedProxy(clientSide = "xk.xact.network.ClientProxy", serverSide = "xk.xact.network.CommonProxy")
 	public static CommonProxy proxy;
@@ -69,7 +69,8 @@ public class XActMod {
 				+ FMLCommonHandler.instance().getEffectiveSide());
 
 		// Load keybinds
-		proxy.registerKeybindings();
+		if (ConfigurationManager.ENABLE_KEYBINDS)
+			proxy.registerKeybindings();
 	}
 
 	@EventHandler
@@ -111,7 +112,7 @@ public class XActMod {
 				"tile.xact.VanillaWorkbench");
 
 		// Register GUIs
-		NetworkRegistry.INSTANCE.registerGuiHandler(XActMod.instance, proxy);
+		NetworkRegistry.INSTANCE.registerGuiHandler(XactMod.instance, proxy);
 		// FMLCommonHandler.instance().bus().register(ConfigurationManager.instance);
 
 		// Add the recipes
@@ -146,7 +147,7 @@ public class XActMod {
 						itemRecipeBlank));
 
 		if (blockWorkbench != null)
-			GameRegistry.addRecipe(new ShapedOreRecipe(XActMod.blockWorkbench,
+			GameRegistry.addRecipe(new ShapedOreRecipe(XactMod.blockWorkbench,
 					new String[] { "0w0", "wcw", "0w0" }, 'w', "plankWood",
 					'c', Blocks.crafting_table));
 

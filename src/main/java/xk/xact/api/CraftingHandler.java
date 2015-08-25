@@ -72,6 +72,7 @@ public abstract class CraftingHandler {
 				continue;
 			
 			int found = getCountFor(recipe, cur, false);
+
 			if (found < cur.stackSize)
 				return false;
 		}
@@ -286,12 +287,9 @@ public abstract class CraftingHandler {
 	 * @return an array of int. any value of 0 represents there's no items left.
 	 * @see xk.xact.recipes.CraftRecipe#getCompressedIngredients()
 	 */
-	public int[] getMissingIngredientsCount(CraftRecipe recipe) { // Example:
-																	// Missing 3
-																	// redstone,
-																	// 2
-																	// cobblestone.
+	public int[] getMissingIngredientsCount(CraftRecipe recipe) { // Example: Missing 3 redstone, 2 cobblestone.
 		ItemStack[] ingredients = recipe.getCompressedIngredients();
+		
 		int[] retValue = new int[ingredients.length];
 		for (int i = 0; i < ingredients.length; i++) {
 			ItemStack stack = ingredients[i];
@@ -299,10 +297,12 @@ public abstract class CraftingHandler {
 				retValue[i] = 0;
 				continue;
 			}
+			
 			int found = getCountFor(recipe, stack, false);
 			retValue[i] = (found >= stack.stackSize) ? 0 : stack.stackSize
 					- found;
 		}
+		
 		return retValue;
 	}
 
@@ -350,6 +350,7 @@ public abstract class CraftingHandler {
 				retValue += ", ";
 			retValue += Utils.stackDescription(ingredients[i]);
 		}
+		
 		return retValue.equals("") ? "none." : retValue;
 	}
 
@@ -358,7 +359,6 @@ public abstract class CraftingHandler {
 		if (recipe == null) {
 			return missingArray;
 		}
-
 		ItemStack[] ingredients = recipe.getIngredients();
 		ItemStack[] missingIngredients = getMissingIngredients(recipe);
 		
@@ -376,7 +376,7 @@ public abstract class CraftingHandler {
 
 			}
 		}
-
+		
 		return missingArray;
 	}
 
@@ -430,12 +430,9 @@ public abstract class CraftingHandler {
 		if (item == null)
 			return false;
 		ItemStack ingredient = recipe.getIngredients()[ingredientIndex];
-
-
+		
 		/* regular test: if replacing the item on that spot still matches with
 		   the recipe.
-		   I have no idea why there were all these other methods of checking if the given item is
-		   a valid ingredient when this one works always
 		   It will only apply that method if the item is either the same or shares the same ore dictionary entry 
 		 */
 		if (InventoryUtils.similarStacks(ingredient, item, false) || Utils.shareSameOreDictionary(item, ingredient, false))

@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.core.Machines;
 import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.core.tileentities.TileMachine;
@@ -34,7 +34,7 @@ public class BlockMachine extends BlockContainer {
 		this.setStepSound(soundTypeMetal);
 		this.setHardness(2.0f);
 		this.setResistance(1.5f);
-		this.setCreativeTab(XActMod.xactTab);
+		this.setCreativeTab(XactMod.xactTab);
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class BlockMachine extends BlockContainer {
 		}
 		if (!world.isRemote)
 			// player.openGui( XActMod.instance, 0, world, x, y, z );
-			FMLNetworkHandler.openGui(player, XActMod.instance, 0, world, x, y,
+			FMLNetworkHandler.openGui(player, XactMod.instance, 0, world, x, y,
 					z);
 
 		return true;

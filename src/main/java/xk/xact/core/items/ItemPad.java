@@ -9,7 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.util.References;
 import xk.xact.util.Textures;
 import cpw.mods.fml.relauncher.Side;
@@ -24,7 +24,7 @@ public class ItemPad extends Item {
 		super();
 		this.setUnlocalizedName(References.Unlocalized.ITEMCRAFTPAD);
 		this.setMaxStackSize(1);
-		this.setCreativeTab(XActMod.xactTab);
+		this.setCreativeTab(XactMod.xactTab);
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class ItemPad extends Item {
 		itemStack.setItemDamage(1);
 
 		if (!world.isRemote)
-			player.openGui(XActMod.instance, 3, world, 0, 0, 0);
+			player.openGui(XactMod.instance, 3, world, 0, 0, 0);
 		return itemStack;
 	}
 

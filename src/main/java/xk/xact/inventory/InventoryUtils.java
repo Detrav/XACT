@@ -13,6 +13,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.world.World;
@@ -51,8 +52,31 @@ public class InventoryUtils {
 		
 		if (!compareNBT)
 			return true;
-
+		
 		// Compare stacks tags.
+		
+		// Special case for GregTech
+		if (stack1.hasTagCompound() && stack2.hasTagCompound())
+			if (stack1.getTagCompound().getCompoundTag("GT.CraftingComponents") != null 
+			    && stack1.getTagCompound().getCompoundTag("GT.CraftingComponents") != null) { 
+				  
+				  // GregTech saves the items used to craft a machine in NBT
+				  // This means, that even if both machines are the same
+				  // But crafted with different materials 
+			      // (e.g IC2 plates instead of gregtech plates) we'll ignore this tag 
+				
+				NBTTagCompound compound1 = stack1.getTagCompound();
+				NBTTagCompound compound2 = stack2.getTagCompound();
+				
+				// Remove the used materials tag
+				compound1.removeTag("GT.CraftingComponents");
+				compound2.removeTag("GT.CraftingComponents");
+
+				// Compare them
+				return compound1.equals(compound2);
+			}
+		
+		
 		return !stack1.hasTagCompound() || stack2.hasTagCompound()
 				&& stack1.getTagCompound().equals(stack2.getTagCompound());
 

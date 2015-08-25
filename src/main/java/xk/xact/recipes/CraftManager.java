@@ -9,7 +9,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.core.items.ItemChip;
 import xk.xact.inventory.InventoryUtils;
 
@@ -28,7 +28,7 @@ public class CraftManager {
 	 * @return an ItemStack with the recipe stored in it's NBT.
 	 */
 	public static ItemStack encodeRecipe(CraftRecipe recipe) {
-		ItemStack stack = new ItemStack(XActMod.itemRecipeEncoded, 1);
+		ItemStack stack = new ItemStack(XactMod.itemRecipeEncoded, 1);
 
 		if (stack.stackTagCompound == null)
 			stack.stackTagCompound = new NBTTagCompound();

@@ -6,7 +6,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.client.GuiUtils;
 import xk.xact.recipes.CraftManager;
 import xk.xact.recipes.CraftRecipe;
@@ -50,7 +50,7 @@ public class GuiCase extends GuiXACT {
 												// if the player tries to switch
 												// the Case
 					&& hoverdSlot.getStack().getItem()
-							.equals(XActMod.itemChipCase))
+							.equals(XactMod.itemChipCase))
 				return;
 			if (keyCode - 2 >= 0
 					&& invPlayer.getStackInSlot(keyCode - 2) != null)

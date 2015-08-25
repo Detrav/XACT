@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraftforge.common.config.Configuration;
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.core.blocks.BlockMachine;
 import xk.xact.core.blocks.BlockVanillaWorkbench;
 import xk.xact.core.items.ItemCase;
@@ -74,20 +74,13 @@ public class ConfigurationManager extends Configuration {
 
 		// Misc
 		{
-			REPLACE_WORKBENCH = config
-					.get(CATEGORY_MISC,
-							"addWorkbenchTileEntity",
-							true,
-							"If true, XACT will add a crafting table which keeps it's inventory. (This used to replace the vanilla one) \n"
-									+ "Make sure you clear the workbench's grid before setting this to false, or you will lose your items.")
-					.getBoolean(true);
+			REPLACE_WORKBENCH = config.get(CATEGORY_MISC,
+							"addWorkbenchTileEntity", true,"If true, XACT will add a crafting table which keeps it's inventory. (This used to replace the vanilla one) \n"
+						    + "Make sure you clear the workbench's grid before setting this to false, or you will lose your items.").getBoolean(true);
 
-			ENABLE_ALT_TEXTURES = config
-					.get(CATEGORY_MISC,
-							"useAltTextures",
-							false,
-							"If true XACT will use atlernate textures for Items/Guis. They're not really any better.")
-					.getBoolean(true);
+			ENABLE_ALT_TEXTURES = config.get(CATEGORY_MISC, "useAltTextures", false,
+								  "If true XACT will use atlernate textures for Items/Guis. They're not really any better.").getBoolean(true);
+			ENABLE_KEYBINDS = config.get(CATEGORY_MISC, "enableKeybinds", false, "Since there's so many keyinds XACT disables them by default set to true to enable them").getBoolean(false);
 		}
 		
 		// Customization
@@ -100,16 +93,16 @@ public class ConfigurationManager extends Configuration {
 	}
 
 	public static void initItems() {
-		XActMod.itemRecipeBlank = new ItemChip(false);
-		XActMod.itemRecipeEncoded = new ItemChip(true);
-		XActMod.itemChipCase = new ItemCase();
-		XActMod.itemCraftPad = new ItemPad();
+		XactMod.itemRecipeBlank = new ItemChip(false);
+		XactMod.itemRecipeEncoded = new ItemChip(true);
+		XactMod.itemChipCase = new ItemCase();
+		XactMod.itemCraftPad = new ItemPad();
 	}
 
 	public static void initBlocks() {
-		XActMod.blockMachine = new BlockMachine();
+		XactMod.blockMachine = new BlockMachine();
 		if (REPLACE_WORKBENCH) {
-			XActMod.blockWorkbench = new BlockVanillaWorkbench();
+			XactMod.blockWorkbench = new BlockVanillaWorkbench();
 		}
 	}
 
@@ -122,6 +115,8 @@ public class ConfigurationManager extends Configuration {
 	public static boolean ENABLE_AE_PLUGIN;
 
 	public static boolean ENABLE_ALT_TEXTURES;
+	
+	public static boolean ENABLE_KEYBINDS;
 	
 	public static List<String> IGNORED_BLOCKS;
 	private static String[] DEFAULT_BLOCKS = { "" };

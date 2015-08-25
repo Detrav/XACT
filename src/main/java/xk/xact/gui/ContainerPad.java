@@ -11,7 +11,7 @@ import java.util.Map;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.api.InteractiveCraftingContainer;
 import xk.xact.core.CraftPad;
 import xk.xact.core.items.ItemChip;
@@ -130,7 +130,7 @@ public class ContainerPad extends ContainerItem implements
 			} else { // placing a blank chip
 				// Automatically clear invalid chips.
 				if (CraftManager.isEncoded(slot.getStack())) {
-					slot.putStack(new ItemStack(XActMod.itemRecipeBlank));
+					slot.putStack(new ItemStack(XactMod.itemRecipeBlank));
 				}
 			}
 

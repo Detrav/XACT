@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import xk.xact.XActMod;
+import xk.xact.XactMod;
 import xk.xact.core.tileentities.TileWorkbench;
 import xk.xact.util.Textures;
 import xk.xact.util.Utils;
@@ -49,7 +49,7 @@ public class BlockVanillaWorkbench extends BlockContainer {
 	public boolean onBlockActivated(World world, int x, int y, int z,
 			EntityPlayer player, int side, float offX, float offY, float offZ) {
 		if (!world.isRemote) {
-			player.openGui(XActMod.instance, 2, world, x, y, z);
+			player.openGui(XactMod.instance, 2, world, x, y, z);
 		}
 
 		return true;

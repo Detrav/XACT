@@ -79,6 +79,7 @@ public class CraftRecipe {
 			return simpleIngredients;
 		
 		ItemsList list = new ItemsList();
+		
 		for (ItemStack current : getIngredients()) {
 			try {
 				if (current != null) {
@@ -91,6 +92,7 @@ public class CraftRecipe {
 				Utils.logError("|>>>>>>>>>  getSimplifiedIngredients() ");
 			}
 		}
+		
 		return simpleIngredients = list.toArray();
 	}
 	
@@ -101,7 +103,7 @@ public class CraftRecipe {
 	public ItemStack[] getSimplifiedIngredients() {
 		if (simpleIngredients != null)
 			return simpleIngredients;
-
+		
 		ItemsList list = new ItemsList();
 		for (ItemStack current : getIngredients()) {
 			try {
@@ -113,7 +115,7 @@ public class CraftRecipe {
 				Utils.logError("|>>>>>>>>>  getSimplifiedIngredients() ");
 			}
 		}
-
+		
 		return simpleIngredients = list.toArray();
 	}
 	
@@ -194,6 +196,7 @@ public class CraftRecipe {
 	public boolean matchesIngredient(int ingredientIndex, ItemStack otherStack, World world) {
 		SpecialCasedRecipe specialCase = RecipeUtils.checkSpecialCase(this,
 				otherStack, ingredientIndex, world);
+		
 		if (specialCase != null)
 			return specialCase.isMatchingIngredient(this, otherStack,
 					ingredientIndex, world);
