@@ -1,3 +1,10 @@
+v0.5.3b
+-------
+[*] Resources will only be accepted if using them in the recipe won't
+    change the outcome
+[*] Fixes for GregTech machine recipes
+[*] Fixes when comparing ore dictionary
+
 v0.5.2b
 -------
 [+] Clear grid and load previous/next recipe button for crafter
