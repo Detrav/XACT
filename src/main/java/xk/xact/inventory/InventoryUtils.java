@@ -38,8 +38,7 @@ public class InventoryUtils {
 	 *            if the item's NBT must also match.
 	 * @return true if the stacks contain the same kind of items.
 	 */
-	public static boolean similarStacks(ItemStack stack1, ItemStack stack2,
-			boolean compareNBT) {
+	public static boolean similarStacks(ItemStack stack1, ItemStack stack2, boolean compareNBT) {
 		if (stack1 == null || stack2 == null)
 			return false; // this scenario is not meant to happen.
 

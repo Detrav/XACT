@@ -14,8 +14,11 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.oredict.OreDictionary;
+import xk.xact.config.ConfigurationManager;
+import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.inventory.InventoryUtils;
 import xk.xact.network.CommonProxy;
+import xk.xact.plugin.betterstorage.inventory.CrateInventory;
 import xk.xact.recipes.CraftRecipe;
 import xk.xact.recipes.RecipeUtils;
 import xk.xact.util.Utils;
@@ -87,7 +90,6 @@ public abstract class CraftingHandler {
 		craftedItem.onCrafting(device.getWorld(), player, craftedItem.stackSize);
 		
 		consumeIngredients(craftMatrix, player);
-		
 		// Update the device's state.
 		device.updateState();
 	}
@@ -173,6 +175,7 @@ public abstract class CraftingHandler {
 			if (!addToInventories(stack))
 				player.dropPlayerItemWithRandomChoice(stack, false);
 		}
+		device.updateState();
 	}
 
 	/**
@@ -269,7 +272,10 @@ public abstract class CraftingHandler {
 		boolean creativeMod = player != null
 				&& !CommonProxy.isFakePlayer(player)
 				&& player.capabilities.isCreativeMode;
-		if (creativeMod)
+		if (creativeMod && !ConfigurationManager.ENABLE_FREECRAFTING) {
+			ItemStack[] contents = findAndGetRecipeIngredients(recipe, takeItems);
+			return InventoryUtils.simulateCraftingInventory(contents);
+		} else if (creativeMod)
 			return InventoryUtils.simulateCraftingInventory(recipe
 					.getIngredients());
 
@@ -356,9 +362,11 @@ public abstract class CraftingHandler {
 
 	public boolean[] getMissingIngredientsArray(CraftRecipe recipe) {
 		boolean[] missingArray = new boolean[9];
+		
 		if (recipe == null) {
 			return missingArray;
 		}
+		
 		ItemStack[] ingredients = recipe.getIngredients();
 		ItemStack[] missingIngredients = getMissingIngredients(recipe);
 		
@@ -376,7 +384,7 @@ public abstract class CraftingHandler {
 
 			}
 		}
-		
+		//System.out.println(Utils.arrayToString(missingIngredients));
 		return missingArray;
 	}
 
@@ -435,9 +443,12 @@ public abstract class CraftingHandler {
 		   the recipe.
 		   It will only apply that method if the item is either the same or shares the same ore dictionary entry 
 		 */
-		if (InventoryUtils.similarStacks(ingredient, item, false) || Utils.shareSameOreDictionary(item, ingredient, false))
-			return recipe.matchesIngredient(ingredientIndex, item,
-					device.getWorld());
+		
+//		if (ingredient.getItem().equals(Items.enchanted_book))
+//			System.out.println(Utils.compareEnchantments(item, ingredient));
+		
+		if ((InventoryUtils.similarStacks(ingredient, item, false) || Utils.shareSameOreDictionary(item, ingredient, false)))
+			return recipe.matchesIngredient(ingredientIndex, item, (TileCrafter) device);
 		else
 			return false;
 	}

@@ -203,7 +203,7 @@ public class GuiCrafter extends GuiCrafting {
 		int color;
 		if (recipeIndex < 0)
 			return 0;
-		if (this.mc.thePlayer.capabilities.isCreativeMode) {
+		if (this.mc.thePlayer.capabilities.isCreativeMode && ConfigurationManager.ENABLE_FREECRAFTING) {
 			color = GuiUtils.COLOR_BLUE;
 		} else if (Utils.anyOf(container.recipeStates[recipeIndex])) {
 			color = GuiUtils.COLOR_RED;

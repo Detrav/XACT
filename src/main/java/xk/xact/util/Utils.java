@@ -276,4 +276,29 @@ public class Utils {
 			return true;
 		return false;
 	}
+	
+	/**
+	 * Used for recipes like the magic wood from Extra Utilities
+	 */
+	public static boolean compareEnchantments(ItemStack stack1, ItemStack stack2) {
+		
+		if (stack1 == null || stack2 == null)
+			return false;
+		
+		if (!stack1.hasTagCompound() && !stack2.hasTagCompound())
+			return true; // If both items don't have any nbt it'll just return true
+		
+		if (!stack1.hasTagCompound() || !stack2.hasTagCompound())
+			return false; // If only one of the items has nbt it'll return false
+		
+		if (stack1.getEnchantmentTagList().tagCount() > 0 && stack2.getEnchantmentTagList().tagCount() > 0) {
+			// We are comparing two weapons with enchantments
+			return stack1.getEnchantmentTagList().equals(stack2.getEnchantmentTagList());
+		} else if (stack1.getTagCompound().getTag("StoredEnchantments") != null && stack2.getTagCompound().getTag("StoredEnchantments") != null) {
+		    // We are comparing two books with enchantments
+			return stack1.getTagCompound().getTag("StoredEnchantments").equals(stack2.getTagCompound().getTag("StoredEnchantments"));
+		}
+		
+		return false;
+	}
 }

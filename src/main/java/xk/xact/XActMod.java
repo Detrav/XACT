@@ -88,7 +88,8 @@ public class XactMod {
 		proxy.registerRenderInformation();
 
 		// Register keybind handler
-		proxy.registerHandlers();
+		if (ConfigurationManager.ENABLE_KEYBINDS)
+			proxy.registerHandlers();
 
 		// Register Blocks
 		GameRegistry.registerBlock(blockMachine, ItemMachine.class,

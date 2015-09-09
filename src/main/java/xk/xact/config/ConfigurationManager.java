@@ -80,7 +80,11 @@ public class ConfigurationManager extends Configuration {
 
 			ENABLE_ALT_TEXTURES = config.get(CATEGORY_MISC, "useAltTextures", false,
 								  "If true XACT will use atlernate textures for Items/Guis. They're not really any better.").getBoolean(true);
-			ENABLE_KEYBINDS = config.get(CATEGORY_MISC, "enableKeybinds", false, "Since there's so many keyinds XACT disables them by default set to true to enable them").getBoolean(false);
+			
+			ENABLE_KEYBINDS = config.get(CATEGORY_MISC, "enableKeybinds", false, "Since there's so many keyinds XACT disables"
+								+ " them by default set to true to enable them").getBoolean(false);
+			
+			ENABLE_FREECRAFTING = config.get(CATEGORY_MISC, "enableFreeCrafting", true, "Allow free crafting when in creative").getBoolean(true);
 		}
 		
 		// Customization
@@ -117,6 +121,8 @@ public class ConfigurationManager extends Configuration {
 	public static boolean ENABLE_ALT_TEXTURES;
 	
 	public static boolean ENABLE_KEYBINDS;
+	
+	public static boolean ENABLE_FREECRAFTING;
 	
 	public static List<String> IGNORED_BLOCKS;
 	private static String[] DEFAULT_BLOCKS = { "" };

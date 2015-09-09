@@ -44,7 +44,6 @@ public class KeyBindingHandler {// extends KeyBindingRegistry.KeyHandler {
 
 	@SubscribeEvent
 	public void handleKeyInputEvent(InputEvent.KeyInputEvent event) {
-		System.out.println(ConfigurationManager.ENABLE_KEYBINDS);
 		if (getPressedKeybinding() != null && ConfigurationManager.ENABLE_KEYBINDS) {
 			if (FMLClientHandler.instance().getClientPlayerEntity() != null) {
 				EntityPlayer entityPlayer = FMLClientHandler.instance().getClientPlayerEntity();

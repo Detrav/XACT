@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import xk.xact.api.SpecialCasedRecipe;
 import xk.xact.config.ConfigurationManager;
+import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.inventory.InventoryUtils;
 import xk.xact.util.ItemsList;
 import xk.xact.util.Utils;
@@ -193,15 +194,14 @@ public class CraftRecipe {
 		return RecipePointer.getRecipe(recipeID);
 	}
 
-	public boolean matchesIngredient(int ingredientIndex, ItemStack otherStack, World world) {
+	public boolean matchesIngredient(int ingredientIndex, ItemStack otherStack, TileCrafter crafter) {
 		SpecialCasedRecipe specialCase = RecipeUtils.checkSpecialCase(this,
-				otherStack, ingredientIndex, world);
+				otherStack, ingredientIndex, crafter.getWorld());
 		
 		if (specialCase != null)
 			return specialCase.isMatchingIngredient(this, otherStack,
-					ingredientIndex, world);
-		return RecipeUtils.matchesIngredient(this, ingredientIndex, otherStack,
-				world);
+					ingredientIndex, crafter.getWorld());
+		return RecipeUtils.matchesIngredient(this, ingredientIndex, otherStack, crafter);
 	}
 
 	public boolean validate(World world) {

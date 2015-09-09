@@ -8,6 +8,7 @@ import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import xk.xact.api.CraftingHandler;
 import xk.xact.api.ICraftingDevice;
+import xk.xact.config.ConfigurationManager;
 import xk.xact.recipes.CraftRecipe;
 import xk.xact.util.Utils;
 
@@ -65,7 +66,7 @@ public class SlotCraft extends SlotCrafting {
 
 	@Override
 	public boolean canTakeStack(EntityPlayer player) {
-		if (player != null && player.capabilities.isCreativeMode)
+		if (player != null && player.capabilities.isCreativeMode && ConfigurationManager.ENABLE_FREECRAFTING)
 			return getHasStack();
 
 		return device.canCraft(getSlotIndex());
@@ -73,9 +74,9 @@ public class SlotCraft extends SlotCrafting {
 
 	@Override
 	public void onPickupFromSlot(EntityPlayer player, ItemStack craftedItem) {
-		if (player.capabilities.isCreativeMode || craftedItem == null)
+		if (player.capabilities.isCreativeMode && ConfigurationManager.ENABLE_FREECRAFTING || craftedItem == null)
 			return;
-
+		
 		CraftRecipe recipe = getRecipe();
 		if (recipe == null)
 			return;

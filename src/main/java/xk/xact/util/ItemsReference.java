@@ -75,6 +75,9 @@ public class ItemsReference {
 		if (this.itemDamage != reference.itemDamage)
 			return false;
 		
+		if (!Utils.compareEnchantments(this.stack, reference.stack))
+			return false;
+		
 		return true;
 	}
 	

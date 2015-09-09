@@ -7,25 +7,29 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 import xk.xact.api.SpecialCasedRecipe;
+import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.inventory.InventoryUtils;
 import xk.xact.plugin.PluginManager;
 
 public class RecipeUtils {
 
-	public static boolean matchesIngredient(CraftRecipe recipe, int ingredientIndex, ItemStack otherStack, World world) {
+	public static boolean matchesIngredient(CraftRecipe recipe, int ingredientIndex, ItemStack otherStack, TileCrafter crafter) {
 		try {
 			IRecipe iRecipe = recipe.getRecipePointer().getIRecipe();
 
 			InventoryCrafting craftingGrid = simulateGrid(recipe,
 					ingredientIndex, otherStack);
 
-			if (!iRecipe.matches(craftingGrid, world))
+			if (!iRecipe.matches(craftingGrid, crafter.getWorld()))
 				return false;
 
 			ItemStack nominalResult = recipe.getResult();
 			ItemStack realResult = iRecipe.getCraftingResult(craftingGrid);
-
-			return InventoryUtils.similarStacks(nominalResult, realResult, false); // checking nbt in the output isn't needed
+			
+			if (nominalResult.stackSize != realResult.stackSize && InventoryUtils.similarStacks(nominalResult, realResult, true))
+				crafter.setInventorySlotContents(4, nominalResult);
+			
+			return InventoryUtils.similarStacks(nominalResult, realResult, true);
 		} catch (NullPointerException npe) {
 			return false;
 		}
