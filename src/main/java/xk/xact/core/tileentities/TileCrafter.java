@@ -20,6 +20,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -223,9 +224,9 @@ public class TileCrafter extends TileMachine implements IInventory,
 			}
 		}
 
+		// Set the output slots of the crafter to the results
 		for (int i = 0; i < getRecipeCount(); i++) {
-			ItemStack stack = recipes[i] == null ? null : recipes[i]
-					.getResult();
+			ItemStack stack = recipes[i] == null ? null : handler.getResultWithResources(recipes[i]);//recipes[i].getResult();
 			results.setInventorySlotContents(i, stack);
 		}
 		
@@ -234,6 +235,7 @@ public class TileCrafter extends TileMachine implements IInventory,
 
 	// Updates the states of the recipes.
 	public void updateState() {
+		
 		if (worldObj.isRemote) {
 			return; // don't do this client-side.
 		}
@@ -241,19 +243,31 @@ public class TileCrafter extends TileMachine implements IInventory,
 			// if the recipe can be crafted.
 			craftableRecipes[i] = (recipes[i] != null) && getHandler().canCraft(this.getRecipe(i), null);
 			recipeStates[i] = getHandler().getMissingIngredientsArray(recipes[i]);
-			
 		}
 	}
-
+	
+	/**
+	 * Depending on which resources are found the crafter changes the amount of output
+	 * (Only visually)
+	 */
+	private void updateRecipeOutput() {
+		for (int i = 0; i < getRecipeCount(); i++) {
+			ItemStack stack = recipes[i] == null ? null : handler.getResultWithResources(recipes[i]);//recipes[i].getResult();
+			results.setInventorySlotContents(i, stack);
+		}
+	}
+	
 	// Used to trigger updates if changes have been detected.
 	private void updateIfChangesDetected() {
 		if (neighborsUpdatePending && !worldObj.isRemote) {
 			checkForAdjacentCrates();
+			updateRecipeOutput();
 			neighborsUpdatePending = false;
 		}
 
 		if (stateUpdatePending) {
 			updateState();
+			updateRecipeOutput();
 			stateUpdatePending = false;
 		}
 	}
@@ -360,6 +374,7 @@ public class TileCrafter extends TileMachine implements IInventory,
 								// pipes/tubes/etc
 		stateUpdatePending = true;
 		recentlyUpdated = true;
+		
 	}
 
 	@Override

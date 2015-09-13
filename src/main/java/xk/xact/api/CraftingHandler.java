@@ -103,8 +103,7 @@ public abstract class CraftingHandler {
 	 * @param craftMatrix
 	 *            the crafting grid with the ingredients for this recipe.
 	 */
-	public ItemStack getRecipeResult(CraftRecipe recipe,
-			InventoryCrafting craftMatrix) {
+	public ItemStack getRecipeResult(CraftRecipe recipe, InventoryCrafting craftMatrix) {
 		if (recipe == null)
 			return null;
 
@@ -122,7 +121,22 @@ public abstract class CraftingHandler {
 
 		return craftedItem;
 	}
+	
+	public ItemStack getResultWithResources(CraftRecipe recipe) {
+		if (recipe == null)
+			return null;
+		
+		if (getMissingIngredients(recipe).length > 0)
+			return getRecipeResult(recipe, null);
 
+		ItemStack result = null;
+		ItemStack[]	foundItemStacks = findAndGetRecipeIngredients(recipe, false);
+		
+		InventoryCrafting matrix = InventoryUtils.simulateCraftingInventory(foundItemStacks);
+		result = CraftingManager.getInstance().findMatchingRecipe(matrix, device.getWorld());
+		return result;
+	}
+	
 	public void consumeIngredients(InventoryCrafting craftMatrix, EntityPlayer player) {
 		// consume the items
 
@@ -269,15 +283,12 @@ public abstract class CraftingHandler {
 			Utils.debug("XACT: generateTemporaryCraftingGridFor: !canCraft");
 			return null;
 		}
-		boolean creativeMod = player != null
-				&& !CommonProxy.isFakePlayer(player)
-				&& player.capabilities.isCreativeMode;
+		boolean creativeMod = player != null && !CommonProxy.isFakePlayer(player) && player.capabilities.isCreativeMode;
 		if (creativeMod && !ConfigurationManager.ENABLE_FREECRAFTING) {
 			ItemStack[] contents = findAndGetRecipeIngredients(recipe, takeItems);
 			return InventoryUtils.simulateCraftingInventory(contents);
 		} else if (creativeMod)
-			return InventoryUtils.simulateCraftingInventory(recipe
-					.getIngredients());
+			return InventoryUtils.simulateCraftingInventory(recipe.getIngredients());
 
 		ItemStack[] contents = findAndGetRecipeIngredients(recipe, takeItems);
 		return InventoryUtils.simulateCraftingInventory(contents);
@@ -448,7 +459,7 @@ public abstract class CraftingHandler {
 //			System.out.println(Utils.compareEnchantments(item, ingredient));
 		
 		if ((InventoryUtils.similarStacks(ingredient, item, false) || Utils.shareSameOreDictionary(item, ingredient, false)))
-			return recipe.matchesIngredient(ingredientIndex, item, (TileCrafter) device);
+			return recipe.matchesIngredient(ingredientIndex, item, device.getWorld());
 		else
 			return false;
 	}

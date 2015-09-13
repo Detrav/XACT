@@ -13,21 +13,18 @@ import xk.xact.plugin.PluginManager;
 
 public class RecipeUtils {
 
-	public static boolean matchesIngredient(CraftRecipe recipe, int ingredientIndex, ItemStack otherStack, TileCrafter crafter) {
+	public static boolean matchesIngredient(CraftRecipe recipe, int ingredientIndex, ItemStack otherStack, World world) {
 		try {
 			IRecipe iRecipe = recipe.getRecipePointer().getIRecipe();
 
 			InventoryCrafting craftingGrid = simulateGrid(recipe,
 					ingredientIndex, otherStack);
 
-			if (!iRecipe.matches(craftingGrid, crafter.getWorld()))
+			if (!iRecipe.matches(craftingGrid, world))
 				return false;
 
 			ItemStack nominalResult = recipe.getResult();
 			ItemStack realResult = iRecipe.getCraftingResult(craftingGrid);
-			
-			if (nominalResult.stackSize != realResult.stackSize && InventoryUtils.similarStacks(nominalResult, realResult, true))
-				crafter.setInventorySlotContents(4, nominalResult);
 			
 			return InventoryUtils.similarStacks(nominalResult, realResult, true);
 		} catch (NullPointerException npe) {

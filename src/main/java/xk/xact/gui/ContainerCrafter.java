@@ -403,7 +403,6 @@ public class ContainerCrafter extends ContainerXACT implements
 		super.detectAndSendChanges();
 		if (clientSide)
 			return;
-		
 		syncClients(crafters);
 	}
 
@@ -490,13 +489,8 @@ public class ContainerCrafter extends ContainerXACT implements
 
 		map.put(ContainerSection.CRAFTING_OUT, getSlots(0, 1, 2, 3, 17)); // output
 																			// slots
-		map.put(ContainerSection.CRAFTING_IN_PERSISTENT, slots.subList(4, 17)); // crafting
-																				// grid
-																				// and
-																				// chips.
-		map.put(ContainerSection.CHEST, slots.subList(18, 18 + 27)); // the
-																		// resources
-																		// buffer
+		map.put(ContainerSection.CRAFTING_IN_PERSISTENT, slots.subList(4, 17)); // crafting grid and chips.
+		map.put(ContainerSection.CHEST, slots.subList(18, 18 + 27)); // the resources buffer
 
 		return map;
 	}

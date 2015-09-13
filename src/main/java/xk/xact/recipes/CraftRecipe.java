@@ -194,14 +194,14 @@ public class CraftRecipe {
 		return RecipePointer.getRecipe(recipeID);
 	}
 
-	public boolean matchesIngredient(int ingredientIndex, ItemStack otherStack, TileCrafter crafter) {
+	public boolean matchesIngredient(int ingredientIndex, ItemStack otherStack, World world) {
 		SpecialCasedRecipe specialCase = RecipeUtils.checkSpecialCase(this,
-				otherStack, ingredientIndex, crafter.getWorld());
+				otherStack, ingredientIndex, world);
 		
 		if (specialCase != null)
 			return specialCase.isMatchingIngredient(this, otherStack,
-					ingredientIndex, crafter.getWorld());
-		return RecipeUtils.matchesIngredient(this, ingredientIndex, otherStack, crafter);
+					ingredientIndex, world);
+		return RecipeUtils.matchesIngredient(this, ingredientIndex, otherStack, world);
 	}
 
 	public boolean validate(World world) {
@@ -268,19 +268,7 @@ public class CraftRecipe {
 			return null;
 
 		ItemStack[] ingredients = new ItemStack[9];
-		NBTTagList tagList = compound.getTagList("recipeIngredients", 10); // MAAAAN
-																			// CHANGING
-																			// THIS
-																			// TO
-																			// TEN
-																			// FIXED
-																			// ALL
-																			// THE
-																			// THINGS
-																			// GAAAAH
-																			// (it
-																			// was
-																			// 0)
+		NBTTagList tagList = compound.getTagList("recipeIngredients", 10); // MAAAAN CHANGING THIS TO TEN FIXED ALL THE THINGS GAAAAH (it was 0)
 		if (tagList == null)
 			return null;
 		for (int i = 0; i < tagList.tagCount(); i++) {
