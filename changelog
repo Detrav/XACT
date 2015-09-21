@@ -1,3 +1,12 @@
+v0.5.4b
+-------
+[*] Fixed items not saving in crafter(?)
+
+v0.5.4
+------
+[*] Visual fix when crafting Magical Wood
+[*] Fixed items not disappearing after crafting on client side
+
 v0.5.3b
 -------
 [*] Resources will only be accepted if using them in the recipe won't
