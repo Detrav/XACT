@@ -126,13 +126,17 @@ public abstract class CraftingHandler {
 		if (recipe == null)
 			return null;
 		
-		if (getMissingIngredients(recipe).length > 0)
+		if (getMissingIngredients(recipe) != null && getMissingIngredients(recipe).length > 0)
 			return getRecipeResult(recipe, null);
 
 		ItemStack result = null;
 		ItemStack[]	foundItemStacks = findAndGetRecipeIngredients(recipe, false);
-		
+		if (foundItemStacks == null)
+			return null;
 		InventoryCrafting matrix = InventoryUtils.simulateCraftingInventory(foundItemStacks);
+		if (matrix == null || device.getWorld() == null)
+			return null;
+		
 		result = CraftingManager.getInstance().findMatchingRecipe(matrix, device.getWorld());
 		return result;
 	}

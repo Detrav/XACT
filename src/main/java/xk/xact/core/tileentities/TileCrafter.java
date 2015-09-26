@@ -420,7 +420,6 @@ public class TileCrafter extends TileMachine implements IInventory,
 						ItemStack.loadItemStackFromNBT(tag));
 			}
 		}
-		updateRecipes();
 		stateUpdatePending = true;
 	}
 

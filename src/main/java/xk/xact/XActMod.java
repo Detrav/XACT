@@ -33,8 +33,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
  * into chips.
  */
 @Mod(modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION, useMetadata = true, guiFactory = References.GUI_FACTORY_CLASS)
-// @NetworkMod(clientSideRequired = true, serverSideRequired = true,
-// channels = { "xact_channel" }, packetHandler = PacketHandler.class)
 public class XactMod {
 
 	@Mod.Instance("xact")
