@@ -173,8 +173,7 @@ public class GuiUtils {
 	@SideOnly(Side.CLIENT)
 	// item = the chip, slotID
 	public static void sendItemToServer(byte slotID, ItemStack item) {
-		PacketHandler.INSTANCE.sendToServer(new MessageSyncRecipeChip(item,
-				slotID));
+		PacketHandler.INSTANCE.sendToServer(new MessageSyncRecipeChip(item, slotID));
 	}
 
 	@SideOnly(Side.CLIENT)

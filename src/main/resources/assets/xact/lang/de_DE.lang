@@ -9,6 +9,7 @@ item.xact:chipCase.name=Chip Behälter
 item.xact:recipeChip.blank.desc=leer
 item.xact:recipeChip.invalid.desc=ungültig
 item.xact:recipeChip.recipe=Rezept
+
 # Blocks
 xact:tile.machine.crafter.name=X.A.C.T. Crafter
 

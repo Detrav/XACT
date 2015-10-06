@@ -1,23 +1,30 @@
 package xk.xact.network;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import cpw.mods.fml.relauncher.Side;
+import xk.xact.network.message.MessageNameCrafter;
+import xk.xact.network.message.MessageNameCrafterClient;
+import xk.xact.network.message.MessageSwitchGui;
 import xk.xact.network.message.MessageSwitchItems;
 import xk.xact.network.message.MessageSyncIngredients;
 import xk.xact.network.message.MessageSyncRecipeChip;
 import xk.xact.network.message.MessageUpdateMissingItems;
 import xk.xact.util.References;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import cpw.mods.fml.relauncher.Side;
 
 public class PacketHandler {// implements IPacketHandler {
 	public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(References.MOD_ID.toLowerCase());
-
+	private static int ID = 0;
 	public static void init() {
 		// Register Network Messages
-		INSTANCE.registerMessage(MessageSyncRecipeChip.class, MessageSyncRecipeChip.class, 0, Side.SERVER);
-		INSTANCE.registerMessage(MessageSyncIngredients.class, MessageSyncIngredients.class, 1, Side.SERVER);
-		INSTANCE.registerMessage(MessageUpdateMissingItems.class, MessageUpdateMissingItems.class, 2, Side.SERVER);
-		INSTANCE.registerMessage(MessageSwitchItems.class, MessageSwitchItems.class, 3, Side.SERVER);
+		INSTANCE.registerMessage(MessageSyncRecipeChip.class, MessageSyncRecipeChip.class, ID++, Side.SERVER);
+		INSTANCE.registerMessage(MessageSyncIngredients.class, MessageSyncIngredients.class, ID++, Side.SERVER);
+		INSTANCE.registerMessage(MessageUpdateMissingItems.class, MessageUpdateMissingItems.class, ID++, Side.SERVER);
+		INSTANCE.registerMessage(MessageSwitchItems.class, MessageSwitchItems.class, ID++, Side.SERVER);
+		INSTANCE.registerMessage(MessageSwitchGui.class, MessageSwitchGui.class, ID++, Side.SERVER);
+		INSTANCE.registerMessage(MessageNameCrafter.class, MessageNameCrafter.class, ID++, Side.SERVER);
+		INSTANCE.registerMessage(MessageNameCrafterClient.class, MessageNameCrafterClient.class, ID++, Side.CLIENT);
+		
 	}
 
 	/*

@@ -11,15 +11,19 @@ import xk.xact.client.KeyBindingHandler;
 import xk.xact.client.Keybinds;
 import xk.xact.client.gui.GuiCase;
 import xk.xact.client.gui.GuiPad;
+import xk.xact.client.gui.GuiTextPrompt;
 import xk.xact.client.gui.GuiVanillaWorkbench;
 import xk.xact.client.render.ChipRenderer;
 import xk.xact.core.ChipCase;
 import xk.xact.core.CraftPad;
+import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.core.tileentities.TileMachine;
 import xk.xact.core.tileentities.TileWorkbench;
 import xk.xact.gui.ContainerCase;
+import xk.xact.gui.ContainerCrafter;
 import xk.xact.gui.ContainerPad;
 import xk.xact.gui.ContainerVanillaWorkbench;
+import appeng.api.implementations.tiles.ISegmentedInventory;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -55,8 +59,7 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	@Override
-	public Object getClientGuiElement(int GuiID, EntityPlayer player,
-			World world, int x, int y, int z) {
+	public Object getClientGuiElement(int GuiID, EntityPlayer player, World world, int x, int y, int z) {
 		int ID = (GuiID & 0xFF);
 		int meta = (GuiID >> 8) & 0xFFFF;
 
@@ -65,6 +68,7 @@ public class ClientProxy extends CommonProxy {
 		// 1: library
 		// 2: vanilla workbench
 		// 3: craft pad
+		// 4: prompt window
 		switch (ID) {
 		case 0: // Machines
 			TileMachine machine = (TileMachine) world.getTileEntity(x, y, z);
@@ -91,6 +95,9 @@ public class ClientProxy extends CommonProxy {
 					player.inventory.mainInventory[invSlot], player);
 			return new GuiPad(craftPad, new ContainerPad(craftPad, player,
 					invSlot));
+		case 4: // Prompt Window
+			return new GuiTextPrompt(x, y, z);
+					
 		default:
 			return null;
 		}

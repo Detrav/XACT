@@ -57,7 +57,7 @@ public class InventoryUtils {
 		// Special case for GregTech
 		if (stack1.hasTagCompound() && stack2.hasTagCompound())
 			if (stack1.getTagCompound().getCompoundTag("GT.CraftingComponents") != null 
-			    && stack1.getTagCompound().getCompoundTag("GT.CraftingComponents") != null) { 
+			    && stack2.getTagCompound().getCompoundTag("GT.CraftingComponents") != null) { 
 				  
 				  // GregTech saves the items used to craft a machine in NBT
 				  // This means, that even if both machines are the same
@@ -310,15 +310,12 @@ public class InventoryUtils {
 	public static IInventoryAdapter getInventoryAdapter(Object inventory) {
 		
 		if (inventory != null) {
-			for (Class adapterClass : PluginManager.getInventoryAdapters()
-					.keySet()) {
+			for (Class adapterClass : PluginManager.getInventoryAdapters().keySet()) {
 //				System.out.println(adapterClass.isAssignableFrom(inventory.getClass()));
 				if (adapterClass != null
 						&& adapterClass.isAssignableFrom(inventory.getClass()))
 					
-					return PluginManager.getInventoryAdapters()
-							.get(adapterClass)
-							.createInventoryAdapter(inventory);
+					return PluginManager.getInventoryAdapters().get(adapterClass).createInventoryAdapter(inventory);
 			}
 			if (inventory instanceof IInventory) {
 				return new LinearInventory((IInventory) inventory);
@@ -335,6 +332,9 @@ public class InventoryUtils {
 	public static boolean isValidInventory(Object inventory) {
 		
 		if (inventory != null) {
+			if (inventory.toString().contains("ic2.core.block")) // IC2 machines are strange. Don't pull items.
+				return false;
+			
 			if (inventory instanceof TileEntityChest) {
 				return true;
 			}
@@ -343,9 +343,6 @@ public class InventoryUtils {
 				// Special case carpeters safe
 				if (((IInventory) inventory).getInventoryName() == "tile.blockCarpentersSafe.name")
 					return false;
-				if (inventory instanceof IWrenchable || inventory instanceof IEnergyStorage)
-					return false; // IC2 Inventories cause dupe bugs, and since their no real storage blocks they'll be ignored
-				
 				return true;
 			}
 

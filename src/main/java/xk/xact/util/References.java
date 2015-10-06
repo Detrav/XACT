@@ -5,6 +5,7 @@ public class References {
 	public static final String MOD_NAME = "XACT Mod";
 	public static final String VERSION = "0.5.2";
 	public static final String GUI_FACTORY_CLASS = "xk.xact.config.GuiFactory";
+	
 	public static class Registry {
 		public static final String ITEMCHIPCASE = "chipCase";
 		public static final String ITEMCRAFTPAD = "craftPad";
@@ -39,11 +40,19 @@ public class References {
 		public static final String CHIP_BLANK = "item.xact:recipeChip.blank.desc";
 		public static final String CHIP_INVALID = "item.xact:recipeChip.invalid.desc";
 		public static final String CHIP_RECIPE = "item.xact:recipeChip.recipe";
+		public static final String PROMPT_TITLE = "gui.xact:prompt.name";
 		
 		public static final String TOOLTIP_CLEAR = "gui.xact:tipclear";
 		public static final String TOOLTIP_SAVE = "gui.xact:tipsave";
 		public static final String TOOLTIP_CLEARGRID = "gui.xact:tipcleargrid";
 		public static final String TOOLTIP_NEXTRECIPE = "gui.xact:tipnextrecipe";
 		public static final String TOOLTIP_LASTRECIPE = "gui.xact:tiplastrecipe";
+		public static final String TOOLTIP_SETNAME = "gui.xact:tipsetname";
+		public static final String TOOLTIP_ADJACENTCRAFTER = "gui.xact:tipadjacentcrafter";
+		public static final String TOOLTIP_CLICKTOOPEN = "gui.xact:tipclicktoopengui";
+		
+		public static final String BUTTON_ACCEPT = "gui.xact:buttonAccept.name";
+		public static final String BUTTON_CANCEL = "gui.xact:buttonCancel.name";
+		
 	}
 }

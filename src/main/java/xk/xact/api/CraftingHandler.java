@@ -90,8 +90,7 @@ public abstract class CraftingHandler {
 		craftedItem.onCrafting(device.getWorld(), player, craftedItem.stackSize);
 		
 		consumeIngredients(craftMatrix, player);
-		// Update the device's state.
-		device.updateState();
+		
 	}
 
 	/**
@@ -150,12 +149,12 @@ public abstract class CraftingHandler {
 			ItemStack stackInSlot = craftMatrix.getStackInSlot(i);
 			if (stackInSlot == null)
 				continue;
-
-			craftMatrix.decrStackSize(i, 1);
+			
+	
+				craftMatrix.decrStackSize(i, 1);
 			
 			if (stackInSlot.getItem().getContainerItem(stackInSlot) != null) {
-				ItemStack containerStack = stackInSlot.getItem()
-						.getContainerItem(stackInSlot);
+				ItemStack containerStack = stackInSlot.getItem().getContainerItem(stackInSlot);
 
 				if (containerStack.isItemStackDamageable() && containerStack.getItemDamage() > containerStack.getMaxDamage()) {
 					MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, containerStack));
@@ -168,8 +167,7 @@ public abstract class CraftingHandler {
 						for (Object inventory : getAvailableInventories()) {
 							IInventoryAdapter adapter = InventoryUtils.getInventoryAdapter(inventory);
 							if (adapter != null) {
-								containerStack = adapter
-										.placeItem(containerStack);
+								containerStack = adapter.placeItem(containerStack);
 								if (containerStack == null)
 									continue mainLoop;
 							}
@@ -180,7 +178,7 @@ public abstract class CraftingHandler {
 				}
 			}
 		}
-		//craftMatrix.onInventoryChanged();
+		craftMatrix.markDirty();
 
 		// give back the remaining items
 		for (ItemStack stack : remainingList) {
@@ -281,8 +279,7 @@ public abstract class CraftingHandler {
 	 * @param recipe
 	 *            the recipe from which to take the ingredients.
 	 */
-	public InventoryCrafting generateTemporaryCraftingGridFor(
-			CraftRecipe recipe, EntityPlayer player, boolean takeItems) {
+	public InventoryCrafting generateTemporaryCraftingGridFor(CraftRecipe recipe, EntityPlayer player, boolean takeItems) {
 		if (!canCraft(recipe, player)) {
 			Utils.debug("XACT: generateTemporaryCraftingGridFor: !canCraft");
 			return null;
@@ -291,7 +288,7 @@ public abstract class CraftingHandler {
 		if (creativeMod && !ConfigurationManager.ENABLE_FREECRAFTING) {
 			ItemStack[] contents = findAndGetRecipeIngredients(recipe, takeItems);
 			return InventoryUtils.simulateCraftingInventory(contents);
-		} else if (creativeMod)
+		} else if (creativeMod && ConfigurationManager.ENABLE_FREECRAFTING)
 			return InventoryUtils.simulateCraftingInventory(recipe.getIngredients());
 
 		ItemStack[] contents = findAndGetRecipeIngredients(recipe, takeItems);
@@ -413,6 +410,7 @@ public abstract class CraftingHandler {
 			int required = simplifiedIngredients[i].stackSize;
 
 			for (Object inventory : getAvailableInventories()) {
+				
 				IInventoryAdapter adapter = InventoryUtils.getInventoryAdapter(inventory);
 				for (ItemStack item : adapter) {
 					if (required <= 0) {
@@ -428,8 +426,7 @@ public abstract class CraftingHandler {
 							break;
 
 						if (contents[index] != null
-								|| !isItemMatchingIngredient(item, recipe,
-										index)) {
+								|| !isItemMatchingIngredient(item, recipe, index)) {
 							continue; // try on next grid slot.
 						}
 
@@ -440,9 +437,11 @@ public abstract class CraftingHandler {
 							contents[index].stackSize = 1;
 						}
 						required--;
-						available -= contents[index] == null ? 0
-								: contents[index].stackSize;
+						available -= contents[index] == null ? 0 : contents[index].stackSize;
 					}
+				}
+				if (inventory != null && inventory instanceof TileCrafter) {
+					((TileCrafter) inventory).resources.markDirty();
 				}
 			}
 		}

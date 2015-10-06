@@ -1,7 +1,5 @@
 package xk.xact.client.gui;
 
-import java.util.Arrays;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.RenderHelper;
@@ -205,18 +203,17 @@ public class GuiPad extends GuiCrafting {
 
 	@Override
 	protected void actionPerformed(GuiButton button) {
+		
 		if (button instanceof GuiButtonCustom) {
 			int action = ((GuiButtonCustom) button).getAction();
-
+			System.out.println(craftPad.getRecipe(0));
 			if (action == 1) { // SAVE
-				ItemStack stack = CraftManager.encodeRecipe(craftPad
-						.getRecipe(0));
+				ItemStack stack = CraftManager.encodeRecipe(craftPad.getRecipe(0));
 				GuiUtils.sendItemToServer((byte) (button.id + 10), stack);
 				return;
 			}
 			if (action == 3) { // CLEAR
-				GuiUtils.sendItemToServer((byte) (button.id + 10),
-						new ItemStack(XactMod.itemRecipeBlank));
+				GuiUtils.sendItemToServer((byte) (button.id + 10), new ItemStack(XactMod.itemRecipeBlank));
 			}
 		}
 	}
@@ -230,12 +227,9 @@ public class GuiPad extends GuiCrafting {
 			byte slotToSwitch = (byte) (pad.stackTagCompound
 					.getByte("originalSlot"));
 			if (slotToSwitch != 0) {
-				ItemStack stack = craftPad.getPlayerOwner().inventory
-						.getStackInSlot(slotToSwitch - 1);
+				ItemStack stack = craftPad.getPlayerOwner().inventory.getStackInSlot(slotToSwitch - 1);
 				pad.stackTagCompound.setByte("originalSlot", (byte) 0);
-				PacketHandler.INSTANCE.sendToServer(new MessageSwitchItems(pad,
-						slotToSwitch - 1, stack, slotIdPad));
-
+				PacketHandler.INSTANCE.sendToServer(new MessageSwitchItems(pad, slotToSwitch - 1, stack, slotIdPad));
 			}
 		}
 		super.onGuiClosed();

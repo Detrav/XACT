@@ -11,21 +11,24 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 /**
  * Used to properly switch items between hot bar and Inventory
  */
-public class MessageSwitchItems implements IMessage,
-		IMessageHandler<MessageSwitchItems, IMessage> {
+public class MessageSwitchItems implements IMessage, IMessageHandler<MessageSwitchItems, IMessage> {
+	
 	/**
 	 * The slot id where the item from the inventory shall be moved
 	 */
 	public byte idHotBarsStack;
+	
 	/**
 	 * The slot id where the item form the hotbar shall be moved
 	 */
 	public byte idInvStack;
+	
 	/**
 	 * The stack that is currently in the hotbar and shall be moved to the
 	 * inventory
 	 */
 	public ItemStack hotbarStack;
+	
 	/**
 	 * The stack that is currently in the inventory and shall be moved to the
 	 * hot bar

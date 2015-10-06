@@ -1,26 +1,20 @@
 package xk.xact.core.tileentities;
 
-//import appeng.api.IItemList;
-//import appeng.api.WorldCoord;
-//import appeng.api.me.tiles.IGridTileEntity;
-//import appeng.api.me.tiles.INonSignalBlock;
-//import appeng.api.me.tiles.IStorageAware;
-//import appeng.api.me.util.IGridInterface;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.api.crate.ICrateStorage;
 import net.mcft.copy.betterstorage.api.crate.ICrateWatcher;
 import net.minecraft.block.Block;
-//import net.mcft.copy.betterstorage.api.ICrateStorage;
-//import net.mcft.copy.betterstorage.api.ICrateWatcher;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -29,6 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import xk.xact.api.CraftingHandler;
 import xk.xact.api.ICraftingDevice;
+import xk.xact.api.INameable;
 import xk.xact.client.gui.GuiCrafter;
 import xk.xact.client.gui.GuiCrafting;
 import xk.xact.config.ConfigurationManager;
@@ -39,14 +34,11 @@ import xk.xact.plugin.PluginManager;
 import xk.xact.recipes.CraftRecipe;
 import xk.xact.recipes.RecipeUtils;
 import xk.xact.util.Utils;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author Xhamolk_
  */
-public class TileCrafter extends TileMachine implements IInventory,
-		ICraftingDevice, ICrateWatcher { //, IStorageMonitorable {// , IStorageAware, INonSignalBlock,
+public class TileCrafter extends TileMachine implements IInventory, ICraftingDevice, ICrateWatcher, INameable { //, IStorageMonitorable {// , IStorageAware, INonSignalBlock,
 										// IGridTileEntity {
 
 	/*
@@ -92,9 +84,20 @@ public class TileCrafter extends TileMachine implements IInventory,
 	// Used by GuiCrafter to update it's internal state.
 	// Should only be accessed client-side for rendering purposes.
 	public boolean recentlyUpdated = false;
-
+	
+	/**
+	 * The name the crafter gets when renaming
+	 */
+	private String crafterName;
+	
+	/**
+	 * Used to identify the crafter
+	 */
+	private String UUID;
+	
 	public TileCrafter() {
 		this.results = new Inventory(getRecipeCount(), "Results");
+		
 		this.circuits = new Inventory(4, "Encoded Recipes") {
 			@Override
 			public void markDirty() {
@@ -235,6 +238,7 @@ public class TileCrafter extends TileMachine implements IInventory,
 
 	// Updates the states of the recipes.
 	public void updateState() {
+		
 		
 		if (worldObj.isRemote) {
 			return; // don't do this client-side.
@@ -388,7 +392,7 @@ public class TileCrafter extends TileMachine implements IInventory,
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-
+	
 		NBTTagList gridList = compound.getTagList("Grid", 10); // Load Grid
 		for (int i = 0; i < gridList.tagCount(); ++i) {
 			NBTTagCompound tag = gridList.getCompoundTagAt(i);
@@ -420,6 +424,12 @@ public class TileCrafter extends TileMachine implements IInventory,
 						ItemStack.loadItemStackFromNBT(tag));
 			}
 		}
+		
+		// Load name
+//		crafterName = compound.getString("CustomName");
+//		if (EffectiveSide.isServerSide()) // Only server side
+//			PacketHandler.INSTANCE.sendToAllAround(new MessageNameCrafterClient(crafterName, xCoord, yCoord, zCoord),
+//					new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 128D)); // Tell all clients what the name is
 		stateUpdatePending = true;
 	}
 
@@ -463,6 +473,11 @@ public class TileCrafter extends TileMachine implements IInventory,
 			}
 		}
 		compound.setTag("Resources", resourceList);
+		
+		// Save the custom name
+//		if (hasName())
+//			compound.setString("CustomName", crafterName);
+//			
 	}
 
 	// ////////
@@ -527,47 +542,6 @@ public class TileCrafter extends TileMachine implements IInventory,
 			stateUpdatePending = true;
 	}
 
-	// ---------- Applied Energistics integration ---------- //
-
-	// @Override
-	// public WorldCoord getLocation() {
-	// return new WorldCoord( xCoord, yCoord, zCoord );
-	// }
-	//
-	// @Override
-	// public boolean isValid() {
-	// return true;
-	// }
-	//
-	// @Override
-	// public void setPowerStatus(boolean hasPower) { }
-	//
-	// @Override
-	// public boolean isPowered() {
-	// return true;
-	// }
-	//
-	// @Override
-	// public IGridInterface getGrid() {
-	// return null;
-	// }
-	//
-	// @Override
-	// public void setGrid(IGridInterface gi) { }
-	//
-	// @Override
-	// public void onNetworkInventoryChange(IItemList iss) {
-	// stateUpdatePending = true;
-	// }
-	//
-	// // Connectivity events
-	//
-	// private void fireLoadEventAE() {
-	// if( PluginManager.aeProxy != null ) {
-	// PluginManager.aeProxy.fireTileLoadEvent( this );
-	// }
-	// }
-
 	private void fireUnloadEventAE() {
 		if (PluginManager.aeProxy != null) {
 			// PluginManager.aeProxy.fireTileUnloadEvent( this );
@@ -588,5 +562,30 @@ public class TileCrafter extends TileMachine implements IInventory,
 	public void closeInventory() {
 
 	}
+	
+	// ----- INameable
+	
+	@Override
+	public String getName() { return crafterName; }
 
+	@Override
+	public void setName(String name) { this.crafterName = name; }
+
+	@Override
+	public boolean hasName() { return crafterName != null; }
+	
+	@Override
+	public int getXPos() { return xCoord; }
+	
+	@Override
+	public int getYPos() { return yCoord; }
+	
+	@Override
+	public int getZPos() { return zCoord; }
+
+	@Override
+	public String getUUID() {
+
+		return null;
+	}
 }

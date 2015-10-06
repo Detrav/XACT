@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import xk.xact.api.InteractiveCraftingContainer;
 import xk.xact.gui.ContainerCrafter;
+import xk.xact.gui.ContainerPad;
 import xk.xact.recipes.CraftManager;
 import xk.xact.recipes.CraftRecipe;
 import cpw.mods.fml.common.network.ByteBufUtils;
@@ -15,8 +16,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 /*
  * Replaces the old Packethandler
  */
-public class MessageSyncRecipeChip implements IMessage,
-		IMessageHandler<MessageSyncRecipeChip, IMessage> {
+public class MessageSyncRecipeChip implements IMessage, IMessageHandler<MessageSyncRecipeChip, IMessage> {
 
 	public ItemStack chip;
 	public byte SlotID;
@@ -31,22 +31,30 @@ public class MessageSyncRecipeChip implements IMessage,
 
 	@Override
 	public IMessage onMessage(MessageSyncRecipeChip message, MessageContext ctx) {
-
-		InteractiveCraftingContainer container = (InteractiveCraftingContainer) ((EntityPlayer) ctx
-				.getServerHandler().playerEntity).openContainer;
-		if (container != null && container instanceof ContainerCrafter) {
-			if (message.SlotID == -1) {
-				container.setStack(-1, null);
-				return null;
-			}
-
-			ItemStack stack = message.chip;
-			if (stack != null)
-				if (stack.stackTagCompound != null) {
-					CraftRecipe recipe = CraftManager.decodeRecipe(stack);
+		InteractiveCraftingContainer container = (InteractiveCraftingContainer) ((EntityPlayer) ctx.getServerHandler().playerEntity).openContainer;
+		
+		if (container != null) {
+			if (container instanceof ContainerCrafter) {
+				if (message.SlotID == -1) {
+					container.setStack(-1, null);
+					return null;
 				}
-			container.setStack(message.SlotID, stack);
-			((ContainerCrafter) container).crafter.updateState();
+
+				ItemStack stack = message.chip;
+				if (stack != null)
+					if (stack.stackTagCompound != null) {
+						CraftRecipe recipe = CraftManager.decodeRecipe(stack);
+					}
+				container.setStack(message.SlotID, stack);
+				((ContainerCrafter) container).crafter.updateState();				
+			} else if (container instanceof ContainerPad) {
+				if (message.SlotID == -1) {
+					container.setStack(-1, null);
+					return null;
+				}
+				ItemStack stack = message.chip;
+				container.setStack(message.SlotID, stack);
+			}
 		}
 		
 		return null;

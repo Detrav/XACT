@@ -15,13 +15,14 @@ public final class Textures {
 	public static final String GUI_CASE = TEXTURES_ROOT + "gui/GuiCase.png";
 	public static final String GUI_RECIPE = TEXTURES_ROOT + "gui/GuiRecipe.png";
 	public static final String GUI_WORKBENCH = "textures/gui/container/crafting_table.png";
-
+	public static final String GUI_PROMPT = TEXTURES_ROOT + "/gui/GuiTextPrompt.png";
+	
 	// NEI: Usage Handler
 	public static final String NEI_CHIP_HANDLER = TEXTURES_ROOT + "gui/ChipHandler.png";
 
 	// Other
 	public static final String MISC_BUTTONS = TEXTURES_ROOT + "other/buttons_1.png";
-
+	
 
 	// Items
 	public static final String ITEM_CASE = References.MOD_ID + ":case";
