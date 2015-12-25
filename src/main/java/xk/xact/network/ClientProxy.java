@@ -23,7 +23,6 @@ import xk.xact.gui.ContainerCase;
 import xk.xact.gui.ContainerCrafter;
 import xk.xact.gui.ContainerPad;
 import xk.xact.gui.ContainerVanillaWorkbench;
-import appeng.api.implementations.tiles.ISegmentedInventory;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;

@@ -170,13 +170,13 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 	@Override
 	public void invalidate() {
 		super.invalidate();
-		// for( int i = 0; i < adjacentCrates.length; i++ ) {
-		// ICrateStorage crate = adjacentCrates[i];
-		// if( crate != null ) {
-		// crate.unregisterCrateWatcher( this );
-		// adjacentCrates[i] = null;
-		// }
-		// }
+//		 for( int i = 0; i < adjacentCrates.length; i++ ) {
+//		 ICrateStorage crate = adjacentCrates[i];
+//		 if( crate != null ) {
+//		 crate.unregisterCrateWatcher( this );
+//		 adjacentCrates[i] = null;
+//		 }
+//		 }
 		fireUnloadEventAE();
 	}
 
@@ -238,8 +238,6 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 
 	// Updates the states of the recipes.
 	public void updateState() {
-		
-		
 		if (worldObj.isRemote) {
 			return; // don't do this client-side.
 		}
@@ -329,6 +327,22 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 	public World getWorld() {
 		return this.worldObj;
 	}
+
+	@Override
+	public int getX() {
+		return xCoord;
+	}
+
+	@Override
+	public int getY() {
+		return yCoord;
+	}
+
+	@Override
+	public int getZ() {
+		return zCoord;
+	}
+
 
 	// /////////////
 	// /// IInventory: provide access to the resources inventory

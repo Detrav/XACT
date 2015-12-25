@@ -7,18 +7,15 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
-import net.minecraftforge.oredict.OreDictionary;
 import xk.xact.config.ConfigurationManager;
 import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.inventory.InventoryUtils;
 import xk.xact.network.CommonProxy;
-import xk.xact.plugin.betterstorage.inventory.CrateInventory;
 import xk.xact.recipes.CraftRecipe;
 import xk.xact.recipes.RecipeUtils;
 import xk.xact.util.Utils;
@@ -180,6 +177,7 @@ public abstract class CraftingHandler {
 		}
 		craftMatrix.markDirty();
 
+
 		// give back the remaining items
 		for (ItemStack stack : remainingList) {
 			if (!addToInventories(stack))
@@ -191,8 +189,10 @@ public abstract class CraftingHandler {
 			if (!addToInventories(stack))
 				player.dropPlayerItemWithRandomChoice(stack, false);
 		}
-		device.updateState();
+
+
 	}
+
 
 	/**
 	 * Tries to add the ItemStack on to the first available inventory, and will
@@ -212,11 +212,12 @@ public abstract class CraftingHandler {
 		if (stack == null)
 			return true; // technically, counts as a success.
 
+		System.out.println(stack);
 		for (Object inventory : getAvailableInventories()) {
 			IInventoryAdapter adapter = InventoryUtils.getInventoryAdapter(inventory);
 			ItemStack result = adapter.placeItem(stack);
 			if (result == null) {
-				stack.stackSize = 0;
+				stack = null;
 				return true;
 			} else {
 				stack.stackSize = result.stackSize;
@@ -432,6 +433,7 @@ public abstract class CraftingHandler {
 
 						if (doRemove) {
 							contents[index] = adapter.takeItem(item, 1);
+
 						} else {
 							contents[index] = item.copy();
 							contents[index].stackSize = 1;

@@ -72,7 +72,10 @@ public class LinearInventory implements IInventoryAdapter {
 				if( quantity <= 0 )
 					break;
 			}
+
 		}
+
+		inventory.markDirty();
 
 		return stack;
 	}

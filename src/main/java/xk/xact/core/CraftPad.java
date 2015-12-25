@@ -130,6 +130,21 @@ public class CraftPad implements ICraftingDevice {
 		return player.worldObj;
 	}
 
+	@Override
+	public int getX() {
+		return player.chunkCoordX;
+	}
+
+	@Override
+	public int getY() {
+		return player.chunkCoordY;
+	}
+
+	@Override
+	public int getZ() {
+		return player.chunkCoordZ;
+	}
+
 	private void notifyClient() { // client-only
 		GuiScreen screen = Minecraft.getMinecraft().currentScreen;
 		if (screen != null && screen instanceof GuiCrafting) {

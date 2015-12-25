@@ -1,5 +1,7 @@
 package xk.xact.gui;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraft.block.BlockWorkbench;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
@@ -22,13 +24,14 @@ public class SlotCraft extends SlotCrafting {
 	private CraftingHandler handler;
 	private ICraftingDevice device;
 	private EntityPlayer player;
-
+	private IInventory matrix;
 	public SlotCraft(ICraftingDevice device, IInventory displayInventory,
 			EntityPlayer player, int index, int x, int y) {
 		super(player, displayInventory, displayInventory, index, x, y);
 		this.player = player;
 		this.device = device;
 		this.handler = device.getHandler();
+		this.matrix = displayInventory;
 	}
 
 	@Override
@@ -74,13 +77,20 @@ public class SlotCraft extends SlotCrafting {
 
 	@Override
 	public void onPickupFromSlot(EntityPlayer player, ItemStack craftedItem) {
-		if (player.capabilities.isCreativeMode && ConfigurationManager.ENABLE_FREECRAFTING || craftedItem == null)
+		if (player.capabilities.isCreativeMode && ConfigurationManager.ENABLE_FREECRAFTING || craftedItem == null) {
+			FMLCommonHandler.instance().firePlayerCraftingEvent(player, craftedItem, matrix);
+			super.onCrafting(craftedItem);
 			return;
-		
+		}
+
 		CraftRecipe recipe = getRecipe();
 		if (recipe == null)
 			return;
+
+
 		handler.doCraft(recipe, player, craftedItem);
+		FMLCommonHandler.instance().firePlayerCraftingEvent(player, craftedItem, matrix);
+		super.onCrafting(craftedItem);
 	}
 
 	public CraftRecipe getRecipe() {

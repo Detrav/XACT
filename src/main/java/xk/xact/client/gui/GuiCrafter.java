@@ -1,34 +1,23 @@
 package xk.xact.client.gui;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import appeng.client.render.ItemRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiRepair;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.gui.inventory.GuiBeacon;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Keyboard;
 import scala.actors.threadpool.Arrays;
 import xk.xact.XactMod;
 import xk.xact.api.INameable;
 import xk.xact.client.GuiUtils;
-import xk.xact.client.button.ButtonAction;
-import xk.xact.client.button.ButtonTab;
-import xk.xact.client.button.CustomButtons;
-import xk.xact.client.button.GuiButtonCustom;
-import xk.xact.client.button.ICustomButtonMode;
+import xk.xact.client.button.*;
 import xk.xact.config.ConfigurationManager;
 import xk.xact.core.items.ItemChip;
 import xk.xact.core.tileentities.TileCrafter;
@@ -55,7 +44,7 @@ public class GuiCrafter extends GuiCrafting {
 		this.crafter = crafter;
 		this.container = (ContainerCrafter) super.inventorySlots;
 		this.ySize = 256;
-		
+
 	}
 
 	@Override

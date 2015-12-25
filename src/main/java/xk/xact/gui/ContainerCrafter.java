@@ -10,11 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
-//import invtweaks.api.container.ChestContainer;
-//import invtweaks.api.container.ContainerSection;
-//import invtweaks.api.container.ContainerSectionCallback;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
@@ -127,6 +122,8 @@ public class ContainerCrafter extends ContainerXACT implements
 		return true;
 	}
 
+
+
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotID) {
 		Slot slot = (Slot) inventorySlots.get(slotID);
@@ -191,6 +188,15 @@ public class ContainerCrafter extends ContainerXACT implements
 		if (stackInSlot.stackSize == 0) {
 			slot.putStack(null);
 		}
+
+		if (stackInSlot.stackSize == 0) {
+			slot.putStack(null);
+		} else {
+			slot.onSlotChanged();
+		}
+
+
+		slot.onPickupFromSlot(player, stackInSlot);
 		slot.onSlotChanged();
 
 		return stack;
@@ -401,8 +407,8 @@ public class ContainerCrafter extends ContainerXACT implements
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
-		if (clientSide)
-			return;
+//		if (clientSide)
+//			return;
 		syncClients(crafters);
 	}
 
@@ -421,7 +427,7 @@ public class ContainerCrafter extends ContainerXACT implements
 
 	
 	private void syncClients(List<ICrafting> clients) {
-		if (clients == null || clients.size() == 0)
+		if (clients == null || clients.size() == 0 || clientSide)
 			return;
 		
 		int i;
@@ -437,8 +443,6 @@ public class ContainerCrafter extends ContainerXACT implements
 
 				for (ICrafting client : clients) {
 					client.sendProgressBarUpdate(this, i, encodedState);
-		
-			
 				}
 			}
 		}

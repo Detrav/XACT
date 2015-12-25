@@ -3,6 +3,7 @@ package xk.xact.api;
 import java.util.List;
 
 import net.minecraft.world.World;
+import xk.xact.inventory.Inventory;
 import xk.xact.recipes.CraftRecipe;
 
 /**
@@ -31,6 +32,12 @@ public interface ICraftingDevice { // todo: javadoc.
 	public abstract CraftingHandler getHandler();
 
 	public abstract World getWorld();
+
+	public int getX();
+
+	public int getY();
+
+	public int getZ();
 
 	/**
 	 * This is called after crafting anything, so the device can update it's

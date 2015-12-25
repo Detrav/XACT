@@ -49,6 +49,14 @@ public class Inventory implements IInventory, IInventoryNBT {
 		this.internalInv = new ItemStack[size];
 	}
 
+	public Inventory(String name, ItemStack[] inventory) {
+		this.size = size;
+		this.name = name;
+		this.internalInv = inventory;
+		setContens(inventory);
+	}
+
+
 	/**
 	 * Sets the new contents on the inventory, replacing the previous ones.
 	 *
