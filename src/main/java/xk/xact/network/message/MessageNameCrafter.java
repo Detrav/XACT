@@ -33,12 +33,12 @@ public class MessageNameCrafter  implements IMessage, IMessageHandler<MessageNam
 	public IMessage onMessage(MessageNameCrafter message, MessageContext ctx) {
 		TileEntity te = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.x, message.y, message.z);
 		
-		if (te != null && te instanceof INameable) {
+		if (te != null && te instanceof TileCrafter) {
 			// Server notifies all clients in 128 range of the name change
 			PacketHandler.INSTANCE.sendToAllAround(new MessageNameCrafterClient(message.name, message.x, message.y, message.z),
 					new TargetPoint(te.getWorldObj().provider.dimensionId, message.x, message.y, message.z, 128D));
-			
-			((INameable) te).setName(message.name);
+
+			((TileCrafter) te).crafterName = message.name;
 		}
 		return null;
 	}

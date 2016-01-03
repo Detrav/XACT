@@ -41,19 +41,21 @@ public class SlotCraft extends SlotCrafting {
 
 	@Override
 	public ItemStack getStack() {
-		return Utils.copyOf(super.getStack());
+
+		return getCraftedStack();
 	}
 
 	public ItemStack getCraftedStack() {
 		CraftRecipe recipe = getRecipe();
 		if (recipe == null)
 			return null;
-		if (device.getWorld().isRemote)
-			return getStack(); // Client-side, only show.
+//		if (device.getWorld().isRemote)
+//			return getStack(); // Client-side, only show.
 
 		InventoryCrafting grid = handler.generateTemporaryCraftingGridFor(
 				recipe, player, false);
 		ItemStack craftedItem = handler.getRecipeResult(recipe, grid);
+
 		return Utils.copyOf(craftedItem);
 	}
 

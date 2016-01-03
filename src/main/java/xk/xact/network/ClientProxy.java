@@ -68,6 +68,7 @@ public class ClientProxy extends CommonProxy {
 		// 2: vanilla workbench
 		// 3: craft pad
 		// 4: prompt window
+
 		switch (ID) {
 		case 0: // Machines
 			TileMachine machine = (TileMachine) world.getTileEntity(x, y, z);

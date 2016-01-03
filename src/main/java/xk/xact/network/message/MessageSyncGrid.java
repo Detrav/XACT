@@ -13,6 +13,7 @@ public class MessageSyncGrid implements IMessage, IMessageHandler<MessageSyncGri
 	public MessageSyncGrid() {
 		// No vars needed
 	}
+
 	@Override
 	public IMessage onMessage(MessageSyncGrid message, MessageContext ctx) {
 		InteractiveCraftingContainer container = (InteractiveCraftingContainer) ((EntityPlayer) ctx.getServerHandler().playerEntity).openContainer;

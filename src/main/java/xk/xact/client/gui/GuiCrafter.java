@@ -7,15 +7,12 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
-import scala.actors.threadpool.Arrays;
 import xk.xact.XactMod;
-import xk.xact.api.INameable;
 import xk.xact.client.GuiUtils;
 import xk.xact.client.button.*;
 import xk.xact.config.ConfigurationManager;
@@ -31,6 +28,8 @@ import xk.xact.util.NumberHelper;
 import xk.xact.util.References;
 import xk.xact.util.Textures;
 import xk.xact.util.Utils;
+
+import java.util.Arrays;
 
 public class GuiCrafter extends GuiCrafting {
 	
@@ -51,6 +50,7 @@ public class GuiCrafter extends GuiCrafting {
 	public void initGui() {
 		super.initGui();
 		updateGhostContents(-1);
+
 		/*
 		 * Buttons: 42, 21. 120, 21 42, 65. 120, 65
 		 */
@@ -131,7 +131,7 @@ public class GuiCrafter extends GuiCrafting {
 
 	@Override
 	protected void drawTitle() {
-		String localizedTitle = crafter.hasName() ? crafter.getName() : I18n.format(References.Localization.CRAFTER_TITLE);
+		String localizedTitle = crafter.hasCustomInventoryName() ? crafter.getInventoryName() : I18n.format(References.Localization.CRAFTER_TITLE);
 		int xPos = (this.xSize - fontRendererObj.getStringWidth(localizedTitle)) / 2;
 		this.fontRendererObj.drawString(localizedTitle, xPos, 6, 4210752);
 		this.fontRendererObj.drawString(I18n.format(References.Localization.CRAFTER_INVENTORY), 8, this.ySize - 94, 4210752);
@@ -207,8 +207,7 @@ public class GuiCrafter extends GuiCrafting {
 		
 		// Tooltip for the naming button
 		if (buttons[10].isMouseHovering(mousex, mousey))
-			drawHoveringText(Arrays.asList(new String[] { I18n.format(References.Localization.TOOLTIP_SETNAME) + 
-					EnumChatFormatting.RED + " [WIP]", EnumChatFormatting.GRAY + "Will not safe between sessions",}),
+			drawHoveringText(Arrays.asList(new String[] { I18n.format(References.Localization.TOOLTIP_SETNAME),}),
 							mousex, mousey > 20 ? mousey : 20, fontRendererObj);
 	
 		
@@ -216,7 +215,7 @@ public class GuiCrafter extends GuiCrafting {
 		for (int i = 7; i < 10; i++) {
 			if (buttons[i].isMouseHovering(mousex, mousey) && buttons[i].isVisible())
 				if (buttons[i] instanceof ButtonTab) {
-					drawHoveringText(Arrays.asList(new String[] { ((ButtonTab)buttons[i]).getToolTip() + EnumChatFormatting.RED + " [WIP]",
+					drawHoveringText(Arrays.asList(new String[] { ((ButtonTab)buttons[i]).getToolTip(),
 							EnumChatFormatting.GRAY + I18n.format(References.Localization.TOOLTIP_CLICKTOOPEN) }),
 							mousex, mousey > 20 ? mousey : 20, fontRendererObj);
 					return;			
@@ -332,7 +331,7 @@ public class GuiCrafter extends GuiCrafting {
 	@Override
 	protected void actionPerformed(GuiButton button) {
 		if (button instanceof GuiButtonCustom) {
-			INameable adjCrafter = null;
+			TileCrafter adjCrafter = null;
 			int action = ((GuiButtonCustom) button).getAction();
 			switch (action) {
 			case 1: // SAVE
@@ -352,16 +351,16 @@ public class GuiCrafter extends GuiCrafting {
 				setRecipe(getNextRecipe());
 				return;
 			case 7: // Tab 1
-				adjCrafter = Utils.getAdjacentCrafters(crafter.xCoord, crafter.yCoord, crafter.zCoord, crafter.getWorld(), Minecraft.getMinecraft().thePlayer).get(0);
-				openGui(adjCrafter.getXPos(), adjCrafter.getYPos(), adjCrafter.getZPos()); // Side doesn't matter
+				adjCrafter = Utils.getAdjacentCrafters(crafter.xCoord, crafter.yCoord, crafter.zCoord, crafter.getWorld()).get(0);
+				openGui(adjCrafter.xCoord, adjCrafter.yCoord, adjCrafter.zCoord); // Side doesn't matter
 				break;
 			case 8: // Tab 2
-				adjCrafter = Utils.getAdjacentCrafters(crafter.xCoord, crafter.yCoord, crafter.zCoord, crafter.getWorld(), Minecraft.getMinecraft().thePlayer).get(1);
-				openGui(adjCrafter.getXPos(), adjCrafter.getYPos(), adjCrafter.getZPos()); // Side doesn't matter
+				adjCrafter = Utils.getAdjacentCrafters(crafter.xCoord, crafter.yCoord, crafter.zCoord, crafter.getWorld()).get(1);
+				openGui(adjCrafter.xCoord, adjCrafter.yCoord, adjCrafter.zCoord); // Side doesn't matter
 				break;
 			case 9: // Tab 3
-				adjCrafter = Utils.getAdjacentCrafters(crafter.xCoord, crafter.yCoord, crafter.zCoord, crafter.getWorld(), Minecraft.getMinecraft().thePlayer).get(2);
-				openGui(adjCrafter.getXPos(), adjCrafter.getYPos(), adjCrafter.getZPos()); // Side doesn't matter
+				adjCrafter = Utils.getAdjacentCrafters(crafter.xCoord, crafter.yCoord, crafter.zCoord, crafter.getWorld()).get(2);
+				openGui(adjCrafter.xCoord, adjCrafter.yCoord, adjCrafter.zCoord); // Side doesn't matter
 				break;
 			case 10: // Name Crafter
 				// Open the prompt gui

@@ -47,7 +47,7 @@ public class GuiTextPrompt extends GuiScreen {
         this.textBox.setTextColor(-1);
         this.textBox.setDisabledTextColour(-1);
         this.textBox.setEnableBackgroundDrawing(false);
-        this.textBox.setMaxStringLength(90);
+        this.textBox.setMaxStringLength(27);
         
         // Buttons
         GuiButton accept = new GuiButton(0, getCenterX() + 20, getCenterY() + 4, 60, 20, I18n.format(Localization.BUTTON_ACCEPT));

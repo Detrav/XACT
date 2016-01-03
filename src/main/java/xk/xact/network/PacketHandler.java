@@ -18,5 +18,6 @@ public class PacketHandler {// implements IPacketHandler {
 		INSTANCE.registerMessage(MessageSwitchGui.class, MessageSwitchGui.class, ID++, Side.SERVER);
 		INSTANCE.registerMessage(MessageNameCrafter.class, MessageNameCrafter.class, ID++, Side.SERVER);
 		INSTANCE.registerMessage(MessageNameCrafterClient.class, MessageNameCrafterClient.class, ID++, Side.CLIENT);
+
 	}
 }

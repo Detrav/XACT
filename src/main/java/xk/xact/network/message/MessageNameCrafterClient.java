@@ -32,8 +32,9 @@ public class MessageNameCrafterClient implements IMessage, IMessageHandler<Messa
 	public IMessage onMessage(MessageNameCrafterClient message, MessageContext ctx) {
 		TileEntity te = Minecraft.getMinecraft().thePlayer.worldObj.getTileEntity(message.x, message.y, message.z);
 		
-		if (te != null && te instanceof INameable) {
-			((INameable) te).setName(message.name);
+		if (te != null && te instanceof TileCrafter) {
+
+			((TileCrafter) te).crafterName = message.name;
 		}
 		return null;
 	}
@@ -45,6 +46,7 @@ public class MessageNameCrafterClient implements IMessage, IMessageHandler<Messa
 		this.z = buf.readInt();
 		
 		this.name = ByteBufUtils.readUTF8String(buf);
+
 	}
 
 	@Override
@@ -52,7 +54,7 @@ public class MessageNameCrafterClient implements IMessage, IMessageHandler<Messa
 		buf.writeInt(this.x);
 		buf.writeInt(this.y);
 		buf.writeInt(this.z);
-		
+
 		ByteBufUtils.writeUTF8String(buf, name);
 	}
 

@@ -1,14 +1,10 @@
 package xk.xact.core.tileentities;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.mcft.copy.betterstorage.api.crate.ICrateStorage;
 import net.mcft.copy.betterstorage.api.crate.ICrateWatcher;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -23,28 +19,32 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import xk.xact.api.CraftingHandler;
 import xk.xact.api.ICraftingDevice;
-import xk.xact.api.INameable;
 import xk.xact.client.gui.GuiCrafter;
 import xk.xact.client.gui.GuiCrafting;
 import xk.xact.config.ConfigurationManager;
 import xk.xact.gui.ContainerCrafter;
 import xk.xact.inventory.Inventory;
 import xk.xact.inventory.InventoryUtils;
+import xk.xact.network.PacketHandler;
+import xk.xact.network.message.MessageNameCrafter;
 import xk.xact.plugin.PluginManager;
 import xk.xact.recipes.CraftRecipe;
 import xk.xact.recipes.RecipeUtils;
 import xk.xact.util.Utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Xhamolk_
  */
-public class TileCrafter extends TileMachine implements IInventory, ICraftingDevice, ICrateWatcher, INameable { //, IStorageMonitorable {// , IStorageAware, INonSignalBlock,
+public class TileCrafter extends TileMachine implements IInventory, ICraftingDevice, ICrateWatcher { //, IStorageMonitorable {// , IStorageAware, INonSignalBlock,
 										// IGridTileEntity {
 
 	/*
 	 * Available Inventories: This should be able to pull items from adjacent
 	 * chests.
-	 * 
+	 *
 	 * Crafting mechanism: The CraftRecipe object knows the ingredients and
 	 * their position on the crafting grid. If the required items are present on
 	 * the resources buffer, then (per operation) each ingredient will be placed
@@ -84,20 +84,20 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 	// Used by GuiCrafter to update it's internal state.
 	// Should only be accessed client-side for rendering purposes.
 	public boolean recentlyUpdated = false;
-	
+
 	/**
 	 * The name the crafter gets when renaming
 	 */
-	private String crafterName;
-	
+	public String crafterName;
+
 	/**
 	 * Used to identify the crafter
 	 */
-	private String UUID;
-	
+	public String UUID;
+
 	public TileCrafter() {
 		this.results = new Inventory(getRecipeCount(), "Results");
-		
+
 		this.circuits = new Inventory(4, "Encoded Recipes") {
 			@Override
 			public void markDirty() {
@@ -177,6 +177,7 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 //		 adjacentCrates[i] = null;
 //		 }
 //		 }
+
 		fireUnloadEventAE();
 	}
 
@@ -194,7 +195,6 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 
 	@Override
 	public void updateEntity() { // It was 5!
-		Block blockNorthFromCrafter = worldObj.getBlock(xCoord, yCoord, zCoord - 1);
 		updateIfChangesDetected();
 	}
 
@@ -232,8 +232,8 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 			ItemStack stack = recipes[i] == null ? null : handler.getResultWithResources(recipes[i]);//recipes[i].getResult();
 			results.setInventorySlotContents(i, stack);
 		}
-		
-		
+
+
 	}
 
 	// Updates the states of the recipes.
@@ -247,7 +247,7 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 			recipeStates[i] = getHandler().getMissingIngredientsArray(recipes[i]);
 		}
 	}
-	
+
 	/**
 	 * Depending on which resources are found the crafter changes the amount of output
 	 * (Only visually)
@@ -258,7 +258,7 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 			results.setInventorySlotContents(i, stack);
 		}
 	}
-	
+
 	// Used to trigger updates if changes have been detected.
 	private void updateIfChangesDetected() {
 		if (neighborsUpdatePending && !worldObj.isRemote) {
@@ -374,7 +374,7 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 
 	@Override
 	public String getInventoryName() {
-		return resources.getInventoryName();
+		return crafterName;
 	}
 
 	@Override
@@ -392,7 +392,7 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 								// pipes/tubes/etc
 		stateUpdatePending = true;
 		recentlyUpdated = true;
-		
+
 	}
 
 	@Override
@@ -406,7 +406,7 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-	
+
 		NBTTagList gridList = compound.getTagList("Grid", 10); // Load Grid
 		for (int i = 0; i < gridList.tagCount(); ++i) {
 			NBTTagCompound tag = gridList.getCompoundTagAt(i);
@@ -438,12 +438,10 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 						ItemStack.loadItemStackFromNBT(tag));
 			}
 		}
-		
+
 		// Load name
-//		crafterName = compound.getString("CustomName");
-//		if (EffectiveSide.isServerSide()) // Only server side
-//			PacketHandler.INSTANCE.sendToAllAround(new MessageNameCrafterClient(crafterName, xCoord, yCoord, zCoord),
-//					new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 128D)); // Tell all clients what the name is
+
+		crafterName = compound.getString("CustomCrafterName");
 		stateUpdatePending = true;
 	}
 
@@ -489,9 +487,9 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 		compound.setTag("Resources", resourceList);
 		
 		// Save the custom name
-//		if (hasName())
-//			compound.setString("CustomName", crafterName);
-//			
+		if (crafterName != null)
+			compound.setString("CustomCrafterName", crafterName);
+
 	}
 
 	// ////////
@@ -564,7 +562,7 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 
 	@Override
 	public boolean hasCustomInventoryName() {
-		return true;
+		return crafterName != "" && crafterName != null;
 	}
 
 	@Override
@@ -576,30 +574,5 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 	public void closeInventory() {
 
 	}
-	
-	// ----- INameable
-	
-	@Override
-	public String getName() { return crafterName; }
 
-	@Override
-	public void setName(String name) { this.crafterName = name; }
-
-	@Override
-	public boolean hasName() { return crafterName != null; }
-	
-	@Override
-	public int getXPos() { return xCoord; }
-	
-	@Override
-	public int getYPos() { return yCoord; }
-	
-	@Override
-	public int getZPos() { return zCoord; }
-
-	@Override
-	public String getUUID() {
-
-		return null;
-	}
 }

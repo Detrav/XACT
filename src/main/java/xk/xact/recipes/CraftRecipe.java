@@ -93,7 +93,7 @@ public class CraftRecipe {
 				Utils.logError("|>>>>>>>>>  getSimplifiedIngredients() ");
 			}
 		}
-		
+
 		return simpleIngredients = list.toArray();
 	}
 	
@@ -145,7 +145,7 @@ public class CraftRecipe {
 				
 				if (ingredients[gridIndex] != null && ((ingredients[gridIndex].isItemEqual(current)
 					&& ItemStack.areItemStackTagsEqual(ingredients[gridIndex], current)) 
-					|| Utils.shareSameOreDictionary(ingredients[gridIndex], current, false))) {
+					|| Utils.shareSameOreDictionary(ingredients[gridIndex], current, true))) {
 
 					if (!indexMap.containsKey(simplifiedIndex)) {
 						indexMap.put(simplifiedIndex,

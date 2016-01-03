@@ -1,14 +1,17 @@
 package xk.xact.network;
 
+import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import xk.xact.core.ChipCase;
 import xk.xact.core.CraftPad;
+import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.core.tileentities.TileMachine;
 import xk.xact.core.tileentities.TileWorkbench;
 import xk.xact.gui.ContainerCase;
@@ -19,6 +22,8 @@ import xk.xact.gui.ContainerVanillaWorkbench;
 import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.common.network.IGuiHandler;
+import xk.xact.network.message.MessageNameCrafterClient;
+import xk.xact.util.Utils;
 
 public class CommonProxy implements IGuiHandler {
 
@@ -55,8 +60,17 @@ public class CommonProxy implements IGuiHandler {
 
 		if (ID == 0) { // Machines
 			TileMachine machine = (TileMachine) world.getTileEntity(x, y, z);
-			if (machine == null)
+			if (machine == null || !(machine instanceof TileCrafter))
 				return null;
+
+			List<TileCrafter> adjacentCrafters = Utils.getAdjacentCrafters(x, y, z, world); // All close crafters
+
+			for (TileCrafter crafter : adjacentCrafters) // Before opening the gui/container send the names of all close crafters
+				if (crafter.hasCustomInventoryName())
+					PacketHandler.INSTANCE.sendTo(new MessageNameCrafterClient(crafter.getInventoryName(), crafter.xCoord, crafter.yCoord, crafter.zCoord), (EntityPlayerMP) player);
+
+			if (((TileCrafter) machine).hasCustomInventoryName())
+				PacketHandler.INSTANCE.sendTo(new MessageNameCrafterClient(((TileCrafter) machine).getInventoryName(), x, y, z), (EntityPlayerMP) player); // Also send own name
 
 			return machine.getContainerFor(player);
 		}

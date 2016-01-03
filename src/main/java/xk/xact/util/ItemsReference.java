@@ -64,7 +64,7 @@ public class ItemsReference {
 	 * @return
 	 */
 	public boolean compare(ItemsReference reference) {
-		if (Utils.shareSameOreDictionary(this.stack, reference.stack, false))
+		if (Utils.shareSameOreDictionary(this.stack, reference.stack, true))
 			return true; // Ore dictionary is top priority
 		
 		// Compare Item ID.

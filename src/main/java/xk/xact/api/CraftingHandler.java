@@ -293,6 +293,8 @@ public abstract class CraftingHandler {
 			return InventoryUtils.simulateCraftingInventory(recipe.getIngredients());
 
 		ItemStack[] contents = findAndGetRecipeIngredients(recipe, takeItems);
+//		for (int i = 0; i < contents.length; i++)
+//			System.out.println(contents[i]);
 		return InventoryUtils.simulateCraftingInventory(contents);
 	}
 
@@ -340,6 +342,7 @@ public abstract class CraftingHandler {
 
 		ArrayList<ItemStack> list = new ArrayList<ItemStack>();
 		int[] missingCount = getMissingIngredientsCount(recipe);
+
 		ItemStack[] ingredients = copyArray(recipe.getCompressedIngredients());
 
 		for (int i = 0; i < missingCount.length; i++) {
@@ -349,7 +352,7 @@ public abstract class CraftingHandler {
 				list.add(ingredients[i]);
 			}
 		}
-		
+
 		return list.toArray(new ItemStack[list.size()]);
 	}
 
@@ -381,8 +384,9 @@ public abstract class CraftingHandler {
 		}
 		
 		ItemStack[] ingredients = recipe.getIngredients();
+
 		ItemStack[] missingIngredients = getMissingIngredients(recipe);
-		
+
 		for (ItemStack currentMissed : missingIngredients) {
 			if (currentMissed == null)
 				continue;
@@ -390,7 +394,7 @@ public abstract class CraftingHandler {
 			int remaining = currentMissed.stackSize;
 			for (int i = 0; remaining > 0 && i < ingredients.length; i++) {
 				if (ingredients[i] != null && (ingredients[i].isItemEqual(currentMissed) && ItemStack.areItemStackTagsEqual(ingredients[i], currentMissed))
-					|| Utils.shareSameOreDictionary(ingredients[i], currentMissed, false)) {
+					|| Utils.shareSameOreDictionary(ingredients[i], currentMissed, true)) {
 					remaining--;
 					missingArray[i] = true;
 				}
@@ -404,9 +408,11 @@ public abstract class CraftingHandler {
 	protected ItemStack[] findAndGetRecipeIngredients(CraftRecipe recipe, boolean doRemove) {
 		Map<Integer, int[]> gridIndexes = recipe.getGridIndexes();
 		ItemStack[] simplifiedIngredients = recipe.getCompressedIngredients();
+
 		ItemStack[] contents = new ItemStack[9];
 		
 		ingredient: for (int i = 0; i < simplifiedIngredients.length; i++) {
+
 			int[] indexes = gridIndexes.get(i);
 			int required = simplifiedIngredients[i].stackSize;
 
@@ -414,6 +420,7 @@ public abstract class CraftingHandler {
 				
 				IInventoryAdapter adapter = InventoryUtils.getInventoryAdapter(inventory);
 				for (ItemStack item : adapter) {
+
 					if (required <= 0) {
 						continue ingredient; // next ingredient
 					}
@@ -442,11 +449,17 @@ public abstract class CraftingHandler {
 						available -= contents[index] == null ? 0 : contents[index].stackSize;
 					}
 				}
+
 				if (inventory != null && inventory instanceof TileCrafter) {
-					((TileCrafter) inventory).resources.markDirty();
+					TileCrafter te = ((TileCrafter) inventory);
+					te.resources.markDirty();
+					te.getWorld().markBlockForUpdate(te.xCoord, te.yCoord, te.zCoord);
+					System.out.println("heyoo");
 				}
 			}
 		}
+//		for (int i = 0; i < contents.length; i++)
+//			System.out.println(contents[i]);
 		return contents;
 	}
 

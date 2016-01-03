@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import xk.xact.XactMod;
 import xk.xact.api.INameable;
 import xk.xact.client.GuiUtils;
+import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.gui.ContainerCrafter;
 import xk.xact.util.Utils;
 import xk.xact.util.References.Localization;
@@ -30,11 +31,11 @@ public class ButtonTab extends ButtonAction {
 	
 	@Override
 	public boolean isVisible() {
-		List<INameable> crafters = Utils.getAdjacentCrafters(crafter.crafter.xCoord, crafter.crafter.yCoord, crafter.crafter.zCoord, crafter.crafter.getWorld(), Minecraft.getMinecraft().thePlayer);
+		List<TileCrafter> crafters = Utils.getAdjacentCrafters(crafter.crafter.xCoord, crafter.crafter.yCoord, crafter.crafter.zCoord, crafter.crafter.getWorld());
 		
 		if (6 + crafters.size() >= this.id) {
-			if (crafters.get(id - 7).hasName())
-				tooltip = crafters.get(id - 7).getName();
+			if (crafters.get(id - 7).hasCustomInventoryName())
+				tooltip = crafters.get(id - 7).getInventoryName();
 			
 			return true;
 		}

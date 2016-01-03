@@ -26,6 +26,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import xk.xact.XactMod;
 import xk.xact.api.INameable;
 import xk.xact.config.ConfigurationManager;
+import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.inventory.InventoryUtils;
 
 public class Utils {
@@ -82,6 +83,19 @@ public class Utils {
 		return stack1.getItem() == stack2.getItem()
 				&& (!stack1.getHasSubtypes() || stack1.getItemDamage() == stack2.getItemDamage())
 				&& ItemStack.areItemStackTagsEqual(stack1, stack2);
+	}
+
+	public static String arrayToString(Object[] obj) {
+		String out = "";
+
+//		if (obj instanceof ItemStack[])
+//			for (int i = 0; i < obj.length; i++)
+//				out += (i == obj.length - 1 ? "" : ", " + obj.toString());
+//		else
+			for (int i = 0; i < obj.length; i++)
+				if (obj[i] != null)
+					out += (i == obj.length - 1 ? "" : ", " + obj[i].toString());
+		return out;
 	}
 
 	/**
@@ -228,8 +242,8 @@ public class Utils {
 	/**
 	 * Gets adjacent Crafters Maximum is 3 Crafters
 	 */
-	public static List<INameable> getAdjacentCrafters(int x, int y, int z, World world, EntityPlayer player) {
-		List<INameable> crafters = new ArrayList<INameable>();
+	public static List<TileCrafter> getAdjacentCrafters(int x, int y, int z, World world) {
+		List<TileCrafter> crafters = new ArrayList<TileCrafter>();
 		for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) { // Will search through all directions
 			for (int range = 1; range <= 3; range++) { // Will search 3 blocks into current direction
 				int currentX = x + face.offsetX * range;
@@ -237,8 +251,8 @@ public class Utils {
 				int currentZ = z + face.offsetZ * range; // since all offsets exept one will be 0, multiplying won't do anything
 
 				TileEntity te = world.getTileEntity(currentX, currentY, currentZ);
-				if (te != null && te instanceof INameable)
-					crafters.add((INameable) te);
+				if (te != null && te instanceof TileCrafter)
+					crafters.add((TileCrafter) te);
 				
 				if (crafters.size() == 3)
 					return crafters;
@@ -247,6 +261,7 @@ public class Utils {
 		
 		return crafters;
 	}
+
 
 	public static boolean shareSameOreDictionary(ItemStack stack1, ItemStack stack2, boolean strict) {
 		if (stack1 == null || stack2 == null)

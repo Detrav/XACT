@@ -407,8 +407,9 @@ public class ContainerCrafter extends ContainerXACT implements
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
-//		if (clientSide)
-//			return;
+		if (clientSide)
+			return;
+
 		syncClients(crafters);
 	}
 
@@ -505,10 +506,11 @@ public class ContainerCrafter extends ContainerXACT implements
 		if (curr != null && curr instanceof ContainerCrafter) {
 			((ContainerCrafter) curr).recipeStates = recipeStates;
 		}
-		System.out.println("dafuq");
 		super.onTickUpdate(player);
 	}
-	
+
+
+
 	private List<Slot> getSlots(int... indexes) {
 		List<Slot> slots = new ArrayList<Slot>();
 		for (int index : indexes) {
