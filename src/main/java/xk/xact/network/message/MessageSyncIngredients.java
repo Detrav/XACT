@@ -1,5 +1,9 @@
 package xk.xact.network.message;
 
+import cpw.mods.fml.common.network.ByteBufUtils;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -9,10 +13,6 @@ import xk.xact.gui.ContainerPad;
 import xk.xact.gui.ContainerVanillaWorkbench;
 import xk.xact.recipes.CraftManager;
 import xk.xact.recipes.CraftRecipe;
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
 public class MessageSyncIngredients implements IMessage,
 		IMessageHandler<MessageSyncIngredients, IMessage> {

@@ -1,9 +1,9 @@
 package xk.xact.inventory;
 
-import java.util.Iterator;
-
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+
+import java.util.Iterator;
 
 // used by InventoryUtils.inventoryIterator(IInventory)
 public class InvSlotIterator implements Iterable<InvSlot>, Iterator<InvSlot> {

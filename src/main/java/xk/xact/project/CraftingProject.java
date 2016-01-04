@@ -1,12 +1,12 @@
 package xk.xact.project;
 
-import java.util.ArrayList;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import xk.xact.inventory.InventoryUtils;
 import xk.xact.recipes.CraftRecipe;
 import xk.xact.util.Utils;
+
+import java.util.ArrayList;
 
 /**
  * This is the representation of the crafting project.

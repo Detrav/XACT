@@ -1,5 +1,9 @@
 package xk.xact.network;
 
+import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.network.NetHandlerPlayClient;
@@ -16,17 +20,11 @@ import xk.xact.client.gui.GuiVanillaWorkbench;
 import xk.xact.client.render.ChipRenderer;
 import xk.xact.core.ChipCase;
 import xk.xact.core.CraftPad;
-import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.core.tileentities.TileMachine;
 import xk.xact.core.tileentities.TileWorkbench;
 import xk.xact.gui.ContainerCase;
-import xk.xact.gui.ContainerCrafter;
 import xk.xact.gui.ContainerPad;
 import xk.xact.gui.ContainerVanillaWorkbench;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ClientProxy extends CommonProxy {
 

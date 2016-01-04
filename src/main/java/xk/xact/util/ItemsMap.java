@@ -1,10 +1,10 @@
 package xk.xact.util;
 
-import static xk.xact.util.ItemsReference.wrap;
+import net.minecraft.item.ItemStack;
 
 import java.util.HashMap;
 
-import net.minecraft.item.ItemStack;
+import static xk.xact.util.ItemsReference.wrap;
 
 public class ItemsMap<V> extends HashMap<ItemsReference, V> {
 

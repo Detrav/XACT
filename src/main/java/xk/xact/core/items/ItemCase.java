@@ -1,7 +1,7 @@
 package xk.xact.core.items;
 
-import java.util.List;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -10,8 +10,8 @@ import net.minecraft.world.World;
 import xk.xact.XactMod;
 import xk.xact.util.References;
 import xk.xact.util.Textures;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class ItemCase extends Item {
 

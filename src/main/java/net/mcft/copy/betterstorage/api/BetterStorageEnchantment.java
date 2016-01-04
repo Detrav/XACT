@@ -1,12 +1,12 @@
 package net.mcft.copy.betterstorage.api;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.item.ItemStack;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public final class BetterStorageEnchantment {
 	

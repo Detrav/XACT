@@ -1,11 +1,9 @@
 package xk.xact.gui;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import net.minecraft.block.BlockWorkbench;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import xk.xact.api.CraftingHandler;

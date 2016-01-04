@@ -1,12 +1,10 @@
 package xk.xact.client;
 
-import net.minecraft.client.settings.KeyBinding;
-
-import org.lwjgl.input.Keyboard;
-
-import xk.xact.util.References;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.settings.KeyBinding;
+import org.lwjgl.input.Keyboard;
+import xk.xact.util.References;
 
 @SideOnly(Side.CLIENT)
 public class Keybinds {

@@ -1,12 +1,12 @@
 package xk.xact.network.message;
 
-import net.minecraft.entity.player.EntityPlayer;
-import xk.xact.api.InteractiveCraftingContainer;
-import xk.xact.gui.ContainerCrafter;
-import io.netty.buffer.ByteBuf;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+import xk.xact.api.InteractiveCraftingContainer;
+import xk.xact.gui.ContainerCrafter;
 
 public class MessageSyncGrid implements IMessage, IMessageHandler<MessageSyncGrid, IMessage> {
 	

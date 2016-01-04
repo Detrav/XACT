@@ -1,10 +1,7 @@
 package xk.xact.config;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import cpw.mods.fml.client.event.ConfigChangedEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.common.config.Configuration;
 import xk.xact.XactMod;
 import xk.xact.core.blocks.BlockMachine;
@@ -13,8 +10,10 @@ import xk.xact.core.items.ItemCase;
 import xk.xact.core.items.ItemChip;
 import xk.xact.core.items.ItemPad;
 import xk.xact.util.References;
-import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Xhamolk_
@@ -62,11 +61,11 @@ public class ConfigurationManager extends Configuration {
 									+ "This plug-in enables the XACT Crafter to pull resources from adjacent crates (from Better Storage).")
 					.getBoolean(true);
 
-			ENABLE_AE_PLUGIN = config
+			ENABLE_AE2_PLUGIN = config
 					.get(CATEGORY_PLUGINS,
-							"enableAppliedEnergisticsPlugin",
+							"enableAppliedEnergistics2Plugin",
 							true,
-							"If true, XACT will try to initialize the plug-in for the Applied Energistics mod. \n"
+							"If true, XACT will try to initialize the plug-in for the Applied Energistics 2 mod. \n"
 									+ "This plug-in enables the XACT Crafter to pull resources from adjacent ME Interfaces, \n"
 									+ "which acts as a access point to that particular ME Network.")
 					.getBoolean(true);
@@ -116,7 +115,9 @@ public class ConfigurationManager extends Configuration {
 
 	public static boolean ENABLE_BETTER_STORAGE_PLUGIN;
 
-	public static boolean ENABLE_AE_PLUGIN;
+	public static boolean ENABLE_AE2_PLUGIN;
+
+
 
 	public static boolean ENABLE_ALT_TEXTURES;
 	

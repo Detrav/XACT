@@ -1,7 +1,5 @@
 package xk.xact.gui;
 
-import java.util.HashSet;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -9,6 +7,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import xk.xact.util.Utils;
+
+import java.util.HashSet;
 
 public abstract class ContainerXACT extends Container {
 

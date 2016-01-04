@@ -1,8 +1,8 @@
 package xk.xact.api;
 
-import java.util.Iterator;
-
 import net.minecraft.item.ItemStack;
+
+import java.util.Iterator;
 
 /**
  * Used for accessing the contents of inventories from CraftingHandler

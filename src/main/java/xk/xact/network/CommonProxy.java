@@ -1,8 +1,7 @@
 package xk.xact.network;
 
-import java.util.List;
-import java.util.UUID;
-
+import com.mojang.authlib.GameProfile;
+import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -18,12 +17,11 @@ import xk.xact.gui.ContainerCase;
 import xk.xact.gui.ContainerPad;
 import xk.xact.gui.ContainerRecipe;
 import xk.xact.gui.ContainerVanillaWorkbench;
-
-import com.mojang.authlib.GameProfile;
-
-import cpw.mods.fml.common.network.IGuiHandler;
 import xk.xact.network.message.MessageNameCrafterClient;
 import xk.xact.util.Utils;
+
+import java.util.List;
+import java.util.UUID;
 
 public class CommonProxy implements IGuiHandler {
 

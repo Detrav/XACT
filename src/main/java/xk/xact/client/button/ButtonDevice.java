@@ -1,11 +1,7 @@
 package xk.xact.client.button;
 
-import java.util.List;
-
 import net.minecraft.client.Minecraft;
-
 import org.lwjgl.opengl.GL11;
-
 import xk.xact.client.GuiUtils;
 
 public class ButtonDevice extends GuiButtonCustom {

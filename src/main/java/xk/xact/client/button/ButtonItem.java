@@ -3,9 +3,7 @@ package xk.xact.client.button;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
-
 import org.lwjgl.opengl.GL11;
-
 import xk.xact.client.GuiUtils;
 
 public class ButtonItem extends GuiButtonCustom {

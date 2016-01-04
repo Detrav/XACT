@@ -1,5 +1,7 @@
 package xk.xact.core.blocks;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -14,8 +16,6 @@ import xk.xact.XactMod;
 import xk.xact.core.tileentities.TileWorkbench;
 import xk.xact.util.Textures;
 import xk.xact.util.Utils;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 // the block that replaces the vanilla crafting table
 public class BlockVanillaWorkbench extends BlockContainer {

@@ -1,8 +1,8 @@
 package xk.xact.core.blocks;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -20,9 +20,9 @@ import xk.xact.core.Machines;
 import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.core.tileentities.TileMachine;
 import xk.xact.util.Utils;
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Xhamolk_

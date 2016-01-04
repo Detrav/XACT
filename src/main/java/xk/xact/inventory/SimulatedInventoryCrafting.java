@@ -1,11 +1,11 @@
 package xk.xact.inventory;
 
-import java.util.ArrayList;
-
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+
+import java.util.ArrayList;
 
 /**
  * Necessary for GUIs that involve crafting grids.

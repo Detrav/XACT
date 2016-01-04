@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 import xk.xact.api.SpecialCasedRecipe;
-import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.inventory.InventoryUtils;
 import xk.xact.plugin.PluginManager;
 

@@ -3,11 +3,6 @@ package xk.xact.gui;
 import invtweaks.api.container.ChestContainer;
 import invtweaks.api.container.ContainerSection;
 import invtweaks.api.container.ContainerSectionCallback;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -18,6 +13,10 @@ import xk.xact.core.items.ItemChip;
 import xk.xact.recipes.CraftManager;
 import xk.xact.recipes.CraftRecipe;
 import xk.xact.recipes.RecipeUtils;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @ChestContainer(showButtons = false)
 public class ContainerPad extends ContainerItem implements

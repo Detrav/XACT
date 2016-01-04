@@ -5,10 +5,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import xk.xact.client.GuiUtils;
 import xk.xact.client.gui.GuiCrafter;
 

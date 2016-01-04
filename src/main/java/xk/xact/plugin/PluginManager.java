@@ -1,11 +1,5 @@
 package xk.xact.plugin;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import net.minecraft.inventory.IInventory;
 import xk.xact.api.IInventoryAdapterProvider;
 import xk.xact.api.SpecialCasedRecipe;
@@ -14,11 +8,11 @@ import xk.xact.config.ConfigurationManager;
 import xk.xact.util.ReflectionUtils;
 import xk.xact.util.Utils;
 
+import java.util.*;
+
 public class PluginManager {
 
 	// ---------- Proxies ---------- //
-
-	public static AEProxy aeProxy = null;
 
 	private static List<SpecialCasedRecipe> specialCasedRecipes = new ArrayList<SpecialCasedRecipe>();
 	private static List<XACTPlugin> plugins = new ArrayList<XACTPlugin>();
@@ -32,11 +26,7 @@ public class PluginManager {
 			// Register ModularPowerSuits plug-in.
 			Class mpsPlugin = ReflectionUtils
 					.getClassByName("xk.xact.plugin.mps.PluginForMPS");
-			if (mpsPlugin != null) {// public void
-									// fireTileLoadEvent(IGridTileEntity tile);
-				//
-				// public void fireTileUnloadEvent(IGridTileEntity tile);
-
+			if (mpsPlugin != null) {
 				Object instance = ReflectionUtils.newInstanceOf(mpsPlugin);
 				if (instance != null) {
 					addPlugin(XACTPlugin.class.cast(instance));
@@ -57,17 +47,18 @@ public class PluginManager {
 			}
 		}
 
-		if (ConfigurationManager.ENABLE_AE_PLUGIN) {
-			// Register Applied Energistics plug-in.
-			Class aePlugin = ReflectionUtils
-					.getClassByName("xk.xact.plugin.appliedenergistics.PluginForAppliedEnergistics");
-			if (aePlugin != null) {
-				Object instance = ReflectionUtils.newInstanceOf(aePlugin);
+		if (ConfigurationManager.ENABLE_AE2_PLUGIN) {
+			// Register Applied Energistics 2 plug-in.3
+			Class ae2Plugin = ReflectionUtils
+					.getClassByName("xk.xact.plugin.ae2.PluginForAE2");
+			if (ae2Plugin != null) {
+				Object instance = ReflectionUtils.newInstanceOf(ae2Plugin);
 				if (instance != null) {
 					addPlugin(XACTPlugin.class.cast(instance));
 				}
 			}
 		}
+
 
 		// Load all other plugins.
 		Utils.log("Loading plug-ins...");

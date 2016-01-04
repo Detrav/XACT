@@ -1,10 +1,9 @@
 package xk.xact.api;
 
-import java.util.List;
-
 import net.minecraft.world.World;
-import xk.xact.inventory.Inventory;
 import xk.xact.recipes.CraftRecipe;
+
+import java.util.List;
 
 /**
  * Used by the CraftingHandler.

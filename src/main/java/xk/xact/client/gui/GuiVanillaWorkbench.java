@@ -5,9 +5,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-
 import org.lwjgl.opengl.GL11;
-
 import xk.xact.api.InteractiveCraftingGui;
 import xk.xact.client.GuiUtils;
 import xk.xact.gui.ContainerVanillaWorkbench;

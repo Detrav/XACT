@@ -3,21 +3,16 @@ package xk.xact.gui;
 import invtweaks.api.container.ChestContainer;
 import invtweaks.api.container.ContainerSection;
 import invtweaks.api.container.ContainerSectionCallback;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotCrafting;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import xk.xact.core.tileentities.TileWorkbench;
 import xk.xact.inventory.InventoryUtils;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @ChestContainer
 public class ContainerVanillaWorkbench extends Container {

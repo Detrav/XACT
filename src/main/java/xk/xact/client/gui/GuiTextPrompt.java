@@ -1,17 +1,14 @@
 package xk.xact.client.gui;
 
-import org.lwjgl.input.Keyboard;
-
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Keyboard;
 import xk.xact.network.PacketHandler;
 import xk.xact.network.message.MessageNameCrafter;
-import xk.xact.network.message.MessageNameCrafterClient;
 import xk.xact.network.message.MessageSwitchGui;
 import xk.xact.util.References;
 import xk.xact.util.References.Localization;

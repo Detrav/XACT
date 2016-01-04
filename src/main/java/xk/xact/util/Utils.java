@@ -1,11 +1,5 @@
 package xk.xact.util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import org.apache.logging.log4j.Level;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import net.minecraft.block.Block;
@@ -23,11 +17,15 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.logging.log4j.Level;
 import xk.xact.XactMod;
-import xk.xact.api.INameable;
 import xk.xact.config.ConfigurationManager;
 import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.inventory.InventoryUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Utils {
 
@@ -188,6 +186,8 @@ public class Utils {
 		}
 		return list;
 	}
+
+
 
 	public static boolean[] decodeInt(int source, int length) {
 		boolean[] retValue = new boolean[length];

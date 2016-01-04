@@ -1,11 +1,11 @@
 package xk.xact.plugin.betterstorage;
 
+import cpw.mods.fml.common.Loader;
 import net.mcft.copy.betterstorage.api.crate.ICrateStorage;
 import xk.xact.api.plugin.XACTPlugin;
 import xk.xact.plugin.PluginManager;
 import xk.xact.plugin.betterstorage.inventory.CrateInventory;
 import xk.xact.util.Utils;
-import cpw.mods.fml.common.Loader;
 
 /**
  * Plug-in for Better Storage.

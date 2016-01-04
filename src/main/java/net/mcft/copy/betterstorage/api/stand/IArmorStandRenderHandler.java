@@ -1,8 +1,8 @@
 package net.mcft.copy.betterstorage.api.stand;
 
-import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.tileentity.TileEntity;
 
 @SideOnly(Side.CLIENT)
 public interface IArmorStandRenderHandler {

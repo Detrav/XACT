@@ -1,7 +1,5 @@
 package xk.xact.inventory.adapter;
 
-import java.util.Iterator;
-
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -11,6 +9,8 @@ import xk.xact.inventory.InvSlotIterator;
 import xk.xact.inventory.InventoryUtils;
 import xk.xact.inventory.SidedInventory;
 import xk.xact.util.Utils;
+
+import java.util.Iterator;
 
 /**
  *

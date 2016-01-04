@@ -1,15 +1,14 @@
 package xk.xact.plugin.betterstorage.inventory;
 
-import java.util.Iterator;
-
 import net.mcft.copy.betterstorage.api.crate.ICrateStorage;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 import xk.xact.api.IInventoryAdapter;
 import xk.xact.api.IInventoryAdapterProvider;
 import xk.xact.config.ConfigurationManager;
 import xk.xact.util.EmptyIterator;
 import xk.xact.util.Utils;
+
+import java.util.Iterator;
 
 /**
  * Used to handler ICrateStorage inventories.
@@ -58,8 +57,6 @@ public class CrateInventory implements IInventoryAdapter {
 		return new EmptyIterator<ItemStack>();
 	}
 
-	private final static ForgeDirection unusedDirection = ForgeDirection.UP; // ignored.
-
 	public static class Provider implements IInventoryAdapterProvider {
 
 		@Override
@@ -69,7 +66,6 @@ public class CrateInventory implements IInventoryAdapter {
 			}
 			return null;
 		}
-
 	}
 
 }

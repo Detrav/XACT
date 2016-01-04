@@ -1,12 +1,12 @@
 package xk.xact.gui;
 
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import xk.xact.util.Utils;
+
+import java.util.List;
 
 /**
  * Extended by Containers for items.

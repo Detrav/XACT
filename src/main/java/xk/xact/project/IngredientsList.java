@@ -1,7 +1,5 @@
 package xk.xact.project;
 
-import java.util.Iterator;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -10,6 +8,8 @@ import xk.xact.util.ItemsList;
 import xk.xact.util.ItemsMap;
 import xk.xact.util.ItemsReference;
 import xk.xact.util.Utils;
+
+import java.util.Iterator;
 
 // This stores the recipes
 public class IngredientsList implements Iterable<ItemStack> {

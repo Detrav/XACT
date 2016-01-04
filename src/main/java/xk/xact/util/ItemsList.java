@@ -1,12 +1,11 @@
 package xk.xact.util;
 
-import static xk.xact.util.ItemsReference.wrap;
+import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import net.minecraft.item.ItemRecord;
-import net.minecraft.item.ItemStack;
+import static xk.xact.util.ItemsReference.wrap;
 
 public class ItemsList extends ArrayList<ItemsReference> {
 

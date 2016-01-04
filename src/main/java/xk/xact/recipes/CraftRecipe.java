@@ -1,20 +1,17 @@
 package xk.xact.recipes;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import scala.runtime.IntRef;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import xk.xact.api.SpecialCasedRecipe;
 import xk.xact.config.ConfigurationManager;
-import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.inventory.InventoryUtils;
 import xk.xact.util.ItemsList;
 import xk.xact.util.Utils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The representation of a crafting recipe. Is the one stored on the

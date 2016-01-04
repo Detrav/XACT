@@ -1,22 +1,13 @@
 package xk.xact.inventory;
 
-import java.util.List;
-
-import ic2.api.IEnergyStorage;
-import ic2.api.IWrenchable;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.inventory.InventoryLargeChest;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import xk.xact.api.IInventoryAdapter;
 import xk.xact.config.ConfigurationManager;
@@ -235,10 +226,10 @@ public class InventoryUtils {
 			} else {
 				inventory = chest;
 			}
-		} else if (tileEntity instanceof ISidedInventory) {
-			inventory = new SidedInventory((ISidedInventory) tileEntity, side);
 		} else if (tileEntity instanceof IInventory) {
 			inventory = (IInventory) tileEntity;
+		} else if (tileEntity instanceof ISidedInventory) {
+			inventory = new SidedInventory((ISidedInventory) tileEntity, side);
 		}
 		return inventory;
 	}
@@ -308,18 +299,16 @@ public class InventoryUtils {
 
 	@SuppressWarnings("unchecked")
 	public static IInventoryAdapter getInventoryAdapter(Object inventory) {
-		
 		if (inventory != null) {
 			for (Class adapterClass : PluginManager.getInventoryAdapters().keySet()) {
-//				System.out.println(adapterClass.isAssignableFrom(inventory.getClass()));
-				if (adapterClass != null
-						&& adapterClass.isAssignableFrom(inventory.getClass()))
-					
+				if (adapterClass != null && adapterClass.isAssignableFrom(inventory.getClass()))
 					return PluginManager.getInventoryAdapters().get(adapterClass).createInventoryAdapter(inventory);
 			}
+
 			if (inventory instanceof IInventory) {
 				return new LinearInventory((IInventory) inventory);
 			}
+
 
 			Utils.logException("Invalid inventory adapter",
 					new InvalidInventoryAdapterException(inventory.getClass()),
@@ -330,26 +319,31 @@ public class InventoryUtils {
 
 	@SuppressWarnings("unchecked")
 	public static boolean isValidInventory(Object inventory) {
-		
+
 		if (inventory != null) {
 			if (inventory.toString().contains("ic2.core.block")) // IC2 machines are strange. Don't pull items.
 				return false;
-			
+
+			// First check if that blockhas a custom inventory adapter
+			for (Class invClass : PluginManager.getInventoryAdapters().keySet()) {
+				if (invClass != null
+						&& invClass.isAssignableFrom(inventory.getClass()))
+					return true;
+			}
+
+			// Then use default ones
 			if (inventory instanceof TileEntityChest) {
+				System.out.println("true");
 				return true;
 			}
+
 			if (inventory instanceof IInventory) { // ISidedInventory is
 													// included here.
 				// Special case carpeters safe
 				if (((IInventory) inventory).getInventoryName() == "tile.blockCarpentersSafe.name")
 					return false;
-				return true;
-			}
 
-			for (Class invClass : PluginManager.getInventoryAdapters().keySet()) {
-				if (invClass != null
-						&& invClass.isAssignableFrom(inventory.getClass()))
-					return true;
+				return true;
 			}
 		}
 		return false;

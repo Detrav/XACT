@@ -25,8 +25,6 @@ import xk.xact.config.ConfigurationManager;
 import xk.xact.gui.ContainerCrafter;
 import xk.xact.inventory.Inventory;
 import xk.xact.inventory.InventoryUtils;
-import xk.xact.network.PacketHandler;
-import xk.xact.network.message.MessageNameCrafter;
 import xk.xact.plugin.PluginManager;
 import xk.xact.recipes.CraftRecipe;
 import xk.xact.recipes.RecipeUtils;
@@ -178,7 +176,7 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 //		 }
 //		 }
 
-		fireUnloadEventAE();
+
 	}
 
 	// /////////////
@@ -196,6 +194,8 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 	@Override
 	public void updateEntity() { // It was 5!
 		updateIfChangesDetected();
+		TileEntity te = getWorld().getTileEntity(xCoord - 1, yCoord, zCoord);
+
 	}
 
 	// Gets the recipe's result.
@@ -281,16 +281,12 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 	@SuppressWarnings("unchecked")
 	public List getAvailableInventories() {
 		// Pulling from adjacent inventories
-		List list = Utils.getAdjacentInventories(this.worldObj, this.xCoord,
-				this.yCoord, this.zCoord);
+		List list = Utils.getAdjacentTileEntities(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+
 		// The internal inventory is always the top priority.
 		list.add(0, resources);
 		return list;
-		// List<IInventory> list = Utils.getAdjacentInventories( worldObj,
-		// xCoord, yCoord, zCoord );
-		// list.add( 0, resources );
-		// return list.toArray( new IInventory[0] );
-		// return Arrays.asList( resources );
+
 	}
 
 	@Override
@@ -552,12 +548,6 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 		}
 		if (foundChanges)
 			stateUpdatePending = true;
-	}
-
-	private void fireUnloadEventAE() {
-		if (PluginManager.aeProxy != null) {
-			// PluginManager.aeProxy.fireTileUnloadEvent( this );
-		}
 	}
 
 	@Override

@@ -1,7 +1,5 @@
 package xk.xact.client.gui;
 
-import java.util.Arrays;
-
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.inventory.Container;
@@ -18,6 +16,8 @@ import xk.xact.recipes.CraftRecipe;
 import xk.xact.recipes.RecipeUtils;
 import xk.xact.util.RecipeDeque;
 import xk.xact.util.References;
+
+import java.util.Arrays;
 
 public abstract class GuiCrafting extends GuiXACT implements
 		InteractiveCraftingGui {

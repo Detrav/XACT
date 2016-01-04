@@ -1,19 +1,18 @@
 package xk.xact.client.button;
 
-import java.util.List;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import xk.xact.XactMod;
-import xk.xact.api.INameable;
 import xk.xact.client.GuiUtils;
 import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.gui.ContainerCrafter;
-import xk.xact.util.Utils;
 import xk.xact.util.References.Localization;
+import xk.xact.util.Utils;
+
+import java.util.List;
 
 public class ButtonTab extends ButtonAction {
 

@@ -1,8 +1,5 @@
 package xk.xact.core.tileentities;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryCrafting;
@@ -17,6 +14,9 @@ import xk.xact.api.OverriddenBlock;
 import xk.xact.inventory.Inventory;
 import xk.xact.inventory.InventoryUtils;
 import xk.xact.util.Utils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 // the TE for the vanilla crafting table
 public class TileWorkbench extends TileEntity implements ISidedInventory,

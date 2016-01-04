@@ -1,7 +1,5 @@
 package xk.xact.client.button;
 
-import java.util.List;
-
 import net.minecraft.item.ItemStack;
 
 public final class CustomButtons {

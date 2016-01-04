@@ -1,12 +1,12 @@
 package xk.xact.util;
 
-import java.util.List;
-
 import codechicken.nei.guihook.IContainerTooltipHandler;
 import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.List;
 
 /**
  * From BluePower :P

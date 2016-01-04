@@ -1,7 +1,7 @@
 package xk.xact.core.items;
 
-import java.util.List;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,8 +13,8 @@ import xk.xact.XactMod;
 import xk.xact.recipes.CraftManager;
 import xk.xact.util.References;
 import xk.xact.util.Textures;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 /**
  * The item used for the encoding of recipes.

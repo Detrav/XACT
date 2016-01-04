@@ -1,7 +1,5 @@
 package xk.xact.recipes;
 
-import java.util.ArrayList;
-
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -12,6 +10,8 @@ import net.minecraft.world.World;
 import xk.xact.XactMod;
 import xk.xact.core.items.ItemChip;
 import xk.xact.inventory.InventoryUtils;
+
+import java.util.ArrayList;
 
 /**
  * Handles the encoding/decoding of CraftRecipes.

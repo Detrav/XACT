@@ -5,9 +5,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
-
 import xk.xact.client.GuiUtils;
 import xk.xact.inventory.InventoryUtils;
 import xk.xact.util.Textures;

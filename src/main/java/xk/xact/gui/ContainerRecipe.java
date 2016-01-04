@@ -1,7 +1,5 @@
 package xk.xact.gui;
 
-import java.util.Arrays;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
@@ -12,6 +10,8 @@ import xk.xact.inventory.Inventory;
 import xk.xact.inventory.InventoryUtils;
 import xk.xact.recipes.CraftRecipe;
 import xk.xact.recipes.RecipeUtils;
+
+import java.util.Arrays;
 
 public class ContainerRecipe extends Container implements
 		InteractiveCraftingContainer {

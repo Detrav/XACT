@@ -1,13 +1,13 @@
 package net.mcft.copy.betterstorage.api;
 
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Loader;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.Loader;
 
 public final class BetterStorageBackpack {
 	

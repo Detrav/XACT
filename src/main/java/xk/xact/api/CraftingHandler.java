@@ -1,11 +1,5 @@
 package xk.xact.api;
 
-import static xk.xact.util.Utils.copyArray;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -19,6 +13,12 @@ import xk.xact.network.CommonProxy;
 import xk.xact.recipes.CraftRecipe;
 import xk.xact.recipes.RecipeUtils;
 import xk.xact.util.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static xk.xact.util.Utils.copyArray;
 
 // Used to craft, check if can craft, etc.
 
@@ -150,7 +150,7 @@ public abstract class CraftingHandler {
 	
 				craftMatrix.decrStackSize(i, 1);
 			
-			if (stackInSlot.getItem().getContainerItem(stackInSlot) != null) {
+			if (stackInSlot.getItem() != null && stackInSlot.getItem().getContainerItem(stackInSlot) != null) {
 				ItemStack containerStack = stackInSlot.getItem().getContainerItem(stackInSlot);
 
 				if (containerStack.isItemStackDamageable() && containerStack.getItemDamage() > containerStack.getMaxDamage()) {
@@ -212,7 +212,7 @@ public abstract class CraftingHandler {
 		if (stack == null)
 			return true; // technically, counts as a success.
 
-		System.out.println(stack);
+
 		for (Object inventory : getAvailableInventories()) {
 			IInventoryAdapter adapter = InventoryUtils.getInventoryAdapter(inventory);
 			ItemStack result = adapter.placeItem(stack);
@@ -258,6 +258,8 @@ public abstract class CraftingHandler {
 			return 0; // not an ingredient! do something!
 		for (Object inventory : getAvailableInventories()) {
 			IInventoryAdapter adapter = InventoryUtils.getInventoryAdapter(inventory);
+			if (adapter == null)
+				continue;
 			for (ItemStack item : adapter) {
 				if (!countAll && found >= stack.stackSize) {
 					return found;

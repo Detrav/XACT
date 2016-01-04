@@ -1,13 +1,13 @@
 package xk.xact.plugin.nei;
 
-import java.util.List;
-
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.item.ItemStack;
-import xk.xact.api.InteractiveCraftingGui;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.api.IOverlayHandler;
 import codechicken.nei.recipe.IRecipeHandler;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.item.ItemStack;
+import xk.xact.api.InteractiveCraftingGui;
+
+import java.util.List;
 
 public class XactOverlayHandler implements IOverlayHandler {
 

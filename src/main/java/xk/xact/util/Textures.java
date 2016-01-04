@@ -1,8 +1,8 @@
 package xk.xact.util;
 
-import xk.xact.config.ConfigurationManager;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import xk.xact.config.ConfigurationManager;
 
 @SideOnly(Side.CLIENT)
 public final class Textures {

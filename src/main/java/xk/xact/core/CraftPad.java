@@ -1,8 +1,5 @@
 package xk.xact.core;
 
-import java.util.Arrays;
-import java.util.List;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,6 +14,9 @@ import xk.xact.client.gui.GuiCrafting;
 import xk.xact.inventory.Inventory;
 import xk.xact.recipes.CraftRecipe;
 import xk.xact.recipes.RecipeUtils;
+
+import java.util.Arrays;
+import java.util.List;
 
 // Used by the GUI
 public class CraftPad implements ICraftingDevice {

@@ -1,10 +1,10 @@
 package net.mcft.copy.betterstorage.api.crafting;
 
-import java.util.List;
-
-import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.item.ItemStack;
+
+import java.util.List;
 
 public interface IStationRecipe {
 	
