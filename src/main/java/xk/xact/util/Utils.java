@@ -3,6 +3,8 @@ package xk.xact.util;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -22,6 +24,7 @@ import xk.xact.XactMod;
 import xk.xact.config.ConfigurationManager;
 import xk.xact.core.tileentities.TileCrafter;
 import xk.xact.inventory.InventoryUtils;
+import xk.xact.network.ClientProxy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +36,20 @@ public class Utils {
 		player.addChatComponentMessage(new ChatComponentText(message));
 	}
 
+	public static void writeCraftPadInfo(EntityPlayer player, Minecraft mc) {
+		System.out.println("TIME: " + (System.currentTimeMillis() - ClientProxy.LAST_MESSAGE) + ", count: " + ClientProxy.MESSAGE_COUNT);
+		if (ClientProxy.MESSAGE_COUNT == 0) {
+			ClientProxy.MESSAGE_COUNT++;
+			ClientProxy.LAST_MESSAGE = System.currentTimeMillis();
+			mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(new ChatComponentText("Woah there, watch where you're going!"), 0);
+		} else if (ClientProxy.MESSAGE_COUNT > 0 && (System.currentTimeMillis() - ClientProxy.LAST_MESSAGE) < 10000) {
+			mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(new ChatComponentText("Woah there, watch where you're going! (" + ClientProxy.MESSAGE_COUNT + "x)"), 1);
+			ClientProxy.MESSAGE_COUNT++;
+			ClientProxy.LAST_MESSAGE = System.currentTimeMillis();
+		} else if (ClientProxy.MESSAGE_COUNT > 0 && (System.currentTimeMillis() - ClientProxy.LAST_MESSAGE) > 10000)
+			ClientProxy.MESSAGE_COUNT = 0;
+	}
+
 	public static void debug(String message, Object... data) {
 		if (ConfigurationManager.DEBUG_MODE)
 			XactMod.logger.fine(String.format(message, data));
@@ -40,11 +57,11 @@ public class Utils {
 	}
 
 	public static void log(String message, Object... data) {
-		FMLLog.log(References.MOD_NAME, Level.INFO, String.format(message, data));
+		FMLLog.log(References.MOD_NAME, Level.INFO, message, data);
 	}
 
 	public static void logError(String message, Object... data) {
-		FMLLog.log(References.MOD_NAME, Level.ERROR, String.format(message, data));
+		FMLLog.log(References.MOD_NAME, Level.ERROR, message, data);
 	}
 
 	public static void logException(String string, Exception exception, boolean stopGame) {
@@ -163,7 +180,7 @@ public class Utils {
 			Block block = world.getBlock(_x, _y, _z);
 			int blockMeta = world.getBlockMetadata(_x, _y, _z);
 
-			if (te != null && !InventoryUtils.isBlockDisabled(block, blockMeta))
+			if (te != null && block.isAir(world, _x, _y, _z) && !InventoryUtils.isBlockDisabled(block, blockMeta))
 				tileEntities.add(te);
 		}
 		return tileEntities;

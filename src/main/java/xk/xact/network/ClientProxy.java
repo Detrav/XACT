@@ -28,6 +28,9 @@ import xk.xact.gui.ContainerVanillaWorkbench;
 
 public class ClientProxy extends CommonProxy {
 
+	public static long LAST_MESSAGE = 0;
+	public static int MESSAGE_COUNT = 0;
+
 	@SideOnly(Side.CLIENT)
 	public static GuiScreen getCurrentScreen() {
 		return Minecraft.getMinecraft().currentScreen;
