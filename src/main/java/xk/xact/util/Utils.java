@@ -163,7 +163,7 @@ public class Utils {
 			Block block = world.getBlock(_x, _y, _z);
 			int blockMeta = world.getBlockMetadata(_x, _y, _z);
 
-			if (te != null && !InventoryUtils.isBlockDisabled(block, blockMeta))
+			if (te != null && !block.isAir(world, _x, _y, _z) && !InventoryUtils.isBlockDisabled(block, blockMeta))
 				tileEntities.add(te);
 		}
 		return tileEntities;
