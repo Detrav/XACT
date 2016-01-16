@@ -180,11 +180,7 @@ public class Utils {
 			Block block = world.getBlock(_x, _y, _z);
 			int blockMeta = world.getBlockMetadata(_x, _y, _z);
 
-<<<<<<< HEAD
-			if (te != null && block.isAir(world, _x, _y, _z) && !InventoryUtils.isBlockDisabled(block, blockMeta))
-=======
 			if (te != null && !block.isAir(world, _x, _y, _z) && !InventoryUtils.isBlockDisabled(block, blockMeta))
->>>>>>> branch 'master' of https://github.com/UniversalLP/XACT.git
 				tileEntities.add(te);
 		}
 		return tileEntities;
