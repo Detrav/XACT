@@ -1,3 +1,11 @@
+v0.5.5b
+-------
+[*] fix for items stacks that have nbt data not being properly counted during crafting operations
+
+v0.5.5a
+-------
+[*] fix for hidden tile entity block being treated as an adjacent inventory
+
 v0.5.5
 ------
 [*] Fixed oredictionary problems with dyes
