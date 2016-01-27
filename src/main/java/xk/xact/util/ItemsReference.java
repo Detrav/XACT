@@ -75,10 +75,15 @@ public class ItemsReference {
 		if (this.itemDamage != reference.itemDamage)
 			return false;
 		
+		/* just checking enchantments is not good enough for some type of items
 		if (!Utils.compareEnchantments(this.stack, reference.stack))
 			return false;
+		*/
 		
-		return true;
+		// Compare stacks tags.
+		if (this.tag == null)
+			return reference.tag == null;
+		return this.tag.equals(reference.tag);
 	}
 	
 	public ItemStack toItemStack() {
