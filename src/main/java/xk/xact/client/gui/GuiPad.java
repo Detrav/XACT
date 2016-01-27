@@ -1,5 +1,7 @@
 package xk.xact.client.gui;
 
+import javafx.scene.input.MouseButton;
+import net.java.games.input.Mouse;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.RenderHelper;
@@ -8,7 +10,9 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MouseHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.MouseEvent;
 import xk.xact.XactMod;
 import xk.xact.client.GuiUtils;
 import xk.xact.client.button.CustomButtons;
@@ -23,6 +27,7 @@ import xk.xact.recipes.CraftManager;
 import xk.xact.recipes.CraftRecipe;
 import xk.xact.util.References;
 import xk.xact.util.Textures;
+import xk.xact.util.Utils;
 
 public class GuiPad extends GuiCrafting {
 
@@ -170,6 +175,14 @@ public class GuiPad extends GuiCrafting {
 	public void updateScreen() {
 		super.updateScreen();
 
+		// Preventing the player from using the pad when falling
+		if (mc.thePlayer.fallDistance > 0 && !mc.thePlayer.capabilities.isCreativeMode) {
+			super.onGuiClosed();
+			mc.mouseHelper.grabMouseCursor();
+			mc.setIngameFocus();
+			Utils.writeCraftPadInfo(mc.thePlayer, mc);
+		}
+
 		if (craftPad.recentlyUpdated) {
 			// Update the buttons for the chips
 			ItemStack chip = craftPad.chipInv.getStackInSlot(0);
@@ -221,11 +234,15 @@ public class GuiPad extends GuiCrafting {
 	@Override
 	public void onGuiClosed() {
 		ItemStack pad = craftPad.getPlayerOwner().getHeldItem();
+		if (pad == null) {
+			Utils.logError("That CrafPad was null! Not saving changes to item. Player: %s", craftPad.getPlayerOwner());
+			return;
+		}
+
 		byte slotIdPad = (byte) craftPad.getPlayerOwner().inventory.currentItem;
 		pad.setItemDamage(0);
 		if (pad.stackTagCompound != null) {
-			byte slotToSwitch = (byte) (pad.stackTagCompound
-					.getByte("originalSlot"));
+			byte slotToSwitch = (byte) (pad.stackTagCompound.getByte("originalSlot"));
 			if (slotToSwitch != 0) {
 				ItemStack stack = craftPad.getPlayerOwner().inventory.getStackInSlot(slotToSwitch - 1);
 				pad.stackTagCompound.setByte("originalSlot", (byte) 0);

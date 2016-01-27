@@ -13,14 +13,14 @@ import xk.xact.core.items.ItemChip;
 import xk.xact.recipes.CraftManager;
 import xk.xact.recipes.CraftRecipe;
 import xk.xact.recipes.RecipeUtils;
+import xk.xact.util.Utils;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @ChestContainer(showButtons = false)
-public class ContainerPad extends ContainerItem implements
-		InteractiveCraftingContainer {
+public class ContainerPad extends ContainerItem implements InteractiveCraftingContainer {
 
 	public CraftPad craftPad;
 
@@ -311,8 +311,9 @@ public class ContainerPad extends ContainerItem implements
 		ItemStack current = getParentItem();
 		if (current != null) {
 			current.setItemDamage(0);
-		}
-		saveContentsToNBT(current);
+			saveContentsToNBT(current);
+		} else
+			Utils.logError("That CrafPad was null! Not saving changes to item. Player: %s", player);
 	}
 
 	// Whether if the slot's contents can be taken on double click.

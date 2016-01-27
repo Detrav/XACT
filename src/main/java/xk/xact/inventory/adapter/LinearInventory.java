@@ -24,10 +24,6 @@ public class LinearInventory implements IInventoryAdapter {
 	public LinearInventory(IInventory inventory) {
 		this.inventory = inventory;
 		this.isSided = inventory instanceof ISidedInventory;
-		if( isSided && !(inventory instanceof SidedInventory) ) {
-			// My implementation of ISided is the only one allowed past here.
-			Utils.logException( "Attempting to use LinearInventory on an unregulated ISidedInventory.", new RuntimeException("Class: "+ inventory.getClass()), false );
-		}
 	}
 
 	@Override

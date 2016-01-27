@@ -97,13 +97,11 @@ public abstract class ContainerItem extends ContainerXACT {
 	 * @param slot
 	 *            the Slot that contains the itemStack.
 	 */
-	protected void onPickupPrevented(EntityPlayer player, ItemStack itemStack,
-			Slot slot) {
+	protected void onPickupPrevented(EntityPlayer player, ItemStack itemStack, Slot slot) {
 		if (!(player instanceof EntityPlayerMP)) { // send the chat message
 													// client-side.
 			String itemName = itemStack.getDisplayName();
-			Utils.notifyPlayer(player, "Cannot move <" + itemName
-					+ "> while it's in use.");
+			Utils.notifyPlayer(player, "Cannot move <" + itemName + "> while it's in use.");
 		}
 	}
 

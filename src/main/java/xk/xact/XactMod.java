@@ -69,6 +69,7 @@ public class XactMod {
 		// Load keybinds
 		if (ConfigurationManager.ENABLE_KEYBINDS)
 			proxy.registerKeybindings();
+
 	}
 
 	@EventHandler
