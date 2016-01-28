@@ -11,3 +11,7 @@ build.properties
 # Ignore build number #
 build.number
 /.project
+eclipse/
+bin/
+.gradle/
+.settings/
