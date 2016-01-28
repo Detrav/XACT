@@ -319,7 +319,6 @@ public class InventoryUtils {
 
 	@SuppressWarnings("unchecked")
 	public static boolean isValidInventory(Object inventory) {
-
 		if (inventory != null) {
 			if (inventory.toString().contains("ic2.core.block")) // IC2 machines are strange. Don't pull items.
 				return false;
@@ -333,7 +332,6 @@ public class InventoryUtils {
 
 			// Then use default ones
 			if (inventory instanceof TileEntityChest) {
-				System.out.println("true");
 				return true;
 			}
 
@@ -359,7 +357,6 @@ public class InventoryUtils {
 			String[] split = string.split(":"); // 0 = modid, 1 = block name, 2 = metadata
 			if (string != "" && split.length == 3) {
 				Block blockFromConfig = GameRegistry.findBlock(split[0], split[1]);
-				
 				if (blockFromConfig != null && block != null) {
 					if (Integer.parseInt(split[2]) == -1)
 						return block.equals(blockFromConfig);

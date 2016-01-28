@@ -37,7 +37,6 @@ public class Utils {
 	}
 
 	public static void writeCraftPadInfo(EntityPlayer player, Minecraft mc) {
-		System.out.println("TIME: " + (System.currentTimeMillis() - ClientProxy.LAST_MESSAGE) + ", count: " + ClientProxy.MESSAGE_COUNT);
 		if (ClientProxy.MESSAGE_COUNT == 0) {
 			ClientProxy.MESSAGE_COUNT++;
 			ClientProxy.LAST_MESSAGE = System.currentTimeMillis();
@@ -313,7 +312,6 @@ public class Utils {
 	}
 	
 	public static boolean compareEnchantments(ItemStack stack1, ItemStack stack2) {
-
 		if (stack1 == null || stack2 == null)
 			return false;
 
