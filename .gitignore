@@ -15,3 +15,7 @@ eclipse/
 bin/
 .gradle/
 .settings/
+
+XACT.ipr
+
+XACT.iws
