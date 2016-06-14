@@ -359,9 +359,13 @@ public class InventoryUtils {
 				Block blockFromConfig = GameRegistry.findBlock(split[0], split[1]);
 				if (blockFromConfig != null && block != null) {
 					if (Integer.parseInt(split[2]) == -1)
-						return block.equals(blockFromConfig);
+						if (block.equals(blockFromConfig)) {
+							return true;
+						}
 					else {
-						return block.equals(blockFromConfig) && Integer.parseInt(split[2]) == blockMeta;
+						if (block.equals(blockFromConfig) && Integer.parseInt(split[2]) == blockMeta) {
+							return true;
+						}
 					}
 				} else
 					return true;
@@ -369,7 +373,7 @@ public class InventoryUtils {
 				return false; // If theres no values set the block will be valid
 			}
 		}
-		return true;
+		return false;
 	}
 	
 }
