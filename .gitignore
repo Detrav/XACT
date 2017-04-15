@@ -19,3 +19,24 @@ bin/
 XACT.ipr
 
 XACT.iws
+
+
+### Intellij IDEA ###
+
+*.iml
+*.ipr
+*.iws
+
+.idea/
+.idea_modules/
+
+
+#Folders
+
+eclipse/
+gradle/
+.gradle/
+
+*.log
+tmp/
+libsrc/
