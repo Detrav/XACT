@@ -298,6 +298,7 @@ public class TileCrafter extends TileMachine implements IInventory, ICraftingDev
 	public boolean canCraft(int index) {
 		if (index < 0 || index > getRecipeCount())
 			return false;
+		stateUpdatePending = true;
 		updateIfChangesDetected();
 		return craftableRecipes[index];
 	}
